@@ -8,7 +8,9 @@
 		<!-- SideBar User info -->
 		<div class="full-box dashboard-sideBar-UserInfo">
 			<figure class="full-box">
+				<BR>
 				<img src="<?php echo SERVERURL; ?>vistas/assets/avatars/<?php echo $_SESSION['foto_sbp']; ?>" alt="UserIcon">
+				<br>
 				<figcaption class="text-center text-titles"><?php echo $_SESSION['nombre_sbp']; ?></figcaption>
 			</figure>
 			<?php 
@@ -49,6 +51,9 @@
 					<i class="zmdi zmdi-case zmdi-hc-fw"></i> Administración <i class="zmdi zmdi-caret-down pull-right"></i>
 				</a>
 				<ul class="list-unstyled full-box">
+					<li>
+						<a href="<?php echo SERVERURL; ?>univ/"><i class="zmdi zmdi-balance zmdi-hc-fw"></i> Universidades</a>
+					</li>
 					<li>
 						<a href="<?php echo SERVERURL; ?>company/"><i class="zmdi zmdi-balance zmdi-hc-fw"></i> Empresa</a>
 					</li>

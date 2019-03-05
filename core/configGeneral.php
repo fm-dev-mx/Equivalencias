@@ -1,4 +1,4 @@
 <?php
-	const SERVERURL="http://localhost/MVC/";
-	const COMPANY="SISTEMA BIBLIOTECA";
-	date_default_timezone_set ("America/El_Salvador");
+	const SERVERURL="http://localhost/Equivalencias/";
+	const COMPANY="SISTEMA DE EQUIVALENCIAS UACJ";
+	date_default_timezone_set ("America/Chihuahua");
