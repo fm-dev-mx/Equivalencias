@@ -1,61 +1,49 @@
 <?php
 	if($peticionAjax){
-		require_once "../modelos/universidadModelo.php";
+		require_once "../modelos/carreraModelo.php";
 	}else{
-		require_once "./modelos/universidadModelo.php";
+		require_once "./modelos/carreraModelo.php";
 	}
 
-    class universidadControlador extends universidadModelo{
-		public function agregar_universidad_controlador(){
-            $nombre=mainModel::limpiar_cadena($_POST['nombreUniversidad-reg']);
-            $telefono=mainModel::limpiar_cadena($_POST['telefono-reg']);
-            $direccion=mainModel::limpiar_cadena($_POST['direccion-reg']);
-			$iniciales=mainModel::limpiar_cadena($_POST['iniciales-reg']);
-			$pais=mainModel::limpiar_cadena($_POST['pais-reg']);
-			$estado=mainModel::limpiar_cadena($_POST['estado-reg']);
-			$ciudad=mainModel::limpiar_cadena($_POST['ciudad-reg']);
-			$tipoUniversidad=mainModel::limpiar_cadena($_POST['optionsPublica']);
+    class carreraControlador extends carreraModelo{
+		public function agregar_carrera_controlador(){
+            $nombre=mainModel::limpiar_cadena($_POST['nombre']);
+            $codigoUniversidad=mainModel::limpiar_cadena($_POST['codigoUniversidad']);
 
-            $consulta1=mainModel::ejecutar_consulta_simple("SELECT id FROM universidad WHERE (UniversidadIniciales='$iniciales' AND UniversidadNombre='$nombre' AND UniversidadCiudad='$ciudad')");
+            $consulta1=mainModel::ejecutar_consulta_simple("SELECT id FROM universidad WHERE CarreraNombre='$nombre' AND CarreraCodigoUniversidad='$codigoUniversidad'");
 	
 			if($consulta1->rowCount()>=1){
                 $alerta=[
                     "Alerta"=>"simple",
                     "Titulo"=>"Ocurrió un error inesperado",
-                    "Texto"=>"El instituto ya existe en el sistema, favor de intentar nuevamente!",
+                    "Texto"=>"La carrera ya existe en el sistema, favor de intentar nuevamente!",
                     "Tipo"=>"error"
                 ];
 			}else{
 				
-				$consulta=mainModel::ejecutar_consulta_simple("SELECT id FROM universidad");
+				$consulta=mainModel::ejecutar_consulta_simple("SELECT id FROM carrera");
 				$numero=($consulta->rowCount())+1;
-				$codigo=mainModel::generar_codigo_aleatorio("UV",7,$numero);
+				$codigoCarrera=mainModel::generar_codigo_aleatorio("CR",7,$numero);
 				$dataAc=[
 					"Nombre"=>$nombre,
-					"Telefono"=>$telefono,
-					"Direccion"=>$direccion,
-					"Iniciales"=>$iniciales,
-					"Tipo"=>$tipoUniversidad,
-					"Pais"=>$pais,
-					"Estado"=>$estado,
-					"Ciudad"=>$ciudad,
-					"Codigo"=>$codigo
+                    "Codigo"=>$codigoCarrera,
+                    "CodigoUniversidad"=>$codigoUniversidad,
 				];
 
-				$guardarUniversidad=universidadModelo::agregar_universidad_modelo($dataAc);
+				$guardarCarrera=carreraModelo::agregar_carrera_modelo($dataAc);
 
-				if($guardarUniversidad->rowCount()>=1){
+				if($guardarCarrera->rowCount()>=1){
 					$alerta=[
 						"Alerta"=>"limpiar",
 						"Titulo"=>"Instituto registrado",
-						"Texto"=>"El instituto se registro con exito en el sistema",
+						"Texto"=>"La carrera se registro con exito en el sistema",
 						"Tipo"=>"success"
 					];
 				}else{
 					$alerta=[
 						"Alerta"=>"simple",
 						"Titulo"=>"Ocurrió un error inesperado",
-						"Texto"=>"No hemos podido registrar el instituto, por favor intente nuevamente",
+						"Texto"=>"No hemos podido registrar la carrera, por favor intente nuevamente",
 						"Tipo"=>"error"
 					];
 				}
@@ -64,7 +52,7 @@
         }
 
 		// Controlador para paginar universidades
-		public function paginador_universidad_controlador($pagina,$registros,$privilegio,$busqueda){
+		public function paginador_carrera_controlador($pagina,$registros,$privilegio,$busqueda){
 
 			$pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
@@ -76,11 +64,11 @@
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
 			if(isset($busqueda) && $busqueda!=""){
-				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM universidad WHERE (UniversidadNombre LIKE '%$busqueda%' OR UniversidadIniciales LIKE '%$busqueda%' OR UniversidadPais LIKE '%$busqueda%' OR UniversidadEstado LIKE '%$busqueda%' OR UniversidadCiudad LIKE '%$busqueda%' OR UniversidadTipo LIKE '%$busqueda%') ORDER BY UniversidadNombre ASC LIMIT $inicio,$registros";
-				$paginaurl="univSearch";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera WHERE (CarreraNombre LIKE '%$busqueda%') ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
+				$paginaurl="carrera";
 			}else{
-				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM universidad ORDER BY UniversidadNombre ASC LIMIT $inicio,$registros";
-				$paginaurl="univList";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera ORDER BY UniversidadNombre ASC LIMIT $inicio,$registros";
+				$paginaurl="carrera";
 			}
 
 			$conexion = mainModel::conectar();
@@ -99,14 +87,11 @@
 					<thead>
 						<tr>
 							<th class="text-center">#</th>
-							<th class="text-center">NOMBRE</th>
-							<th class="text-center">INICIALES</th>
-							<th class="text-center">TELÉFONO</th>
-							<th class="text-center">CAMPUS</th>';
+							<th class="text-center">NOMBRE</th>';
 						if($privilegio<=2){
 							$tabla.='
-								<th class="text-center">A. DATOS</th>
-								<th class="text-center">VER CARRERAS</th>
+								<th class="text-center">RENOMBRAR</th>
+								<th class="text-center">VER MATERIAS</th>
 							';
 						}
 						if($privilegio==1){
@@ -126,19 +111,16 @@
 					$tabla.='
 						<tr>
 							<td>'.$contador.'</td>
-							<td>'.$rows['UniversidadNombre'].'</td>
-							<td>'.$rows['UniversidadIniciales'].'</td>
-							<td>'.$rows['UniversidadTelefono'].'</td>
-							<td>'.$rows['UniversidadCiudad'].'</td>';
+							<td>'.$rows['CarreraNombre'].'</td>';
 							if($privilegio<=2){
 								$tabla.='
 									<td>
-										<a href="'.SERVERURL.'univ/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+										<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['CarreraCodigo']).'/" class="btn btn-success btn-raised btn-xs">
 											<i class="zmdi zmdi-refresh"></i>
 										</a>
 									</td>
 									<td>
-										<a href="'.SERVERURL.'univCarreras/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+										<a href="'.SERVERURL.'univCarreras/'.mainModel::encryption($rows['CarreraCodigo']).'/" class="btn btn-success btn-raised btn-xs">
 											<i class="zmdi zmdi-bookmark"></i>
 										</a>
 									</td>
@@ -148,7 +130,7 @@
 								$tabla.='
 									<td>
 										<form action="'.SERVERURL.'ajax/universidadAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
-											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['UniversidadCodigo']).'">
+											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
 											<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
 											<button type="submit" class="btn btn-danger btn-raised btn-xs">
 												<i class="zmdi zmdi-delete"></i>
@@ -211,7 +193,7 @@
 			return $tabla;
 		}
 
-		public function eliminar_universidad_controlador(){
+		public function eliminar_carrera_controlador(){
 			$codigo=mainModel::decryption($_POST['codigo-del']);
 			$adminPrivilegio=mainModel::decryption($_POST['privilegio-admin']);
 
@@ -220,20 +202,20 @@
 
 			if($adminPrivilegio==1){
 				
-				$DelUniv=universidadModelo::eliminar_universidad_modelo($codigo);
+				$DelCarrera=universidadModelo::eliminar_carrera_modelo($codigo);
 				
-				if($DelUniv->rowCount()>=1){
+				if($DelCarrera->rowCount()>=1){
 					$alerta=[
 						"Alerta"=>"recargar",
-						"Titulo"=>"Instituto eliminado",
-						"Texto"=>"El institutos fue eliminado del sistema con éxito",
+						"Titulo"=>"Carrera eliminada",
+						"Texto"=>"La carrera fue eliminado del sistema con éxito",
 						"Tipo"=>"success"
 					];
 				}else{
 					$alerta=[
 						"Alerta"=>"simple",
 						"Titulo"=>"Ocurrió un error inesperado",
-						"Texto"=>"No podemos eliminar este instituto en este momento, favor de intentar nuevamente!!",
+						"Texto"=>"No podemos eliminar esta carrera, favor de intentar nuevamente!!",
 						"Tipo"=>"error"
 					];
 				}
@@ -241,36 +223,27 @@
 			}
 		}
 
-		public function datos_universidad_controlador($tipo,$codigo){
+		public function datos_carrera_controlador($tipo,$codigo){
 			$tipo=mainModel::limpiar_cadena($tipo);
 			$codigo=mainModel::decryption($codigo);
 
-			return universidadModelo::datos_universidad_modelo($tipo,$codigo);
+			return carreraModelo::datos_carrera_modelo($tipo,$codigo);
 		}
 
-		public function actualizar_universidad_controlador(){
-			$nombre=mainModel::limpiar_cadena($_POST['nombreUniversidad-reg']);
-            $telefono=mainModel::limpiar_cadena($_POST['telefono-reg']);
-            $direccion=mainModel::limpiar_cadena($_POST['direccion-reg']);
-			$iniciales=mainModel::limpiar_cadena($_POST['iniciales-reg']);
-			$pais=mainModel::limpiar_cadena($_POST['pais-reg']);
-			$estado=mainModel::limpiar_cadena($_POST['estado-reg']);
-			$ciudad=mainModel::limpiar_cadena($_POST['ciudad-reg']);
-			$tipoUniversidad=mainModel::limpiar_cadena($_POST['optionsPublica']);
-			$codigo=mainModel::decryption($_POST['codigoUniversidad-up']);
-			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM universidad WHERE UniversidadCodigo='$codigo'");
-			$DatosUniv=$query1->fetch();
+		public function actualizar_carrera_controlador(){
+			$nombre=mainModel::limpiar_cadena($_POST['nombre']);
+            $codigo=mainModel::decryption($_POST['codigo']);
+			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM carrera WHERE CarreraCodigo='$codigo'");
+			$DatosCarrera=$query1->fetch();
 
-			if($nombre!=$DatosUniv['UniversidadNombre'] || $iniciales!=$DatosUniv['UniversidadIniciales'] || $ciudad!=$DatosUniv['UniversidadCiudad']){
-				$consulta1=mainModel::ejecutar_consulta_simple("SELECT UniversidadNombre FROM universidad WHERE UniversidadNombre='$nombre'");
-				$consulta2=mainModel::ejecutar_consulta_simple("SELECT UniversidadIniciales FROM universidad WHERE UniversidadIniciales='$iniciales'");
-				$consulta3=mainModel::ejecutar_consulta_simple("SELECT UniversidadCiudad FROM universidad WHERE UniversidadCiudad='$ciudad'");
+			if($nombre!=$DatosCarrera['CarreraNombre']){
+				$consulta1=mainModel::ejecutar_consulta_simple("SELECT CarreraNombre FROM carrera WHERE CarreraNombre='$nombre'");
 		
-				if(($consulta1->rowCount()>=1) && ($consulta2->rowCount()>=1) && ($consulta3->rowCount()>=1)){
+				if(($consulta1->rowCount()>=1)){
 					$alerta=[
 						"Alerta"=>"simple",
 						"Titulo"=>"Ocurrió un error inesperado",
-						"Texto"=>"Los datos del instituto que acaba de ingresar ya se encuentran registrados en el sistema",
+						"Texto"=>"El nombre de la carrera que acaba de ingresar ya se encuentran registrado en el sistema",
 						"Tipo"=>"error"
 					];
 					return mainModel::sweet_alert($alerta);
@@ -281,13 +254,7 @@
 			$dataAd=[
 				"Codigo"=>$codigo,
 				"Nombre"=>$nombre,
-				"Telefono"=>$telefono,
-				"Direccion"=>$direccion,
-				"Iniciales"=>$iniciales,
-				"Tipo"=>$tipoUniversidad,
-				"Pais"=>$pais,
-				"Estado"=>$estado,
-				"Ciudad"=>$ciudad
+				"CodigoUniversidad"=>$codigoUniversidad
 			];
 
 			if(universidadModelo::actualizar_universidad_modelo($dataAd)){

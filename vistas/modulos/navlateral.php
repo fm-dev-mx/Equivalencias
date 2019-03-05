@@ -55,7 +55,7 @@
 						<a href="<?php echo SERVERURL; ?>univ/"><i class="zmdi zmdi-balance zmdi-hc-fw"></i> Universidades</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>company/"><i class="zmdi zmdi-balance zmdi-hc-fw"></i> Empresa</a>
+						<a href="<?php echo SERVERURL; ?>carrera/"><i class="zmdi zmdi-bookmark zmdi-hc-fw"></i> Carreras</a>
 					</li>
 					<li>
 						<a href="<?php echo SERVERURL; ?>category/"><i class="zmdi zmdi-labels zmdi-hc-fw"></i> Categorías</a>

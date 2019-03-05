@@ -1,13 +1,17 @@
 <?php
 	$peticionAjax=true;
 	require_once "../core/configGeneral.php";
-	if(isset($_POST['nombreUniversidad-reg']) || isset($_POST['codigo-del'])){
+	if(isset($_POST['nombreUniversidad-reg']) || isset($_POST['codigo-del']) || isset($_POST['agregarActualizar-reg'])){
 
 		require_once "../controladores/universidadControlador.php";
 		$InsUniv= new universidadControlador();
 
-		if(isset($_POST['nombreUniversidad-reg']) && isset($_POST['iniciales-reg'])){
+		if(isset($_POST['nombreUniversidad-reg']) && isset($_POST['iniciales-reg']) && isset($_POST['agregarActualizar-reg'])){
+			if($_POST['agregarActualizar-reg']=='Actualizar'){
+				echo $InsUniv->actualizar_universidad_controlador();
+			}elseif($_POST['agregarActualizar-reg']=="Agregar"){
 				echo $InsUniv->agregar_universidad_controlador();
+			}	
 		}
 		
 		if(isset($_POST['codigo-del']) && isset($_POST['privilegio-admin'])){

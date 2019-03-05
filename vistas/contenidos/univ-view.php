@@ -38,12 +38,10 @@
 	if(isset($datos[1])){
 		$tipo="Unico";
 		$filesUniv=$insUniv->datos_universidad_controlador($tipo,$datos[1]);
-
 		if($filesUniv->rowCount()==1){
 			$campos=$filesUniv->fetch();
 		}
 	}
-
 ?>
 
 <!-- panel datos de la empresa -->
@@ -53,51 +51,70 @@
 			<h3 class="panel-title"><i class="zmdi zmdi-plus"></i> &nbsp; DATOS DE LA UNIVERSIDAD</h3>
 		</div>
 		<div class="panel-body">
-		<form action="<?php echo SERVERURL; ?>ajax/universidadAjax.php" method="POST" data-form="save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+		<form action="<?php echo SERVERURL; ?>ajax/universidadAjax.php" method="POST" data-form=<?php if(isset($campos['UniversidadNombre'])){echo 'Update';}else{echo 'Save';} ?> class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
 		    	<fieldset>
+						<input class="form-control" type="hidden" name="agregarActualizar-reg" maxlength="170" value="<?php if(isset($campos['UniversidadNombre'])){echo "Actualizar";}else{echo "Agregar";} ?>">
+						<input class="form-control" type="hidden" name="codigoUniversidad-up" value="<?php echo $datos[1]; ?>">
 		    		<legend><i class="zmdi zmdi-assignment"></i> &nbsp;</legend>
 		    		<div class="container-fluid">
 		    			<div class="row">
 							<div class="col-xs-12">
 								<div class="form-group label-floating">
 								  	<label class="control-label">Nombre del instituto *</label>
-								  	<input class="form-control" type="text" name="nombreUniversidad-reg" maxlength="170" value="<?php $campos['UniversidadNombre'];?>">
+								  	<input class="form-control" type="text" name="nombreUniversidad-reg" required="" maxlength="170" value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadNombre'];} ?>">
 								</div>
 		    				</div>
 		    				<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 								  	<label class="control-label">Iniciales *</label>
-								  	<input class="form-control" type="text" name="iniciales-reg" maxlength="15">
+								  	<input class="form-control" type="text" name="iniciales-reg" required="" maxlength="15"  value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadIniciales'];} ?>">
 								</div>
 		    				</div>
 								<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 								  	<label class="control-label">Pais *</label>
-								  	<input class="form-control" type="text" name="pais-reg" maxlength="15">
+								  	<input class="form-control" type="text" name="pais-reg" required="" maxlength="15"  value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadPais'];} ?>">
 								</div>
 		    				</div>
 								<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 								  	<label class="control-label">Estado *</label>
-								  	<input class="form-control" type="text" name="estado-reg" maxlength="15">
+								  	<input class="form-control" type="text" name="estado-reg" required="" maxlength="15"  value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadEstado'];} ?>">
 								</div>
 		    				</div>
 								<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 								  	<label class="control-label">Ciudad *</label>
-								  	<input class="form-control" type="text" name="ciudad-reg" maxlength="15">
+								  	<input class="form-control" type="text" name="ciudad-reg" required="" maxlength="15"  value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadCiudad'];} ?>">
 								</div>
 		    				</div>
 		    				<div class="col-xs-12">
 								<div class="form-group label-floating">
 								  	<label class="control-label">Dirección</label>
-								  	<input class="form-control" type="text" name="direccion-reg" maxlength="170">
+								  	<input class="form-control" type="text" name="direccion-reg" maxlength="170" value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadDireccion'];} ?>">
+								</div>
+		    				</div>
+								<div class="col-xs-12 col-sm-6">
+								<div class="form-group">
+									<label class="control-label">Tipo de universidad</label>
+									<div class="radio radio-primary">
+										<label>
+											<input type="radio" name="optionsPublica" id="optionsRadios1" value="Publica" checked="" <?php if($campos['UniversidadTipo']=="Publica"){ echo 'checked=""'; } ?>>
+											<i class="zmdi zmdi-male-alt"></i> &nbsp; Pública
+										</label>
+									</div>
+									<div class="radio radio-primary">
+										<label>
+											<input type="radio" name="optionsPublica" id="optionsRadios2" value="Privada" <?php if($campos['UniversidadTipo']=="Privada"){ echo 'checked=""'; } ?>>
+											<i class="zmdi zmdi-female"></i> &nbsp; Privada
+										</label>
+									</div>
 								</div>
 		    				</div>
 								<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 								  	<label class="control-label">Teléfono</label>
-								  	<input pattern="[0-9+]{1,15}" class="form-control" type="text" name="telefono-reg" maxlength="50">
+								  	<input pattern="[0-9+]{1,15}" class="form-control" type="text" name="telefono-reg" maxlength="50" value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadTelefono'];} ?>">
 								</div>
 		    				</div>
 		    			</div>
