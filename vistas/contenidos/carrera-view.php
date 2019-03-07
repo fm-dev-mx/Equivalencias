@@ -31,7 +31,7 @@
 		<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST" data-form=<?php if(isset($campos['UniversidadNombre'])){echo 'Update';}else{echo 'Save';} ?> class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
 		    	<fieldset>
 					<input class="form-control" type="hidden" name="agregarActualizar" maxlength="170" value="<?php if(isset($campos['CarreraNombre'])){echo "Actualizar";}else{echo "Agregar";} ?>">
-					<input class="form-control" type="hidden" name="codigoCarrera" value="<?php echo $datos[1]; ?>">
+					<input class="form-control" type="hidden" name="codigoUniversidad" value="<?php echo $datos[1]; ?>">
 		    		<div class="container-fluid">
 		    			<div class="row">
 							<div class="col-xs-12">
@@ -45,7 +45,7 @@
 		    		</div>
 		    	</fieldset>
 		    	<br>
-					<div class="RespuestaAjax"></div>
+					<div class="RespuestaAjax"></div>					
 		    </form>
 		</div>
 	

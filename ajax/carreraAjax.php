@@ -1,7 +1,7 @@
 <?php
 	$peticionAjax=true;
 	require_once "../core/configGeneral.php";
-	if(isset($_POST['nombre']) || isset($_POST['codigo-del']) || isset($_POST['agregarActualizar']) || isset($_POST['privilegio-admin'])){
+	if(isset($_POST['nombre']) || isset($_POST['codigo-del']) || isset($_POST['agregarActualizar']) || isset($_POST['privilegio-admin']) || isset($_POST['codigo-act'])){
 
 		require_once "../controladores/carreraControlador.php";
 		$InsUniv= new carreraControlador();
@@ -16,6 +16,10 @@
 		
 		if(isset($_POST['codigo-del']) && isset($_POST['privilegio-admin'])){
 			echo $InsUniv->eliminar_carrera_controlador();
+		}
+
+		if(isset($_POST['codigo-act']) && isset($_POST['privilegio-admin'])){
+			echo $InsUniv->actualizar_carrera_controlador();
 		}
 
 	}else{

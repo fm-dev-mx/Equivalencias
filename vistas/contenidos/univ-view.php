@@ -99,13 +99,13 @@
 									<label class="control-label">Tipo de universidad</label>
 									<div class="radio radio-primary">
 										<label>
-											<input type="radio" name="optionsPublica" id="optionsRadios1" value="Publica" checked="" <?php if($campos['UniversidadTipo']=="Publica"){ echo 'checked=""'; } ?>>
+											<input type="radio" name="optionsPublica" id="optionsRadios1" value="Publica" checked="" <?php if(isset($campos['UniversidadTipo'])){if($campos['UniversidadTipo']=="Publica"){ echo 'checked=""'; }} ?>>
 											<i class="zmdi zmdi-male-alt"></i> &nbsp; Pública
 										</label>
 									</div>
 									<div class="radio radio-primary">
 										<label>
-											<input type="radio" name="optionsPublica" id="optionsRadios2" value="Privada" <?php if($campos['UniversidadTipo']=="Privada"){ echo 'checked=""'; } ?>>
+											<input type="radio" name="optionsPublica" id="optionsRadios2" value="Privada" <?php if(isset($campos['UniversidadTipo'])){if($campos['UniversidadTipo']=="Privada"){ echo 'checked=""'; }} ?>>
 											<i class="zmdi zmdi-female"></i> &nbsp; Privada
 										</label>
 									</div>

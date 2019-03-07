@@ -138,7 +138,7 @@
 										</a>
 									</td>
 									<td>
-										<a href="'.SERVERURL.'univCarreras/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+										<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
 											<i class="zmdi zmdi-bookmark"></i>
 										</a>
 									</td>

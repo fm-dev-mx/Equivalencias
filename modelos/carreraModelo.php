@@ -9,8 +9,8 @@
 		protected function agregar_carrera_modelo($datos){
 			$sql=mainModel::conectar()->prepare("INSERT INTO carrera (CarreraNombre,CarreraCodigo,CarreraCodigoUniversidad) VALUES(:Nombre,:Codigo,:CodigoUniversidad)");
 			$sql->bindParam(":Nombre",$datos['Nombre']);
-            $sql->bindParam(":Codigo",$datos['CodigoCarrera']);
-            $sql->bindParam(":CodigoUniversidad",$datos['CodigoUniversidad']);
+            $sql->bindParam(":Codigo",$datos['Codigo']);
+			$sql->bindParam(":CodigoUniversidad",$datos['CodigoUniversidad']);
 			$sql->execute();
 			return $sql;
 		}
