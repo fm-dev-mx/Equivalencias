@@ -24,8 +24,8 @@
 
 		protected function actualizar_carrera_modelo($datos){
 			$query=mainModel::conectar()->prepare("UPDATE carrera SET CarreraNombre=:Nombre WHERE CarreraCodigo=:Codigo");
-			$query->bindParam(":Codigo",$datos['Codigo']);
 			$query->bindParam(":Nombre",$datos['Nombre']);
+			$query->bindParam(":Codigo",$datos['Codigo']);
 			$query->execute();
 			return $query;
 		}

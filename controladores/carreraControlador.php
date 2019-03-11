@@ -34,15 +34,15 @@
 
 				if($guardarCarrera->rowCount()>=1){
 					$alerta=[
-						"Alerta"=>"limpiar",
-						"Titulo"=>"Instituto registrado",
+						"Alerta"=>"recargar",
+						"Titulo"=>"Carrera registrada",
 						"Texto"=>"La carrera se registro con exito en el sistema",
 						"Tipo"=>"success"
 					];
 				}else{
 					$alerta=[
 						"Alerta"=>"simple",
-						"Titulo"=>"Ocurrió un error inesperado".$dataAc['Codigo'],
+						"Titulo"=>"Ocurrió un error inesperado",
 						"Texto"=>"No hemos podido registrar la carrera, por favor intente nuevamente",
 						"Tipo"=>"error"
 					];
@@ -111,7 +111,7 @@
 				$contadorC=0;
 				$codigoUni=explode("/", $_GET['views']);
 				foreach($datos as $rows){
-					if(isset($_POST['codigo-act']) && $contadorC==0){
+					if(isset($_POST['codigo-sel']) && $contadorC==0){
 						$tabla='
 						<div class="table-responsive">
 							<table class="table table-hover text-center">
@@ -139,27 +139,29 @@
 						reset($rows);					
 					}
 					
-					if(($rows['CarreraCodigo']==$banCarrera)){
-					$tabla.='<tr>
-								<form action="'.SERVERURL.'ajax/carreraAjax.php" method="POST" class="FormularioAjax" data-form="update" entype="multipart/form-data" autocomplete="off">
-									<input type="hidden" name="codigo-act" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
-									<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
-									<input type="hidden" name="codigo-universidad" value="'.$codigoUni[2].'">
-									<td>'.$contador.'</td>
+					if($rows['CarreraCodigo']==$banCarrera){
+						
+						$tabla.='<tr>
+								    <form action="'.SERVERURL.'ajax/carreraAjax.php" method="POST" class="FormularioAjax" data-form="Update" entype="multipart/form-data" autocomplete="off">
+										<input type="hidden" name="codigo-actu" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
+										<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
+										<input type="hidden" name="codigo-universidad" value="'.$codigoUni[2].'">
+										<td>'.$contador.'</td>
 
-										<div class="row">
-											<td><input class="col-lg-12 col-offset-6 centered" type="text" name="nombre-carrera" required="" maxlength="170" placeholder="'.$rows['CarreraNombre'].'"></td>
-										</div>
-									
-									<td></td>	
-									<td><button type="submit" class="btn btn-raised btn-primary btn-sm">
-										<i class="zmdi zmdi-floppy"></i>    Renombrar carrera
-									</button>
-									</td>
-									<td></td>
-									<div class="RespuestaAjax"></div>
-								</form>
-							</tr>';
+											<div class="row">
+												<td><input class="col-lg-12 col-offset-6 centered" type="text" name="nombre-carrera" required="" maxlength="170" value="'.$rows['CarreraNombre'].'"></td>
+											</div>
+										
+										<td></td>	
+										<td>
+											<button type="submit" class="btn btn-raised btn-primary btn-sm">
+												<i class="zmdi zmdi-floppy"></i>    Renombrar carrera
+											</button>
+										</td>
+										<td></td>
+										<div class="RespuestaAjax"></div>
+									</form>
+								</tr>';
 					}else{
 						$tabla.='
 						<tr>
@@ -171,7 +173,7 @@
 							$tabla.='
 								<td>
 									<form method="POST" autocomplete="off">
-										<input type="hidden" name="codigo-act" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
+										<input type="hidden" name="codigo-sel" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
 										<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
 										<button type="submit" class="btn btn-success btn-raised btn-xs">
 											<i class="zmdi zmdi-refresh"></i>
@@ -185,7 +187,7 @@
 									</a>
 								</td>
 							';
-							$banCarrera=mainModel::decryption($_POST['codigo-act']);
+							if(isset($_POST['codigo-sel'])){$banCarrera=mainModel::decryption($_POST['codigo-sel']);}
 						}
 						if($privilegio==1){
 							$tabla.='
@@ -268,6 +270,7 @@
 				$DelCarrera=carreraModelo::eliminar_carrera_modelo($codigo);
 				
 				if($DelCarrera->rowCount()>=1){
+					unset($codigo);	
 					$alerta=[
 						"Alerta"=>"recargar",
 						"Titulo"=>"Carrera eliminada",
@@ -295,19 +298,19 @@
 
 		public function actualizar_carrera_controlador(){
 			$nombre=mainModel::limpiar_cadena($_POST['nombre-carrera']);
-            $codigo=mainModel::decryption($_POST['codigo-act']);
+            $codigo=mainModel::decryption($_POST['codigo-actu']);
 			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM carrera WHERE CarreraCodigo='$codigo'");
 			$codigoUniversidad=mainModel::decryption($_POST['codigo-universidad']);
 			$DatosCarrera=$query1->fetch();
 
 			if($nombre!=$DatosCarrera['CarreraNombre']){
-				$consulta1=mainModel::ejecutar_consulta_simple("SELECT CarreraNombre FROM carrera WHERE CarreraNombre='$nombre'");
+				$consulta1=mainModel::ejecutar_consulta_simple("SELECT CarreraNombre FROM carrera WHERE CarreraNombre='$nombre' AND CarreraCodigoUniversidad='$codigoUniversidad'");
 		
-				if(($consulta1->rowCount()>=1)){
+				if($consulta1->rowCount()>=1){
 					$alerta=[
 						"Alerta"=>"simple",
 						"Titulo"=>"Ocurrió un error inesperado",
-						"Texto"=>"El nombre de la carrera que acaba de ingresar ya se encuentran registrado en el sistema",
+						"Texto"=>"El nombre de la carrera que acaba de ingresar ya se encuentran registrado en esta universidad",
 						"Tipo"=>"error"
 					];
 					return mainModel::sweet_alert($alerta);
@@ -317,11 +320,11 @@
 
 			$dataAd=[
 				"Codigo"=>$codigo,
-				"Nombre"=>$nombre,
-				"CodigoUniversidad"=>$codigoUniversidad[2]
+				"Nombre"=>$nombre
 			];
 
-			if(carreraModelo::actualizar_carrera_modelo($dataAd)){
+			$guardarCarrera=carreraModelo::actualizar_carrera_modelo($dataAd);
+			if($guardarCarrera->rowCount()>=1){
 				$alerta=[
 					"Alerta"=>"recargar",
 					"Titulo"=>"Datos actualizados!",
