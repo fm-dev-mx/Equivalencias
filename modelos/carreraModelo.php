@@ -22,10 +22,10 @@
 			return $query;
 		}
 
-		protected function actualizar_carrera_modelo($datos){
+		protected function actualizar_carrera_modelo($codigo,$nombre){
 			$query=mainModel::conectar()->prepare("UPDATE carrera SET CarreraNombre=:Nombre WHERE CarreraCodigo=:Codigo");
-			$query->bindParam(":Nombre",$datos['Nombre']);
-			$query->bindParam(":Codigo",$datos['Codigo']);
+			$query->bindParam(":Nombre",$nombre);
+			$query->bindParam(":Codigo",$codigo);
 			$query->execute();
 			return $query;
 		}

@@ -139,6 +139,7 @@
 						reset($rows);					
 					}
 					
+					if(isset($_POST['codigo-sel'])){$banCarrera=mainModel::decryption($_POST['codigo-sel']);}
 					if($rows['CarreraCodigo']==$banCarrera){
 						
 						$tabla.='<tr>
@@ -187,7 +188,7 @@
 									</a>
 								</td>
 							';
-							if(isset($_POST['codigo-sel'])){$banCarrera=mainModel::decryption($_POST['codigo-sel']);}
+							
 						}
 						if($privilegio==1){
 							$tabla.='
@@ -318,12 +319,7 @@
 				}
 			}
 
-			$dataAd=[
-				"Codigo"=>$codigo,
-				"Nombre"=>$nombre
-			];
-
-			$guardarCarrera=carreraModelo::actualizar_carrera_modelo($dataAd);
+			$guardarCarrera=carreraModelo::actualizar_carrera_modelo($codigo,$nombre);
 			if($guardarCarrera->rowCount()>=1){
 				$alerta=[
 					"Alerta"=>"recargar",
