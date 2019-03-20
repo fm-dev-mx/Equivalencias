@@ -8,8 +8,8 @@
     class carreraControlador extends carreraModelo{
 		public function agregar_carrera_controlador(){
 			
-			$nombre=mainModel::limpiar_cadena($_POST['nombre']);
-            $codigoUniversidad=mainModel::decryption($_POST['codigoUniversidad']);
+			$nombre=mainModel::limpiar_cadena($_POST['nombreCarreraAgregar']);
+            $codigoUniversidad=mainModel::decryption($_POST['codigoUniAgregarCarrera']);
 
             $consulta1=mainModel::ejecutar_consulta_simple("SELECT id FROM carrera WHERE CarreraNombre='$nombre' AND CarreraCodigoUniversidad='$codigoUniversidad'");
 	
@@ -58,17 +58,18 @@
 			$registros=mainModel::limpiar_cadena($registros);
 			$privilegio=mainModel::limpiar_cadena($privilegio);
 			$busqueda=mainModel::limpiar_cadena($busqueda);
-			$renombrar_carrera="";
+			$codigoUniversidad=explode("/", $_GET['views']);
+			$codigoUni=mainModel::decryption($codigoUniversidad[1]);
 			$tabla="";
 
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
 			if(isset($busqueda) && $busqueda!=""){
-				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera WHERE (CarreraNombre LIKE '%$busqueda%') ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera WHERE (CarreraNombre LIKE '%$busqueda%' AND CarreraCodigoUniversidad='$codigoUni') ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
 				$paginaurl="carrera";
 			}else{
-				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera WHERE CarreraCodigoUniversidad='$codigoUni' ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
 				$paginaurl="carrera";
 			}
 
@@ -156,7 +157,7 @@
 					$tabla.='
 						<tr>
 							<td colspan="5">
-								<a href="'.SERVERURL.$paginaurl.'/" class="btn btn-sm btn-info btn-raised">
+								<a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'" class="btn btn-sm btn-info btn-raised">
 									Haga clic aca para recargar el listado
 								</a>
 							</td>
@@ -179,21 +180,21 @@
 				if($pagina==1){
 					$tabla.='<li class="disabled"><a><i class="zmdi zmdi-arrow-left"></i></a></li>';
 				}else{
-					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.($pagina-1).'/"><i class="zmdi zmdi-arrow-left"></i></a></li>';
+					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.($pagina-1).'/"><i class="zmdi zmdi-arrow-left"></i></a></li>';
 				}
 
 				for($i=1; $i<=$Npaginas; $i++){
 					if($pagina==$i){
-						$tabla.='<li class="active"><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
+						$tabla.='<li class="active"><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.$i.'/">'.$i.'</a></li>';
 					}else{
-						$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
+						$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.$i.'/">'.$i.'</a></li>';
 					}
 				}
 
 				if($pagina==$Npaginas){
 					$tabla.='<li class="disabled"><a><i class="zmdi zmdi-arrow-right"></i></a></li>';
 				}else{
-					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.($pagina+1).'/"><i class="zmdi zmdi-arrow-right"></i></a></li>';
+					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.($pagina+1).'/"><i class="zmdi zmdi-arrow-right"></i></a></li>';
 				}
 				$tabla.='</ul></nav>	
 						';
@@ -234,11 +235,10 @@
 			}
 		}
 
-		public function datos_carrera_controlador($tipo,$codigo){
-			$tipo=mainModel::limpiar_cadena($tipo);
+		public function datos_universidad_controlador($codigo){
 			$codigo=mainModel::decryption($codigo);
 
-			return carreraModelo::datos_carrera_modelo($tipo,$codigo);
+			return carreraModelo::datos_universidad_modelo($codigo);
 		}
 		
 

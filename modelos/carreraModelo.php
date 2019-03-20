@@ -30,13 +30,9 @@
 			return $query;
 		}
 
-		protected function datos_carrera_modelo($tipo,$codigo){
-			if($tipo=="Unico"){
-				$query=mainModel::conectar()->prepare("SELECT * FROM carrera WHERE CarreraCodigo=:Codigo");
-				$query->bindParam(":Codigo",$codigo);
-			}elseif($tipo=="Conteo"){
-				$query=mainModel::conectar()->prepare("SELECT id FROM carrera");
-			}
+		protected function datos_universidad_modelo($codigo){
+			$query=mainModel::conectar()->prepare("SELECT * FROM universidad WHERE UniversidadCodigo=:Codigo");
+			$query->bindParam(":Codigo",$codigo);
 			$query->execute();
 			return $query;
 		}

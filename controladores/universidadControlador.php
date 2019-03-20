@@ -102,11 +102,11 @@
 							<th class="text-center">NOMBRE</th>
 							<th class="text-center">INICIALES</th>
 							<th class="text-center">TELÉFONO</th>
-							<th class="text-center">CAMPUS</th>';
+							<th class="text-center">CAMPUS</th>
+							<th class="text-center">VER CARRERAS</th>';
 						if($privilegio<=2){
 							$tabla.='
 								<th class="text-center">A. DATOS</th>
-								<th class="text-center">VER CARRERAS</th>
 							';
 						}
 						if($privilegio==1){
@@ -129,7 +129,12 @@
 							<td>'.$rows['UniversidadNombre'].'</td>
 							<td>'.$rows['UniversidadIniciales'].'</td>
 							<td>'.$rows['UniversidadTelefono'].'</td>
-							<td>'.$rows['UniversidadCiudad'].'</td>';
+							<td>'.$rows['UniversidadCiudad'].'</td>
+							<td>
+								<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+									<i class="zmdi zmdi-bookmark"></i>
+								</a>
+							</td>';
 							if($privilegio<=2){
 								$tabla.='
 									<td>
@@ -137,12 +142,7 @@
 											<i class="zmdi zmdi-refresh"></i>
 										</a>
 									</td>
-									<td>
-										<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
-											<i class="zmdi zmdi-bookmark"></i>
-										</a>
-									</td>
-								';
+									';
 							}
 							if($privilegio==1){
 								$tabla.='
