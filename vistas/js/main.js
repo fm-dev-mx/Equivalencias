@@ -93,6 +93,7 @@ $(document).ready(function(){
     });
 	
 });
+
 (function($){
     $(window).on("load",function(){
         $(".dashboard-sideBar-ct").mCustomScrollbar({
@@ -109,3 +110,64 @@ $(document).ready(function(){
         });
     });
 })(jQuery);
+
+
+
+
+function agregardatos(nombre,apellido,email,telefono){
+
+	cadena="nombre=" + nombre + 
+			"&apellido=" + apellido +
+			"&email=" + email +
+			"&telefono=" + telefono;
+
+	$.ajax({
+		type:"POST",
+		url:"php/agregarDatos.php",
+		data:cadena,
+		success:function(r){
+			if(r==1){
+				$('#tabla').load('componentes/tabla.php');
+				 $('#buscador').load('componentes/buscador.php');
+				alertify.success("agregado con exito :)");
+			}else{
+				alertify.error("Fallo el servidor :(");
+			}
+		}
+	});
+
+}
+
+function mostrarModalRenombrar(datos){
+	d=datos.split('||');
+
+	$('#CarreraCodigoUpdate').val(d[0]);
+	$('#CarreraNombreUpdate').val(d[1]);
+	$('#CarreraPrivilegioUpdate').val(d[2]);
+	
+}
+
+function preguntarSiNo(id){
+	alertify.confirm('Eliminar Datos', '¿Esta seguro de eliminar este registro?', 
+					function(){ eliminarDatos(id) }
+                , function(){ alertify.error('Se cancelo')});
+}
+
+function eliminarDatos(id){
+
+	cadena="id=" + id;
+
+		$.ajax({
+			type:"POST",
+			url:"php/eliminarDatos.php",
+			data:cadena,
+			success:function(r){
+				if(r==1){
+					$('#tabla').load('componentes/tabla.php');
+					alertify.success("Eliminado con exito!");
+				}else{
+					alertify.error("Fallo el servidor :(");
+				}
+			}
+		});
+}

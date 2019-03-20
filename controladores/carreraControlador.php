@@ -54,11 +54,11 @@
 
 		// Controlador para paginar universidades
 		public function paginador_carrera_controlador($pagina,$registros,$privilegio,$busqueda){
-
 			$pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
 			$privilegio=mainModel::limpiar_cadena($privilegio);
 			$busqueda=mainModel::limpiar_cadena($busqueda);
+			$renombrar_carrera="";
 			$tabla="";
 
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
@@ -88,11 +88,11 @@
 					<thead>
 						<tr>
 							<th class="text-center">#</th>
-							<th class="text-center">NOMBRE</th>';
+							<th class="text-center">NOMBRE</th>
+							<th class="text-center">VER MATERIAS</th>';
 						if($privilegio<=2){
-							$tabla.='
+							$tabla.='								
 								<th class="text-center">RENOMBRAR</th>
-								<th class="text-center">VER MATERIAS</th>
 							';
 						}
 						if($privilegio==1){
@@ -109,112 +109,48 @@
 			if($total>=1 && $pagina<=$Npaginas){
 
 				$contador=$inicio+1;
-				$banCarrera="";
-				$contadorC=0;
-				$codigoUni=explode("/", $_GET['views']);
+		
 				foreach($datos as $rows){
 
-					if(isset($_POST['codigo-sel'])){$banCarrera=mainModel::decryption($_POST['codigo-sel']);}
+					$datosRen=mainModel::encryption($rows['CarreraCodigo']).'||'.$rows['CarreraNombre'].'||'.mainModel::encryption($privilegio);
 
-					if(isset($_POST['codigo-sel']) && $contadorC==0){
-						$tabla='
-						<div class="table-responsive">
-							<table class="table table-hover text-center">
-								<thead>
-									<tr>
-										<th class="text-center">#</th>
-										<th class="text-center">NOMBRE</th>';
-									if($privilegio<=2){
-										$tabla.='
-											<th class="text-center">RENOMBRAR</th>
-											<th class="text-center">VER MATERIAS</th>
-										';
-									}
-									if($privilegio==1){
-										$tabla.='
-											<th class="text-center">ELIMINAR</th>
-										';
-									}
-										
-						$tabla.='</tr>
-								</thead>
-								<tbody>
-						';
-						$contadorC++;
-						reset($rows);					
-					}
-					
-					
-					if($rows['CarreraCodigo']==$banCarrera){
-						
-						$tabla.='<tr>
-									<form action="'.SERVERURL.'ajax/carreraAjax.php" method="POST" data-form="update" class="FormularioAjax" autocomplete="off">
-										<input type="hidden" name="codigo-actu" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
-										<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
-										<input type="hidden" name="codigo-universidad" value="'.$codigoUni[1].'">
-										<td>'.$contador.'</td>
-
-											<div class="row">
-												<td><input class="col-lg-12 col-offset-6 centered" type="text" name="nombre-carrera" required="" maxlength="170" value="'.$rows['CarreraNombre'].'"></td>
-											</div>
-										
-										<td></td>	
-										<td>
-											<button type="submit" class="btn btn-raised btn-primary btn-sm">
-												<i class="zmdi zmdi-floppy"></i>    Renombrar carrera
-											</button>
-										</td>
-										<td></td>
-										<div class="RespuestaAjax"></div>
-									</form>
-								 </tr>
+					$tabla.='	
+								<tr>
+									<td>'.$contador.'</td>
+									<td>'.$rows['CarreraNombre'].'</td>
+									<td>
+										<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['CarreraCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+											<i class="zmdi zmdi-bookmark"></i>
+										</a>
+									</td>'
+									;
+					if($privilegio<=2){
+						$tabla.='<td>									
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-carrera-pop" data-dismiss="modal" data-backdrop="false" onclick="mostrarModalRenombrar(\'' . $datosRen . '\')">
+									<i class="zmdi zmdi-refresh"></i></button>
+								</td>
 								';
-					}else{
-						$tabla.='
-						<tr>
-						<td>'.$contador.'</td>
-						<td>'.$rows['CarreraNombre'].'</td>';
-					
-						if($privilegio<=2){
-						
-							$tabla.='
-								<td>
-									<form method="POST" autocomplete="off">
-										<input type="hidden" name="codigo-sel" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
-										<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
-										<button type="submit" class="btn btn-success btn-raised btn-xs">
-											<i class="zmdi zmdi-refresh"></i>
-										</button>
-									</form>
-
-								</td>
-								<td>
-									<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['CarreraCodigo']).'/" class="btn btn-success btn-raised btn-xs">
-										<i class="zmdi zmdi-bookmark"></i>
-									</a>
-								</td>
-							';
-							
-						}
-						if($privilegio==1){
-							$tabla.='
-								<td>
-									<form action="'.SERVERURL.'ajax/carreraAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
-										<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
-										<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
-										<button type="submit" class="btn btn-danger btn-raised btn-xs">
-											<i class="zmdi zmdi-delete"></i>
-										</button>
-										<div class="RespuestaAjax"></div>
-									</form>
-								</td>
-							';	
-						}
 					}
-					
-					$tabla.='</tr>';
+					if($privilegio==1){
+						$tabla.='
+									<td>
+										<form action="'.SERVERURL.'ajax/carreraAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
+											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
+											<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
+											<button type="submit" class="btn btn-danger btn-raised btn-xs">
+												<i class="zmdi zmdi-delete"></i>
+											</button>
+											<div class="RespuestaAjax"></div>
+										</form>
+									</td>
+								';	
+					}
+
 					$contador++;
 				}
+				
+				$tabla.='</tr>';
+				
 			}else{
 				if($total>=1){
 					$tabla.='
@@ -259,7 +195,9 @@
 				}else{
 					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.($pagina+1).'/"><i class="zmdi zmdi-arrow-right"></i></a></li>';
 				}
-				$tabla.='</ul></nav>';
+				$tabla.='</ul></nav>	
+						';
+				$contador++;
 			}
 
 			return $tabla;
@@ -305,10 +243,9 @@
 		
 
 		public function actualizar_carrera_controlador(){
-			$nombre=mainModel::limpiar_cadena($_POST['nombre-carrera']);
-			$codigo=mainModel::decryption($_POST['codigo-actu']);
-			$adminPrivilegio=mainModel::decryption($_POST['privilegio-admin']);
-			$codigoUniversidad=mainModel::decryption($_POST['codigo-universidad']);
+			$nombre=mainModel::limpiar_cadena($_POST['CarreraNombreUpdate']);
+			$codigo=mainModel::decryption($_POST['CarreraCodigoUpdate']);
+			$adminPrivilegio=mainModel::decryption($_POST['CarreraPrivilegioUpdate']);
 
 			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM carrera WHERE CarreraCodigo='$codigo'");
 			$DatosCarrera=$query1->fetch();
@@ -316,7 +253,7 @@
 			if($adminPrivilegio==1){
 
 				if($nombre!=$DatosCarrera['CarreraNombre']){
-					$consulta1=mainModel::ejecutar_consulta_simple("SELECT CarreraNombre FROM carrera WHERE CarreraNombre='$nombre' AND CarreraCodigoUniversidad='$codigoUniversidad'");
+					$consulta1=mainModel::ejecutar_consulta_simple("SELECT CarreraNombre FROM carrera WHERE CarreraNombre='$nombre'");
 					
 					if($consulta1->rowCount()>=1)
 					{
