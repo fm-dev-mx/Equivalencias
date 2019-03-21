@@ -12,156 +12,27 @@
 </div>
 
 <?php 
-	require_once "./controladores/carreraControlador.php";
-	$insUniv= new carreraControlador();
+	require_once "./controladores/universidadControlador.php";
+	$insUniv= new universidadControlador();
 	$url=explode("/", $_GET['views']);
 	$codigoUni=$url[1];
+	
+	//Se obtiene un array con los datos de la universidad seleccionada
+	$tipoConsulta="Unico";
 	if(isset($codigoUni)){
-		$datosUniv=$insUniv->datos_universidad_controlador($codigoUni);
+		$datosUniv=$insUniv->datos_universidad_controlador($tipoConsulta,$codigoUni);
 		if($datosUniv->rowCount()==1){
 			$camposUniv=$datosUniv->fetch();
 		}
 	}
+
+	//Se obtiene un array con los nombres de todas las universidades (para la lista desplegable)
+	$tipoConsulta="Lista";
+	$listaU=$insUniv->datos_universidad_controlador($tipoConsulta,$codigoUni);
+	if($listaU->rowCount()>=1){
+		$listaUniv=$listaU->fetchAll();
+	}
 ?>
-
-
-<div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                ADVANCED SELECT
-                                <small>Taken from <a href="https://silviomoreto.github.io/bootstrap-select/" target="_blank">silviomoreto.github.io/bootstrap-select</a></small>
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="body">
-                            <div class="row clearfix">
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>Basic</b>
-                                    </p>
-                                    <select class="form-control show-tick">
-                                        <option>Mustard</option>
-                                        <option>Ketchup</option>
-                                        <option>Relish</option>
-                                    </select>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>With OptGroups</b>
-                                    </p>
-                                    <select class="form-control show-tick">
-                                        <optgroup label="Picnic">
-                                            <option>Mustard</option>
-                                            <option>Ketchup</option>
-                                            <option>Relish</option>
-                                        </optgroup>
-                                        <optgroup label="Camping">
-                                            <option>Tent</option>
-                                            <option>Flashlight</option>
-                                            <option>Toilet Paper</option>
-                                        </optgroup>
-                                    </select>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>Multiple Select</b>
-                                    </p>
-                                    <select class="form-control show-tick" multiple>
-                                        <option>Mustard</option>
-                                        <option>Ketchup</option>
-                                        <option>Relish</option>
-                                    </select>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>With Search Bar</b>
-                                    </p>
-                                    <select class="form-control show-tick" data-live-search="true">
-                                        <option>Hot Dog, Fries and a Soda</option>
-                                        <option>Burger, Shake and a Smile</option>
-                                        <option>Sugar, Spice and all things nice</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>Max Selection Limit: 2</b>
-                                    </p>
-                                    <select class="form-control show-tick" multiple>
-                                        <optgroup label="Condiments" data-max-options="2">
-                                            <option>Mustard</option>
-                                            <option>Ketchup</option>
-                                            <option>Relish</option>
-                                        </optgroup>
-                                        <optgroup label="Breads" data-max-options="2">
-                                            <option>Plain</option>
-                                            <option>Steamed</option>
-                                            <option>Toasted</option>
-                                        </optgroup>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>Display Count</b>
-                                    </p>
-                                    <select class="form-control show-tick" multiple data-selected-text-format="count">
-                                        <option>Mustard</option>
-                                        <option>Ketchup</option>
-                                        <option>Relish</option>
-                                        <option>Onions</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>With SubText</b>
-                                    </p>
-                                    <select class="form-control show-tick" data-show-subtext="true">
-                                        <option data-subtext="French's">Mustard</option>
-                                        <option data-subtext="Heinz">Ketchup</option>
-                                        <option data-subtext="Sweet">Relish</option>
-                                        <option data-subtext="Miracle Whip">Mayonnaise</option>
-                                        <option data-divider="true"></option>
-                                        <option data-subtext="Honey">Barbecue Sauce</option>
-                                        <option data-subtext="Ranch">Salad Dressing</option>
-                                        <option data-subtext="Sweet &amp; Spicy">Tabasco</option>
-                                        <option data-subtext="Chunky">Salsa</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>Disabled Option</b>
-                                    </p>
-                                    <select class="form-control show-tick">
-                                        <option>Mustard</option>
-                                        <option disabled>Ketchup</option>
-                                        <option>Relish</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
 
 <div class="container-fluid">
 	<div class="panel-body">
@@ -174,11 +45,27 @@
 							<div class="form-group label-floating">
 								<label class="control-label">Agregar nueva carrera</label>
 								<input class="form-control" type="text" name="nombreCarreraAgregar" required="" maxlength="170">
-								<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>
 							</div>
 						</div>
 					</div>
 				</div>
+				<table style="border: hidden" class="table text-center">
+					<tr>
+						<th class="text-left">
+							<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>
+						</th>
+						<th class="text-center">
+							<select class="selectpicker" data-live-search="true">
+							<!--listado de universidades - se valida con el url la que fue seleccionada-->
+								<?php foreach($listaUniv as $rows){ ?> 
+									<option data-tokens="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
+										<?php echo $rows['UniversidadNombre'];?>
+									</option>								
+								<?php } ?>	
+							</select>
+						</th>
+					</tr>
+				</table>			
 			</fieldset>
 			<div class="RespuestaAjax"></div>					
 		</form>
@@ -199,8 +86,12 @@
 		</div>
 		<div class="panel-body">
 			<?php 
-				$pagina = explode("/", $_GET['views']);
-				echo $insUniv->paginador_carrera_controlador($pagina[2],3,$_SESSION['privilegio_sbp'],"");
+				if(isset($url[2])){
+					$pagina=$url[2];
+				}else{
+					$pagina=1;
+				}
+				echo $insUniv->paginador_carrera_controlador($pagina,3,$_SESSION['privilegio_sbp'],"");
 			?>	
 		</div>
 	</div>
@@ -233,3 +124,15 @@
 
 </body>
 </html>
+
+
+
+<!-- PARA QUE FUNCIONE EL BUSCADOR DE UNIVERSIDADES---------------------------------------------------------------- -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/i18n/defaults-*.min.js"></script>

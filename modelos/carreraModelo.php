@@ -30,10 +30,4 @@
 			return $query;
 		}
 
-		protected function datos_universidad_modelo($codigo){
-			$query=mainModel::conectar()->prepare("SELECT * FROM universidad WHERE UniversidadCodigo=:Codigo");
-			$query->bindParam(":Codigo",$codigo);
-			$query->execute();
-			return $query;
-		}
 	}

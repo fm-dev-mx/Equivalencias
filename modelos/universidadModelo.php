@@ -49,6 +49,8 @@
 				$query->bindParam(":Codigo",$codigo);
 			}elseif($tipo=="Conteo"){
 				$query=mainModel::conectar()->prepare("SELECT id FROM universidad");
+			}elseif($tipo=="Lista"){
+				$query=mainModel::conectar()->prepare("SELECT UniversidadCodigo,UniversidadNombre FROM universidad ORDER BY UniversidadNombre ASC");
 			}
 			$query->execute();
 			return $query;

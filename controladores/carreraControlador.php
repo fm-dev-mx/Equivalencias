@@ -235,13 +235,6 @@
 			}
 		}
 
-		public function datos_universidad_controlador($codigo){
-			$codigo=mainModel::decryption($codigo);
-
-			return carreraModelo::datos_universidad_modelo($codigo);
-		}
-		
-
 		public function actualizar_carrera_controlador(){
 			$nombre=mainModel::limpiar_cadena($_POST['CarreraNombreUpdate']);
 			$codigo=mainModel::decryption($_POST['CarreraCodigoUpdate']);
