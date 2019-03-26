@@ -36,39 +36,44 @@
 
 <div class="container-fluid">
 	<div class="panel-body">
-		<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
-			<fieldset>
-				<input class="form-control" type="hidden" name="codigoUniAgregarCarrera" value="<?php echo $codigoUni; ?>">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-xs-12">
-							<div class="form-group label-floating">
-								<label class="control-label">Agregar nueva carrera</label>
-								<input class="form-control" type="text" name="nombreCarreraAgregar" required="" maxlength="170">
+
+		<div class="pull-right">
+			<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST">
+				<select class="selectpicker" name="uniSelect" data-live-search="true">
+				<!--listado de universidades - se valida con el url la que fue seleccionada-->
+					<?php foreach($listaUniv as $rows){ ?> 
+						<option value="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" data-tokens="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
+							<?php echo $rows['UniversidadNombre'];?>
+						</option>								
+					<?php } ?>	
+				</select>
+				<button type="submit" class="btn btn-primary"><i class="zmdi zmdi-search"></i></button>
+				
+			</form>
+		</div>
+
+		<p class="lead"></p>
+		<br>
+		<br>
+		<div class="container-fluid">
+			<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+				<fieldset>
+					<input class="form-control" type="hidden" name="codigoUniAgregarCarrera" value="<?php echo $codigoUni; ?>">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group label-floating">
+									<label class="control-label">Agregar nueva carrera</label>
+									<input class="form-control" type="text" name="nombreCarreraAgregar" required="" maxlength="170">
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<table style="border: hidden" class="table text-center">
-					<tr>
-						<th class="text-left">
-							<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>
-						</th>
-						<th class="text-center">
-							<select class="selectpicker" data-live-search="true">
-							<!--listado de universidades - se valida con el url la que fue seleccionada-->
-								<?php foreach($listaUniv as $rows){ ?> 
-									<option data-tokens="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
-										<?php echo $rows['UniversidadNombre'];?>
-									</option>								
-								<?php } ?>	
-							</select>
-						</th>
-					</tr>
-				</table>			
-			</fieldset>
-			<div class="RespuestaAjax"></div>					
-		</form>
+					&nbsp&nbsp&nbsp<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>						
+				</fieldset>
+				<div class="RespuestaAjax"></div>					
+			</form>
+		</div>
 	</div>
 </div>
 
@@ -79,19 +84,26 @@
 ?>
 
 <!-- Panel listado de carreras -->
+
 <div class="container-fluid">
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;<?php echo "<b>".strtoupper($camposUniv['UniversidadNombre'])."</b>"." - ";?> LISTA DE CARRERAS</h3>
+			<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE CARRERAS</h3>
 		</div>
 		<div class="panel-body">
 			<?php 
+				if(isset($_POST['uniSelect'])){
+					$uniSelect=$_POST['uniSelect'];
+				}else{
+					$uniSelect="";
+				}
 				if(isset($url[2])){
 					$pagina=$url[2];
 				}else{
 					$pagina=1;
 				}
-				echo $insUniv->paginador_carrera_controlador($pagina,3,$_SESSION['privilegio_sbp'],"");
+			
+				echo $insUniv->paginador_carrera_controlador($pagina,3,$_SESSION['privilegio_sbp'],$uniSelect);
 			?>	
 		</div>
 	</div>
@@ -129,10 +141,7 @@
 
 <!-- PARA QUE FUNCIONE EL BUSCADOR DE UNIVERSIDADES---------------------------------------------------------------- -->
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="<?php echo SERVERURL; ?>vistas/css/bootstrap-select.min.css">
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
-
-<!-- (Optional) Latest compiled and minified JavaScript translation files -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/i18n/defaults-*.min.js"></script>
+<script src="<?php echo SERVERURL; ?>vistas/js/bootstrap-select.min.js"></script>

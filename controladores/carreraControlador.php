@@ -53,25 +53,27 @@
         }
 
 		// Controlador para paginar universidades
-		public function paginador_carrera_controlador($pagina,$registros,$privilegio,$busqueda){
+		public function paginador_carrera_controlador($pagina,$registros,$privilegio,$uniSelect){
 			$pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
 			$privilegio=mainModel::limpiar_cadena($privilegio);
-			$busqueda=mainModel::limpiar_cadena($busqueda);
+			$uniSelect=mainModel::limpiar_cadena($uniSelect);
+			
 			$codigoUniversidad=explode("/", $_GET['views']);
-			$codigoUni=mainModel::decryption($codigoUniversidad[1]);
+
+			if($uniSelect!=""){
+				$codigoUni=mainModel::decryption($uniSelect);	
+			}else{
+				$codigoUni=mainModel::decryption($codigoUniversidad[1]);
+			}
 			$tabla="";
 
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
-			if(isset($busqueda) && $busqueda!=""){
-				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera WHERE (CarreraNombre LIKE '%$busqueda%' AND CarreraCodigoUniversidad='$codigoUni') ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
-				$paginaurl="carrera";
-			}else{
-				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera WHERE CarreraCodigoUniversidad='$codigoUni' ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
-				$paginaurl="carrera";
-			}
+			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera WHERE CarreraCodigoUniversidad='$codigoUni' ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
+			
+			$paginaurl="carrera";			
 
 			$conexion = mainModel::conectar();
 
