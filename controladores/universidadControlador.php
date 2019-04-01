@@ -132,10 +132,16 @@
 							<td>'.$rows['UniversidadTelefono'].'</td>
 							<td>'.$rows['UniversidadCiudad'].'</td>
 							<td>
-								<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
-									<i class="zmdi zmdi-bookmark"></i>
-								</a>
+								<form action="'.SERVERURL.'ajax/universidadAjax.php" method="POST">
+									<input type="hidden" name="uniSelect" value="'.mainModel::encryption($rows['UniversidadCodigo']).'">									
+									<button type="submit" class="btn btn-success btn-raised btn-xs">
+										<i class="zmdi zmdi-bookmark"></i>
+									</button>
+								</form>
 							</td>';
+								/*<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+									<i class="zmdi zmdi-bookmark"></i>
+								  </a>*/
 							if($privilegio<=2){
 								$tabla.='
 									<td>

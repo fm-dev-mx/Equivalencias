@@ -18,8 +18,12 @@
 			echo $InsUniv->actualizar_carrera_controlador();
 		}
 
-		if(isset($_POST['uniSelect'])){
+		
 			echo '<script> window.location.href="'.SERVERURL.'carrera/'.$_POST['uniSelect'].'/" </script>';
+
+		if(isset($_POST['uniSelect'])){
+			session_start(['name'=>'SBP']);
+			$_SESSION['uniSelect']=$_POST['uniSelect'];		
 		}
 	}else{
 		session_start(['name'=>'SBP']);

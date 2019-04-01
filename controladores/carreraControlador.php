@@ -64,7 +64,7 @@
 			if($uniSelect!=""){
 				$codigoUni=mainModel::decryption($uniSelect);	
 			}else{
-				$codigoUni=mainModel::decryption($codigoUniversidad[1]);
+				$codigoUni=$_SESSION['uniSelect'];
 			}
 			$tabla="";
 
@@ -182,21 +182,21 @@
 				if($pagina==1){
 					$tabla.='<li class="disabled"><a><i class="zmdi zmdi-arrow-left"></i></a></li>';
 				}else{
-					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.($pagina-1).'/"><i class="zmdi zmdi-arrow-left"></i></a></li>';
+					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.($pagina-1).'/"><i class="zmdi zmdi-arrow-left"></i></a></li>';
 				}
 
 				for($i=1; $i<=$Npaginas; $i++){
 					if($pagina==$i){
 						$tabla.='<li class="active"><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.$i.'/">'.$i.'</a></li>';
 					}else{
-						$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.$i.'/">'.$i.'</a></li>';
+						$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
 					}
 				}
 
 				if($pagina==$Npaginas){
 					$tabla.='<li class="disabled"><a><i class="zmdi zmdi-arrow-right"></i></a></li>';
 				}else{
-					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.($pagina+1).'/"><i class="zmdi zmdi-arrow-right"></i></a></li>';
+					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.($pagina+1).'/"><i class="zmdi zmdi-arrow-right"></i></a></li>';
 				}
 				$tabla.='</ul></nav>	
 						';
