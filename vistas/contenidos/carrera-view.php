@@ -16,7 +16,11 @@
   require_once "./controladores/universidadControlador.php";
   $insUniv= new universidadControlador();
   $url=explode("/", $_GET['views']);
-  $codigoUni=$_SESSION['uniSelect'];
+
+  if(isset($_SESSION['uniSelect']))
+    $codigoUni=$_SESSION['uniSelect'];
+  else
+    $codigoUni="";
 
   //Se obtiene un array con los datos de la universidad seleccionada
   $tipoConsulta="Unico";
@@ -94,6 +98,8 @@
       
         if(isset($_SESSION['uniSelect'])){
           $uniSelect=$_SESSION['uniSelect'];
+        }else{
+          $uniSelect="";
         }
 
         if(isset($url[1])){
@@ -101,7 +107,7 @@
         }else{
           $pagina=1;
         }
-        
+
         echo $insCarrera->paginador_carrera_controlador($pagina,3,1,$uniSelect);
         ?>	
       </div>
@@ -134,7 +140,6 @@
 	<div class="RespuestaAjax"></div>
 </form>
 
-
 <script type="text/javascript">
   $(document).ready(function(){
     $('#uniSelect').select2();
@@ -146,9 +151,7 @@
         data:"uniSelect=" + $('#uniSelect').val(),
         url:"<?php echo SERVERURL; ?>ajax/carreraAjax.php",
         success:function(r){
-          $('#tabla').load('catalog-view.php');
           location.reload();
-          console.log(r);
         }
       });
     });

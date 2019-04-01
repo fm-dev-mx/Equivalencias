@@ -13,24 +13,50 @@
 
 <?php 
 	require_once "./controladores/universidadControlador.php";
+	require_once "./controladores/carreraControlador.php";
 	$insUniv= new universidadControlador();
+	$insCarrera= new carreraControlador();
+
 	$url=explode("/", $_GET['views']);
-	$codigoUni=$url[1];
 	
-	//Se obtiene un array con los datos de la universidad seleccionada
+	if(isset($_SESSION['uniSelect'])){
+		$codigoUni=$_SESSION['uniSelect'];
+	}else{
+		$codigoUni="";
+	}
+
+	if(isset($_SESSION['carreraSelect']))	{
+		$codigoCarrera=$_SESSION['carreraSelect'];
+	}else{
+		$codigoCarrera="";
+	}
+
 	$tipoConsulta="Unico";
+	//Se obtiene un array con los datos de la universidad seleccionada
 	if(isset($codigoUni)){
 		$datosUniv=$insUniv->datos_universidad_controlador($tipoConsulta,$codigoUni);
 		if($datosUniv->rowCount()==1){
 			$camposUniv=$datosUniv->fetch();
 		}
 	}
+	//Se obtiene un array con los datos de la carrera seleccionada
+	if(isset($codigoCarrera)){
+		$datosCarrera=$insCarrera->datos_carrera_controlador($tipoConsulta,$codigoCarrera);
+		if($datosCarrera->rowCount()==1){
+			$camposCarrera=$datosCarrera->fetch();
+		}
+	}
 
-	//Se obtiene un array con los nombres de todas las universidades (para la lista desplegable)
 	$tipoConsulta="Lista";
+	//Se obtiene un array con los nombres de todas las universidades (para la lista desplegable)
 	$listaU=$insUniv->datos_universidad_controlador($tipoConsulta,$codigoUni);
 	if($listaU->rowCount()>=1){
 		$listaUniv=$listaU->fetchAll();
+	}
+	//Se obtiene un array con los nombres de todas las carreras (para la lista desplegable)
+	$listaC=$insCarrera->datos_carrera_controlador($tipoConsulta,$codigoUni);
+	if($listaC->rowCount()>=1){
+		$listaCarrera=$listaC->fetchAll();
 	}
 ?>
 
@@ -38,33 +64,27 @@
 	<div class="panel-body">
 
 		<div class="pull-right">
-			<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST">
-				<select class="selectpicker" name="carreraSelect" data-live-search="true">
-					<option value="0">Seleciona un instituto</option>
-				
-					<!--listado de universidades - se valida con el url la que fue seleccionada-->
-					<?php foreach($listaUniv as $rows){ ?> 
-						<option value="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" data-tokens="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
-							<?php echo $rows['UniversidadNombre'];?>
-						</option>								
-					<?php } ?>	
-				</select>
-				<select class="selectpicker" name="uniSelect" data-live-search="true">
-					<option value="0">Seleciona una carrera</option>
-				
-					<!--listado de carreras - se valida con el url la que fue seleccionada-->
-					<?php foreach($listaUniv as $rows){ ?> 
-						<option value="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" data-tokens="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
-							<?php echo $rows['UniversidadNombre'];?>
-						</option>								
-					<?php } ?>	
-				</select>
-				<button type="submit" class="btn btn-primary"><i class="zmdi zmdi-search"></i></button>				
-			</form>
+			<!--listado de universidades ---------------------------------------------------------->
+			<select class="selectpicker" id="uniSelect" name="uniSelect" data-live-search="true">
+				<option value="0">Seleciona un instituto</option>						
+				<?php foreach($listaUniv as $rows){ ?> 
+					<option value="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
+						<?php echo $rows['UniversidadNombre'];?>
+					</option>	
+				<?php } ?>	
+			</select>
+			<!--listado de carreras ---------------------------------------------------------->
+			<select class="selectpicker" id="carreraSelect" name="carreraSelect" data-live-search="true">
+				<option value="0">Seleciona una carrera</option>			
+				<?php foreach($listaCarrera as $rows){ ?> 
+					<option value="<?php echo $lc->encryption($rows['CarreraCodigo']);?>" <?php if($codigoCarrera==$lc->encryption($rows['CarreraCodigo'])){echo ' selected';} ?>>
+						<?php echo $rows['CarreraNombre'];?>
+					</option>	
+				<?php } ?>	
+			</select>
 		</div>
 			
 		<p class="lead"></p>
-		<br>
 		<br>
 		<div class="container-fluid">
 			<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
@@ -88,33 +108,40 @@
 	</div>
 </div>
 
+<div id="tabla">         
+  <?php 
+    require_once "./controladores/materiaControlador.php";
+    $insMateria= new materiaControlador();
+  ?>
 
-<?php 
-	require_once "./controladores/carreraControlador.php";
-	$insUniv= new carreraControlador();
-?>
+  <!-- Panel listado de carreras -->
 
-<!-- Panel listado de carreras -->
-
-<div class="container-fluid">
-	<div class="panel panel-success">
-		<div class="panel-heading">
-			<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE MATERIAS</h3>
-		</div>
-		<div class="panel-body">
-			<?php 
-				if(isset($url[2])){
-					$pagina=$url[2];
+  <div class="container-fluid">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE CARRERAS</h3>
+      </div>
+      <div class="panel-body">
+      <?php
+      
+        if(isset($_SESSION['uniSelect'])){
+        	$uniSelect=$_SESSION['uniSelect'];
 				}else{
-					$pagina=1;
+					$uniSelect="";	
 				}
-			
-				echo $insUniv->paginador_carrera_controlador($pagina,3,$_SESSION['privilegio_sbp'],"");
-			?>	
-		</div>
-	</div>
+        if(isset($url[1])){
+          $pagina=$url[1];
+        }else{
+          $pagina=1;
+        }
+        
+        echo $insCarrera->paginador_carrera_controlador($pagina,3,1,$uniSelect);
+        ?>	
+      </div>
+    </div>
+  </div>
 </div>
-
+	
 
 <!--Ventana emergente para renombrar carrera-->
 
@@ -140,14 +167,33 @@
 	<div class="RespuestaAjax"></div>
 </form>
 
-</body>
-</html>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#uniSelect').select2();
+	$('#carreraSelect').select2();
+  });
 
+    $('#uniSelect').change(function(){
+      $.ajax({
+        type:"post",
+        data:"uniSelect=" + $('#uniSelect').val(),
+        url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
+        success:function(r){
+          location.reload();
+        }
+      });
+    });
 
-<!-- PARA QUE FUNCIONE EL BUSCADOR DE UNIVERSIDADES---------------------------------------------------------------- -->
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="<?php echo SERVERURL; ?>vistas/css/bootstrap-select.min.css">
+	$('#carreraSelect').change(function(){
+      $.ajax({
+        type:"post",
+        data:"carreraSelect=" + $('#carreraSelect').val(),
+        url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
+        success:function(r){
+          location.reload();
+        }
+      });
+    });  
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="<?php echo SERVERURL; ?>vistas/js/bootstrap-select.min.js"></script>
+</script>

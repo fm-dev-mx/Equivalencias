@@ -1,12 +1,12 @@
 <?php
 	if($peticionAjax){
-		require_once "../modelos/carreraModelo.php";
+		require_once "../modelos/materiaModelo.php";
 	}else{
-		require_once './modelos/carreraModelo.php';
+		require_once './modelos/materiaModelo.php';
 	}
 
-    class carreraControlador extends carreraModelo{
-		public function agregar_carrera_controlador(){
+    class materiaControlador extends materiaModelo{
+		public function agregar_materia_controlador(){
 			
 			$nombre=mainModel::limpiar_cadena($_POST['nombreCarreraAgregar']);
             $codigoUniversidad=mainModel::decryption($_POST['codigoUniAgregarCarrera']);
@@ -62,11 +62,10 @@
 			$codigoUniversidad=explode("/", $_GET['views']);
 
 			if($uniSelect!=""){
-				$codigoUni=mainModel::decryption($_SESSION['uniSelect']);	
+				$codigoUni=mainModel::decryption($uniSelect);	
 			}else{
-				$codigoUni="";
+				$codigoUni=$_SESSION['uniSelect'];
 			}
-			
 			$tabla="";
 
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
@@ -123,12 +122,9 @@
 									<td>'.$contador.'</td>
 									<td>'.$rows['CarreraNombre'].'</td>
 									<td>
-										<form action="'.SERVERURL.'ajax/carreraAjax.php" method="POST">
-											<input type="hidden" name="carreraSelect" value="'.mainModel::encryption($rows['CarreraCodigo']).'">									
-											<button type="submit" class="btn btn-success btn-raised btn-xs">
-												<i class="zmdi zmdi-bookmark"></i>
-											</button>
-										</form>						
+										<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['CarreraCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+											<i class="zmdi zmdi-bookmark"></i>
+										</a>
 									</td>'
 									;
 					if($privilegio<=2){
@@ -163,7 +159,7 @@
 					$tabla.='
 						<tr>
 							<td colspan="5">
-								<a href="'.SERVERURL.$paginaurl.'/" class="btn btn-sm btn-info btn-raised">
+								<a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'" class="btn btn-sm btn-info btn-raised">
 									Haga clic aca para recargar el listado
 								</a>
 							</td>
@@ -191,7 +187,7 @@
 
 				for($i=1; $i<=$Npaginas; $i++){
 					if($pagina==$i){
-						$tabla.='<li class="active"><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
+						$tabla.='<li class="active"><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.$i.'/">'.$i.'</a></li>';
 					}else{
 						$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
 					}
@@ -239,13 +235,6 @@
 				}
 				return mainModel::sweet_alert($alerta);
 			}
-		}
-
-		public function datos_carrera_controlador($tipo,$codigo){
-			$tipo=mainModel::limpiar_cadena($tipo);
-			$codigo=mainModel::decryption($codigo);
-
-			return carreraModelo::datos_carrera_modelo($tipo,$codigo);
 		}
 
 		public function actualizar_carrera_controlador(){
