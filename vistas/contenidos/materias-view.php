@@ -6,7 +6,7 @@
 
 <div class="container-fluid">
 	<div class="page-header">
-	  <h1 class="text-titles"><i class="zmdi zmdi-bookmark zmdi-hc-fw"></i> Administración <small>Carreras</small></h1>
+	  <h1 class="text-titles"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Administración <small>Materias</small></h1>
 	</div>
 	<p class="lead"></p>
 </div>
@@ -39,7 +39,7 @@
 
 		<div class="pull-right">
 			<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST">
-				<select class="selectpicker" id="uniSelect" name="uniSelect" data-live-search="true">
+				<select class="selectpicker" name="carreraSelect" data-live-search="true">
 					<option value="0">Seleciona un instituto</option>
 				
 					<!--listado de universidades - se valida con el url la que fue seleccionada-->
@@ -49,10 +49,20 @@
 						</option>								
 					<?php } ?>	
 				</select>
+				<select class="selectpicker" name="uniSelect" data-live-search="true">
+					<option value="0">Seleciona una carrera</option>
+				
+					<!--listado de carreras - se valida con el url la que fue seleccionada-->
+					<?php foreach($listaUniv as $rows){ ?> 
+						<option value="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" data-tokens="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
+							<?php echo $rows['UniversidadNombre'];?>
+						</option>								
+					<?php } ?>	
+				</select>
 				<button type="submit" class="btn btn-primary"><i class="zmdi zmdi-search"></i></button>				
 			</form>
 		</div>
-
+			
 		<p class="lead"></p>
 		<br>
 		<br>
@@ -64,7 +74,7 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<div class="form-group label-floating">
-									<label class="control-label">Agregar nueva carrera</label>
+									<label class="control-label">Agregar nueva materia</label>
 									<input class="form-control" type="text" name="nombreCarreraAgregar" required="" maxlength="170">
 								</div>
 							</div>
@@ -81,7 +91,7 @@
 
 <?php 
 	require_once "./controladores/carreraControlador.php";
-	$insCarrera= new carreraControlador();
+	$insUniv= new carreraControlador();
 ?>
 
 <!-- Panel listado de carreras -->
@@ -89,7 +99,7 @@
 <div class="container-fluid">
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE CARRERAS</h3>
+			<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE MATERIAS</h3>
 		</div>
 		<div class="panel-body">
 			<?php 
@@ -99,7 +109,7 @@
 					$pagina=1;
 				}
 			
-				echo $insCarrera->paginador_carrera_controlador($pagina,3,$_SESSION['privilegio_sbp'],"");
+				echo $insUniv->paginador_carrera_controlador($pagina,3,$_SESSION['privilegio_sbp'],"");
 			?>	
 		</div>
 	</div>
@@ -132,6 +142,7 @@
 
 </body>
 </html>
+
 
 
 <!-- PARA QUE FUNCIONE EL BUSCADOR DE UNIVERSIDADES---------------------------------------------------------------- -->

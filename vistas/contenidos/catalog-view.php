@@ -1,74 +1,131 @@
-<!-- Content page -->
+<?php 
+  if($_SESSION['tipo_sbp']!="Administrador"){
+    echo $lc->forzar_cierre_sesion_controlador();
+  }
+  
+?>
+
 <div class="container-fluid">
-	<div class="page-header">
-	  <h1 class="text-titles"><i class="zmdi zmdi-book-image zmdi-hc-fw"></i> CATALOGO</h1>
-	</div>
-	<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse voluptas reiciendis tempora voluptatum eius porro ipsa quae voluptates officiis sapiente sunt dolorem, velit quos a qui nobis sed, dignissimos possimus!</p>
+<div class="page-header">
+  <h1 class="text-titles"><i class="zmdi zmdi-bookmark zmdi-hc-fw"></i> Administración <small>Carreras</small></h1>
 </div>
-<div class="container-fluid text-center">
-	<div class="btn-group">
-      <a href="javascript:void(0)" class="btn btn-default btn-raised">SELECCIONE UNA CATEORÍA</a>
-      <a href="javascript:void(0)" data-target="dropdown-menu" class="btn btn-default btn-raised dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-      <ul class="dropdown-menu">
-        <li><a href="#!">Categoría 1</a></li>
-        <li><a href="#!">Categoría 2</a></li>
-        <li><a href="#!">Categoría 3</a></li>
-        <li><a href="#!">Categoría 4</a></li>
-        <li><a href="#!">Categoría 5</a></li>
-        <li><a href="#!">Categoría 6</a></li>
-        <li><a href="#!">Categoría 7</a></li>
-      </ul>
-    </div>
+<p class="lead"></p>
 </div>
+
+<?php 
+  require_once "./controladores/universidadControlador.php";
+  $insUniv= new universidadControlador();
+  $url=explode("/", $_GET['views']);
+  $codigoUni=$url[1];
+
+  //Se obtiene un array con los datos de la universidad seleccionada
+  $tipoConsulta="Unico";
+  if(isset($codigoUni)){
+    $datosUniv=$insUniv->datos_universidad_controlador($tipoConsulta,$codigoUni);
+    if($datosUniv->rowCount()==1){
+      $camposUniv=$datosUniv->fetch();
+    }
+  }
+
+  //Se obtiene un array con los nombres de todas las universidades (para la lista desplegable)
+  $tipoConsulta="Lista";
+  $listaU=$insUniv->datos_universidad_controlador($tipoConsulta,$codigoUni);
+  if($listaU->rowCount()>=1){
+    $listaUniv=$listaU->fetchAll();
+  }
+?>
+
 <div class="container-fluid">
-	<h2 class="text-titles text-center">Categoría seleccionada</h2>
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="list-group">
-				<div class="list-group-item">
-					<div class="row-picture">
-						<img class="circle" src="<?php echo SERVERURL; ?>vistas/assets/book/book-default.png" alt="icon">
+	<div class="panel-body">
+		<div class="pull-right">
+      <select class="selectpicker" id="uniSelect" name="uniSelect" data-live-search="true">
+        <option value="0">Seleciona un instituto</option>
+      
+        <!--listado de universidades - se valida con el url la que fue seleccionada-->
+        <?php foreach($listaUniv as $rows){ ?> 
+          <option value="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
+            <?php echo $rows['UniversidadNombre'];?>
+          </option>								
+        <?php } ?>	
+      </select>
+		</div>
+
+		<p class="lead"></p>
+		<br>
+		<br>
+		<div class="container-fluid">
+			<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+				<fieldset>
+					<input class="form-control" type="hidden" name="codigoUniAgregarCarrera" value="<?php echo $codigoUni; ?>">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group label-floating">
+									<label class="control-label">Agregar nueva carrera</label>
+									<input class="form-control" type="text" name="nombreCarreraAgregar" required="" maxlength="170">
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="row-content">
-						<h4 class="list-group-item-heading">1 - Título completo del libro</h4>
-						<p class="list-group-item-text">
-							<strong>Autor: </strong>Nombre Autor del libro <br>
-							<a href="book-info.html" class="btn btn-primary" title="Más información"><i class="zmdi zmdi-info"></i></a>
-							<a href="#!" class="btn btn-primary" title="Ver PDF"><i class="zmdi zmdi-file"></i></a>
-							<a href="#!" class="btn btn-primary" title="Descargar PDF"><i class="zmdi zmdi-cloud-download"></i></a>
-							<a href="book-config.html" class="btn btn-primary" title="Gestionar libro"><i class="zmdi zmdi-wrench"></i></a>
-						</p>
-					</div>
-				</div>
-				<div class="list-group-separator"></div>
-				<div class="list-group-item">
-					<div class="row-picture">
-						<img src="<?php echo SERVERURL; ?>vistas/assets/book/book-cover.jpg" alt="icon">
-					</div>
-					<div class="row-content">
-						<h4 class="list-group-item-heading">2 - Título completo del libro</h4>
-						<p class="list-group-item-text">
-							<strong>Autor: </strong>Nombre Autor del libro <br>
-							<a href="book-info.html" class="btn btn-primary" title="Más información"><i class="zmdi zmdi-info"></i></a>
-							<a href="#!" class="btn btn-primary" title="Ver PDF"><i class="zmdi zmdi-file"></i></a>
-							<a href="#!" class="btn btn-primary" title="Descargar PDF"><i class="zmdi zmdi-cloud-download"></i></a>
-							<a href="book-config.html" class="btn btn-primary" title="Gestionar libro"><i class="zmdi zmdi-wrench"></i></a>
-						</p>
-					</div>
-				</div>
-				<div class="list-group-separator"></div>
-			</div>
-			<nav class="text-center">
-				<ul class="pagination pagination-sm">
-					<li class="disabled"><a href="javascript:void(0)">«</a></li>
-					<li class="active"><a href="javascript:void(0)">1</a></li>
-					<li><a href="javascript:void(0)">2</a></li>
-					<li><a href="javascript:void(0)">3</a></li>
-					<li><a href="javascript:void(0)">4</a></li>
-					<li><a href="javascript:void(0)">5</a></li>
-					<li><a href="javascript:void(0)">»</a></li>
-				</ul>
-			</nav>
+					&nbsp&nbsp&nbsp<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>						
+				</fieldset>
+				<div class="RespuestaAjax"></div>					
+			</form>
 		</div>
 	</div>
 </div>
+
+<div id="tabla">         
+  <?php 
+    require_once "./controladores/carreraControlador.php";
+    $insCarrera= new carreraControlador();
+  ?>
+
+  <!-- Panel listado de carreras -->
+
+  <div class="container-fluid">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE CARRERAS</h3>
+      </div>
+      <div class="panel-body">
+      <?php
+      
+        if(isset($_SESSION['uniSelect'])){
+          $uniSelect=$_SESSION['uniSelect'];
+        }else{
+          $uniSelect="eE5tSWNHUGV5Zk9Pc25nS0lrUUNrZz09";
+        }
+
+        if(isset($url[2])){
+          $pagina=$url[2];
+        }else{
+          $pagina=1;
+        }
+        
+        echo $insCarrera->paginador_carrera_controlador($pagina,3,1,$uniSelect);
+        ?>	
+      </div>
+    </div>
+  </div>
+</div>
+	
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#uniSelect').select2();
+  });
+
+    $('#uniSelect').change(function(){
+      $.ajax({
+        type:"post",
+        data:"uniSelect=" + $('#uniSelect').val(),
+        url:"<?php echo SERVERURL; ?>ajax/crearsession.php",
+        success:function(r){
+          $('#tabla').load('catalog-view.php');
+          location.reload();
+          console.log(r);
+        }
+      });
+    });
+  
+</script>

@@ -5,3 +5,9 @@
 <script src="<?php echo SERVERURL; ?>vistas/js/ripples.min.js"></script>
 <script src="<?php echo SERVERURL; ?>vistas/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="<?php echo SERVERURL; ?>vistas/js/main.js"></script>
+
+<!--librerias para buscador-->
+<script src="<?php echo SERVERURL; ?>vistas/js/funciones.js"></script>
+<script src="<?php echo SERVERURL; ?>vistas/librerias/alertifyjs/alertify.js"></script>
+<script src="<?php echo SERVERURL; ?>vistas/librerias/select2/js/select2.js"></script>
+

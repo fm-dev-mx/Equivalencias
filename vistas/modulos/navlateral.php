@@ -58,13 +58,7 @@
 						<a href="<?php echo SERVERURL; ?>carrera/"><i class="zmdi zmdi-bookmark zmdi-hc-fw"></i> Carreras</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>category/"><i class="zmdi zmdi-labels zmdi-hc-fw"></i> Categorías</a>
-					</li>
-					<li>
-						<a href="<?php echo SERVERURL; ?>provider/"><i class="zmdi zmdi-truck zmdi-hc-fw"></i> Proveedores</a>
-					</li>
-					<li>
-						<a href="<?php echo SERVERURL; ?>book/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Nuevo libro</a>
+						<a href="<?php echo SERVERURL; ?>materias/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a>
 					</li>
 				</ul>
 			</li>

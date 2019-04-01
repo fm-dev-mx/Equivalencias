@@ -1,4 +1,5 @@
 <?php
+	
 	if($peticionAjax){
 		require_once "../modelos/universidadModelo.php";
 	}else{

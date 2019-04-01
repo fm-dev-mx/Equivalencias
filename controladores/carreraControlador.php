@@ -2,7 +2,7 @@
 	if($peticionAjax){
 		require_once "../modelos/carreraModelo.php";
 	}else{
-		require_once "./modelos/carreraModelo.php";
+		require_once './modelos/carreraModelo.php';
 	}
 
     class carreraControlador extends carreraModelo{
