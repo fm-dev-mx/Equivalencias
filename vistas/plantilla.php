@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="<?php echo SERVERURL; ?>vistas/css/main.css">
 	
 	<!--librerias de buscador-->    
-    <link rel="stylesheet" type="text/css" href="<?php echo SERVERURL; ?>vistas/librerias/select2/css/select2.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo SERVERURL; ?>vistas/css/select2.css">
 	
 	<?php include "./vistas/modulos/script.php"; ?>
 </head>

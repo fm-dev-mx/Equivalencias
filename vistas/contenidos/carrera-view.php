@@ -57,7 +57,6 @@
 
 		<p class="lead"></p>
 		<br>
-		<br>
 		<div class="container-fluid">
 			<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
 				<fieldset>
@@ -94,13 +93,7 @@
         <h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE CARRERAS</h3>
       </div>
       <div class="panel-body">
-      <?php
-      
-        if(isset($_SESSION['uniSelect'])){
-          $uniSelect=$_SESSION['uniSelect'];
-        }else{
-          $uniSelect="";
-        }
+      <?php      
 
         if(isset($url[1])){
           $pagina=$url[1];
@@ -108,7 +101,7 @@
           $pagina=1;
         }
 
-        echo $insCarrera->paginador_carrera_controlador($pagina,3,1,$uniSelect);
+        echo $insCarrera->paginador_carrera_controlador($pagina,3,1,$codigoUni);
         ?>	
       </div>
     </div>

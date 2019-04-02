@@ -87,15 +87,15 @@
 		<p class="lead"></p>
 		<br>
 		<div class="container-fluid">
-			<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+			<form action="<?php echo SERVERURL; ?>ajax/materiaAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
 				<fieldset>
-					<input class="form-control" type="hidden" name="codigoUniAgregarCarrera" value="<?php echo $codigoUni; ?>">
+					<input class="form-control" type="hidden" name="codigoCarreraAgregarMateria" value="<?php echo $codigoUni; ?>">
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-xs-12">
 								<div class="form-group label-floating">
 									<label class="control-label">Agregar nueva materia</label>
-									<input class="form-control" type="text" name="nombreCarreraAgregar" required="" maxlength="170">
+									<input class="form-control" type="text" name="nombreMateriaAgregar" required="" maxlength="170">
 								</div>
 							</div>
 						</div>
@@ -114,28 +114,23 @@
     $insMateria= new materiaControlador();
   ?>
 
-  <!-- Panel listado de carreras -->
+  <!-- Panel listado de materias -->
 
   <div class="container-fluid">
     <div class="panel panel-success">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE CARRERAS</h3>
+        <h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE MATERIAS</h3>
       </div>
       <div class="panel-body">
       <?php
       
-        if(isset($_SESSION['uniSelect'])){
-        	$uniSelect=$_SESSION['uniSelect'];
-				}else{
-					$uniSelect="";	
-				}
         if(isset($url[1])){
           $pagina=$url[1];
         }else{
           $pagina=1;
         }
         
-        echo $insCarrera->paginador_carrera_controlador($pagina,3,1,$uniSelect);
+        echo $insMateria->paginador_materia_controlador($pagina,3,1,$codigoCarrera);
         ?>	
       </div>
     </div>

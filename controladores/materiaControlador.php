@@ -8,43 +8,43 @@
     class materiaControlador extends materiaModelo{
 		public function agregar_materia_controlador(){
 			
-			$nombre=mainModel::limpiar_cadena($_POST['nombreCarreraAgregar']);
-            $codigoUniversidad=mainModel::decryption($_POST['codigoUniAgregarCarrera']);
+			$nombre=mainModel::limpiar_cadena($_POST['nombreMateriaAgregar']);
+            $codigoCarrera=mainModel::decryption($_POST['codigoCarreraAgregarMateria']);
 
-            $consulta1=mainModel::ejecutar_consulta_simple("SELECT id FROM carrera WHERE CarreraNombre='$nombre' AND CarreraCodigoUniversidad='$codigoUniversidad'");
+            $consulta1=mainModel::ejecutar_consulta_simple("SELECT id FROM materia WHERE MateriaNombre='$nombre' AND MateriaCarrera='$codigoCarrera'");
 	
 			if($consulta1->rowCount()>=1){
                 $alerta=[
                     "Alerta"=>"simple",
                     "Titulo"=>"Ocurrió un error inesperado",
-                    "Texto"=>"La carrera ya existe en el sistema, favor de intentar nuevamente!",
+                    "Texto"=>"La materia ya existe en el sistema, favor de intentar nuevamente!",
                     "Tipo"=>"error"
                 ];
 			}else{
 				
-				$consulta=mainModel::ejecutar_consulta_simple("SELECT id FROM carrera");
+				$consulta=mainModel::ejecutar_consulta_simple("SELECT id FROM materia");
 				$numero=($consulta->rowCount())+1;
-				$codigoCarrera=mainModel::generar_codigo_aleatorio("CR",7,$numero);
+				$codigoMateria=mainModel::generar_codigo_aleatorio("MT",7,$numero);
 				$dataAc=[
 					"Nombre"=>$nombre,
-                    "Codigo"=>$codigoCarrera,
-                    "CodigoUniversidad"=>$codigoUniversidad,
+                    "Codigo"=>$codigoMateria,
+                    "CodigoCarrera"=>$codigoCarrera,
 				];
 
-				$guardarCarrera=carreraModelo::agregar_carrera_modelo($dataAc);
+				$guardarMateria=MateriaModelo::agregar_materia_modelo($dataAc);
 
-				if($guardarCarrera->rowCount()>=1){
+				if($guardarMateria->rowCount()>=1){
 					$alerta=[
 						"Alerta"=>"recargar",
-						"Titulo"=>"Carrera registrada",
-						"Texto"=>"La carrera se registro con exito en el sistema",
+						"Titulo"=>"Materia registrada",
+						"Texto"=>"La materia se registro con exito en el sistema",
 						"Tipo"=>"success"
 					];
 				}else{
 					$alerta=[
 						"Alerta"=>"simple",
 						"Titulo"=>"Ocurrió un error inesperado",
-						"Texto"=>"No hemos podido registrar la carrera, por favor intente nuevamente",
+						"Texto"=>"No hemos podido registrar la materia, por favor intente nuevamente",
 						"Tipo"=>"error"
 					];
 				}
@@ -53,27 +53,26 @@
         }
 
 		// Controlador para paginar universidades
-		public function paginador_carrera_controlador($pagina,$registros,$privilegio,$uniSelect){
+		public function paginador_materia_controlador($pagina,$registros,$privilegio,$carrera){
 			$pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
 			$privilegio=mainModel::limpiar_cadena($privilegio);
-			$uniSelect=mainModel::limpiar_cadena($uniSelect);
-			
-			$codigoUniversidad=explode("/", $_GET['views']);
+			$carrera=mainModel::limpiar_cadena($carrera);			
 
-			if($uniSelect!=""){
-				$codigoUni=mainModel::decryption($uniSelect);	
+			if($carrera!=""){
+				$codigoCarrera=mainModel::decryption($carrera);	
 			}else{
-				$codigoUni=$_SESSION['uniSelect'];
+				$codigoCarrera="";
 			}
+
 			$tabla="";
 
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
-			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM carrera WHERE CarreraCodigoUniversidad='$codigoUni' ORDER BY CarreraNombre ASC LIMIT $inicio,$registros";
+			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM materia WHERE MateriaCarrera='$codigoCarrera' ORDER BY MateriaNombre ASC LIMIT $inicio,$registros";
 			
-			$paginaurl="carrera";			
+			$paginaurl="materias";			
 
 			$conexion = mainModel::conectar();
 
@@ -92,10 +91,11 @@
 						<tr>
 							<th class="text-center">#</th>
 							<th class="text-center">NOMBRE</th>
-							<th class="text-center">VER MATERIAS</th>';
+							<th class="text-center">EQUIVALENCIA</th>';
 						if($privilegio<=2){
 							$tabla.='								
 								<th class="text-center">RENOMBRAR</th>
+								<th class="text-center">ASIGNAR</th>
 							';
 						}
 						if($privilegio==1){
@@ -115,30 +115,32 @@
 		
 				foreach($datos as $rows){
 
-					$datosRen=mainModel::encryption($rows['CarreraCodigo']).'||'.$rows['CarreraNombre'].'||'.mainModel::encryption($privilegio);
+					$datosRen=mainModel::encryption($rows['MateriaCodigo']).'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
 
 					$tabla.='	
 								<tr>
 									<td>'.$contador.'</td>
-									<td>'.$rows['CarreraNombre'].'</td>
-									<td>
-										<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['CarreraCodigo']).'/" class="btn btn-success btn-raised btn-xs">
-											<i class="zmdi zmdi-bookmark"></i>
-										</a>
-									</td>'
+									<td>'.$rows['MateriaNombre'].'</td>
+									<td>'.$rows['MateriaUacj'].'</td>
+									'
 									;
 					if($privilegio<=2){
 						$tabla.='<td>									
-									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-carrera-pop" data-dismiss="modal" data-backdrop="false" onclick="mostrarModalRenombrar(\'' . $datosRen . '\')">
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="mostrarModalRenombrar(\'' . $datosRen . '\')">
 									<i class="zmdi zmdi-refresh"></i></button>
 								</td>
+								<td>
+									<a href="'.SERVERURL.'equivalencias/" class="btn btn-success btn-raised btn-xs">
+										<i class="zmdi zmdi-bookmark"></i>
+									</a>
+								</td>								
 								';
 					}
 					if($privilegio==1){
 						$tabla.='
 									<td>
-										<form action="'.SERVERURL.'ajax/carreraAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
-											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
+										<form action="'.SERVERURL.'ajax/materiaAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
+											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['MateriaCodigo']).'">
 											<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
 											<button type="submit" class="btn btn-danger btn-raised btn-xs">
 												<i class="zmdi zmdi-delete"></i>
@@ -159,7 +161,7 @@
 					$tabla.='
 						<tr>
 							<td colspan="5">
-								<a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'" class="btn btn-sm btn-info btn-raised">
+								<a href="'.SERVERURL.$paginaurl.'/" class="btn btn-sm btn-info btn-raised">
 									Haga clic aca para recargar el listado
 								</a>
 							</td>
@@ -187,7 +189,7 @@
 
 				for($i=1; $i<=$Npaginas; $i++){
 					if($pagina==$i){
-						$tabla.='<li class="active"><a href="'.SERVERURL.$paginaurl.'/'.$codigoUniversidad[1].'/'.$i.'/">'.$i.'</a></li>';
+						$tabla.='<li class="active"><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
 					}else{
 						$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
 					}

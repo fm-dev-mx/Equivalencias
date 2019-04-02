@@ -8,6 +8,6 @@
 
 <!--librerias para buscador-->
 <script src="<?php echo SERVERURL; ?>vistas/js/funciones.js"></script>
-<script src="<?php echo SERVERURL; ?>vistas/librerias/alertifyjs/alertify.js"></script>
-<script src="<?php echo SERVERURL; ?>vistas/librerias/select2/js/select2.js"></script>
+<script src="<?php echo SERVERURL; ?>vistas/js/alertify.js"></script>
+<script src="<?php echo SERVERURL; ?>vistas/js/select2.js"></script>
 

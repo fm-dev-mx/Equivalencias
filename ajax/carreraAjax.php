@@ -4,18 +4,18 @@
 	if(isset($_POST['nombre']) || isset($_POST['codigo-del']) || isset($_POST['nombreCarreraAgregar']) || isset($_POST['privilegio-admin']) || isset($_POST['codigo-actu']) || isset($_POST['CarreraNombreUpdate']) || isset($_POST['uniSelect']) || isset($_POST['carreraSelect'])){
 
 		require_once "../controladores/carreraControlador.php";
-		$InsUniv= new carreraControlador();
+		$InsCarrera= new carreraControlador();
 
 		if(isset($_POST['nombreCarreraAgregar']) && isset($_POST['codigoUniAgregarCarrera'])){
-			echo $InsUniv->agregar_carrera_controlador();
+			echo $InsCarrera->agregar_carrera_controlador();
 		}
 		
 		if(isset($_POST['codigo-del']) && isset($_POST['privilegio-admin'])){
-			echo $InsUniv->eliminar_carrera_controlador();
+			echo $InsCarrera->eliminar_carrera_controlador();
 		}
 
 		if(isset($_POST['CarreraNombreUpdate']) && isset($_POST['CarreraCodigoUpdate'])){
-			echo $InsUniv->actualizar_carrera_controlador();
+			echo $InsCarrera->actualizar_carrera_controlador();
 		}
 
 		if(isset($_POST['uniSelect'])){

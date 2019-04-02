@@ -59,8 +59,6 @@
 			$privilegio=mainModel::limpiar_cadena($privilegio);
 			$uniSelect=mainModel::limpiar_cadena($uniSelect);
 			
-			$codigoUniversidad=explode("/", $_GET['views']);
-
 			if($uniSelect!=""){
 				$codigoUni=mainModel::decryption($_SESSION['uniSelect']);	
 			}else{
