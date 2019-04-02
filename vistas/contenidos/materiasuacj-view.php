@@ -13,7 +13,7 @@
 
 <?php 
 	require_once "./controladores/carreraControlador.php";
-	$insCarrera= new carreraControlador();
+	$insCarrera= new carreraUacjControlador();
 
 	$url=explode("/", $_GET['views']);
 	
