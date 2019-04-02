@@ -6,25 +6,17 @@
 
 <div class="container-fluid">
 	<div class="page-header">
-	  <h1 class="text-titles"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Administración <small>Materias</small></h1>
+	  <h1 class="text-titles"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Administración <small>Materias - UACJ</small></h1>
 	</div>
 	<p class="lead"></p>
 </div>
 
 <?php 
-	require_once "./controladores/universidadControlador.php";
 	require_once "./controladores/carreraControlador.php";
-	$insUniv= new universidadControlador();
 	$insCarrera= new carreraControlador();
 
 	$url=explode("/", $_GET['views']);
 	
-	if(isset($_SESSION['uniSelect'])){
-		$codigoUni=$_SESSION['uniSelect'];
-	}else{
-		$codigoUni="";
-	}
-
 	if(isset($_SESSION['carreraSelect']))	{
 		$codigoCarrera=$_SESSION['carreraSelect'];
 	}else{
@@ -32,13 +24,6 @@
 	}
 
 	$tipoConsulta="Unico";
-	//Se obtiene un array con los datos de la universidad seleccionada
-	if(isset($codigoUni)){
-		$datosUniv=$insUniv->datos_universidad_controlador($tipoConsulta,$codigoUni);
-		if($datosUniv->rowCount()==1){
-			$camposUniv=$datosUniv->fetch();
-		}
-	}
 	//Se obtiene un array con los datos de la carrera seleccionada
 	if(isset($codigoCarrera)){
 		$datosCarrera=$insCarrera->datos_carrera_controlador($tipoConsulta,$codigoCarrera);
@@ -48,11 +33,6 @@
 	}
 
 	$tipoConsulta="Lista";
-	//Se obtiene un array con los nombres de todas las universidades (para la lista desplegable)
-	$listaU=$insUniv->datos_universidad_controlador($tipoConsulta,$codigoUni);
-	if($listaU->rowCount()>=1){
-		$listaUniv=$listaU->fetchAll();
-	}
 	//Se obtiene un array con los nombres de todas las carreras (para la lista desplegable)
 	$listaC=$insCarrera->datos_carrera_controlador($tipoConsulta,$codigoUni);
 	if($listaC->rowCount()>=1){
@@ -62,17 +42,7 @@
 
 <div class="container-fluid">
 	<div class="panel-body">
-
 		<div class="pull-right">
-			<!--listado de universidades ---------------------------------------------------------->
-			<select class="selectpicker" id="uniSelect" name="uniSelect" data-live-search="true">
-				<option value="0">Seleciona un instituto</option>						
-				<?php foreach($listaUniv as $rows){ ?> 
-					<option value="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>" <?php if($codigoUni==$lc->encryption($rows['UniversidadCodigo'])){echo ' selected';} ?>>
-						<?php echo $rows['UniversidadNombre'];?>
-					</option>	
-				<?php } ?>	
-			</select>
 			<!--listado de carreras ---------------------------------------------------------->
 			<select class="selectpicker" id="carreraSelect" name="carreraSelect" data-live-search="true">
 				<option value="0">Seleciona una carrera</option>			

@@ -111,10 +111,18 @@ $(document).ready(function(){
     });
 })(jQuery);
 
-function mostrarModalRenombrar(datos){
+function ModalRenombrarCarrera(datos){
 	d=datos.split('||');
 
 	$('#CarreraCodigoUpdate').val(d[0]);
 	$('#CarreraNombreUpdate').val(d[1]);
 	$('#CarreraPrivilegioUpdate').val(d[2]);	
+}
+
+function ModalRenombrarMateria(datos){
+	d=datos.split('||');
+
+	$('#MateriaCodigoUpdate').val(d[0]);
+	$('#MateriaNombreUpdate').val(d[1]);
+	$('#MateriaPrivilegioUpdate').val(d[2]);	
 }

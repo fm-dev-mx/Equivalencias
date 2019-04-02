@@ -52,7 +52,6 @@
             return mainModel::sweet_alert($alerta);
         }
 
-		// Controlador para paginar universidades
 		public function paginador_materia_controlador($pagina,$registros,$privilegio,$carrera){
 			$pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
@@ -126,7 +125,7 @@
 									;
 					if($privilegio<=2){
 						$tabla.='<td>									
-									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="mostrarModalRenombrar(\'' . $datosRen . '\')">
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalRenombrarMateria(\'' . $datosRen . '\')">
 									<i class="zmdi zmdi-refresh"></i></button>
 								</td>
 								<td>
@@ -208,7 +207,7 @@
 			return $tabla;
 		}
 
-		public function eliminar_carrera_controlador(){
+		public function eliminar_materia_controlador(){
 			$codigo=mainModel::decryption($_POST['codigo-del']);
 			$adminPrivilegio=mainModel::decryption($_POST['privilegio-admin']);
 
@@ -217,21 +216,21 @@
 
 			if($adminPrivilegio==1){
 				
-				$DelCarrera=carreraModelo::eliminar_carrera_modelo($codigo);
+				$DelMateria=materiaModelo::eliminar_materia_modelo($codigo);
 				
-				if($DelCarrera->rowCount()>=1){
+				if($DelMateria->rowCount()>=1){
 					unset($codigo);	
 					$alerta=[
 						"Alerta"=>"recargar",
-						"Titulo"=>"Carrera eliminada",
-						"Texto"=>"La carrera fue eliminado del sistema con éxito",
+						"Titulo"=>"Materia eliminada",
+						"Texto"=>"La materia fue eliminado del sistema con éxito",
 						"Tipo"=>"success"
 					];
 				}else{
 					$alerta=[
 						"Alerta"=>"simple",
 						"Titulo"=>"Ocurrió un error inesperado",
-						"Texto"=>"No podemos eliminar esta carrera, favor de intentar nuevamente!!",
+						"Texto"=>"No podemos eliminar esta materia, favor de intentar nuevamente!!",
 						"Tipo"=>"error"
 					];
 				}
@@ -239,46 +238,46 @@
 			}
 		}
 
-		public function actualizar_carrera_controlador(){
-			$nombre=mainModel::limpiar_cadena($_POST['CarreraNombreUpdate']);
-			$codigo=mainModel::decryption($_POST['CarreraCodigoUpdate']);
-			$adminPrivilegio=mainModel::decryption($_POST['CarreraPrivilegioUpdate']);
+		public function actualizar_materia_controlador(){
+			$nombre=mainModel::limpiar_cadena($_POST['MateriaNombreUpdate']);
+			$codigo=mainModel::decryption($_POST['MateriaCodigoUpdate']);
+			$adminPrivilegio=mainModel::decryption($_POST['MateriaPrivilegioUpdate']);
 
-			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM carrera WHERE CarreraCodigo='$codigo'");
-			$DatosCarrera=$query1->fetch();
+			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM materia WHERE MateriaCodigo='$codigo'");
+			$DatosMateria=$query1->fetch();
 
 			if($adminPrivilegio==1){
 
-				if($nombre!=$DatosCarrera['CarreraNombre']){
-					$consulta1=mainModel::ejecutar_consulta_simple("SELECT CarreraNombre FROM carrera WHERE CarreraNombre='$nombre'");
+				if($nombre!=$DatosMateria['MateriaNombre']){
+					$consulta1=mainModel::ejecutar_consulta_simple("SELECT MateriaNombre FROM materia WHERE MateriaNombre='$nombre'");
 					
 					if($consulta1->rowCount()>=1)
 					{
 						$alert=[
 							"Alerta"=>"simple",
 							"Titulo"=>"Ocurrió un error inesperado",
-							"Texto"=>"El nombre de la carrera que acaba de ingresar ya se encuentran registrado en esta universidad",
+							"Texto"=>"El nombre de la materia que acaba de ingresar ya se encuentran registrado en esta carrera",
 							"Tipo"=>"error"
 						];
 						return mainModel::sweet_alert($alert);
 						exit();
 					}
 					
-					$guardarCarrera=carreraModelo::actualizar_carrera_modelo($codigo,$nombre);
+					$guardarMateria=materiaModelo::actualizar_materia_modelo($codigo,$nombre);
 				
-					if($guardarCarrera->rowCount()>=1){
+					if($guardarMateria->rowCount()>=1){
 						unset($codigo);	
 						$alerta=[
 							"Alerta"=>"recargar",
 							"Titulo"=>"Datos actualizados!",
-							"Texto"=>"El nombre de la carrera ha sido actualizado correctamente",
+							"Texto"=>"El nombre de la materia ha sido actualizado correctamente",
 							"Tipo"=>"success"
 						];
 					}else{
 						$alerta=[
 							"Alerta"=>"simple",
 							"Titulo"=>"Ocurrió un error inesperado",
-							"Texto"=>"No hemos podido actualizar el nombre de la carrera, por favor intente nuevamente",
+							"Texto"=>"No hemos podido actualizar el nombre de la materia, por favor intente nuevamente",
 							"Tipo"=>"error"
 						];
 					}

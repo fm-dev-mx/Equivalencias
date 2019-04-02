@@ -52,13 +52,20 @@
 				</a>
 				<ul class="list-unstyled full-box">
 					<li>
-						<a href="<?php echo SERVERURL; ?>univ/"><i class="zmdi zmdi-balance zmdi-hc-fw"></i> Universidades</a>
+						<a href="<?php echo SERVERURL; ?>univList/"><i class="zmdi zmdi-balance zmdi-hc-fw"></i> Universidades</a>
 					</li>
 					<li>
 						<a href="<?php echo SERVERURL; ?>carrera/"><i class="zmdi zmdi-bookmark zmdi-hc-fw"></i> Carreras</a>
 					</li>
 					<li>
 						<a href="<?php echo SERVERURL; ?>materias/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias</a>
+					</li>
+					<hr width=75% size="0.5">
+					<li>
+						<a href="<?php echo SERVERURL; ?>carrerauacj/"><i class="zmdi zmdi-bookmark zmdi-hc-fw"></i> Carreras - UACJ</a>
+					</li>
+					<li>
+						<a href="<?php echo SERVERURL; ?>materiasuacj/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias - UACJ</a>
 					</li>
 				</ul>
 			</li>
@@ -71,16 +78,11 @@
 						<a href="<?php echo SERVERURL; ?>admin/"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administradores</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>client/"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Clientes</a>
+						<a href="<?php echo SERVERURL; ?>home/"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Clientes</a>
 					</li>
 				</ul>
 			</li>
 			<?php endif; ?>
-			<li>
-				<a href="<?php echo SERVERURL; ?>catalog/">
-					<i class="zmdi zmdi-book-image zmdi-hc-fw"></i> Catalogo
-				</a>
-			</li>
 		</ul>
 	</div>
 </section>

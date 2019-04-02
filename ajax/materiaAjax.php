@@ -1,7 +1,7 @@
 <?php
 	$peticionAjax=true;
 	require_once "../core/configGeneral.php";
-	if(isset($_POST['privilegio-admin']) || isset($_POST['uniSelect']) || isset($_POST['carreraSelect']) || isset($_POST['nombreMateriaAgregar']) || isset($_POST['codigoCarreraAgregarMateria'])){
+	if(isset($_POST['privilegio-admin']) || isset($_POST['uniSelect']) || isset($_POST['carreraSelect']) || isset($_POST['nombreMateriaAgregar']) || isset($_POST['codigoCarreraAgregarMateria']) || isset($_POST['MateriaNombreUpdate'])	){
 
 		require_once "../controladores/materiaControlador.php";
 		$InsMateria= new materiaControlador();

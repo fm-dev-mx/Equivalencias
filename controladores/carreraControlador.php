@@ -131,7 +131,7 @@
 									;
 					if($privilegio<=2){
 						$tabla.='<td>									
-									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-carrera-pop" data-dismiss="modal" data-backdrop="false" onclick="mostrarModalRenombrar(\'' . $datosRen . '\')">
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-carrera-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalRenombrarCarrera(\'' . $datosRen . '\')">
 									<i class="zmdi zmdi-refresh"></i></button>
 								</td>
 								';

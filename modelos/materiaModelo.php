@@ -16,14 +16,14 @@
 		}
 		
 		protected function eliminar_materia_modelo($codigo){
-			$query=mainModel::conectar()->prepare("DELETE FROM Materia WHERE MateriaCodigo=:Codigo");
+			$query=mainModel::conectar()->prepare("DELETE FROM materia WHERE MateriaCodigo=:Codigo");
 			$query->bindParam(":Codigo",$codigo);
 			$query->execute();
 			return $query;
 		}
 
 		protected function actualizar_materia_modelo($codigo,$nombre){
-			$query=mainModel::conectar()->prepare("UPDATE Materia SET MateriaNombre=:Nombre WHERE MateriaCodigo=:Codigo");
+			$query=mainModel::conectar()->prepare("UPDATE materia SET MateriaNombre=:Nombre WHERE MateriaCodigo=:Codigo");
 			$query->bindParam(":Nombre",$nombre);
 			$query->bindParam(":Codigo",$codigo);
 			$query->execute();
