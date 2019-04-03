@@ -5,7 +5,7 @@
 ?>
 <div class="container-fluid">
 	<div class="page-header">
-	  <h1 class="text-titles">System <small>Tiles</small></h1>
+	  <h1 class="text-titles">Sistema de equivalencias <small>UACJ</small></h1>
 	</div>
 </div>
 <div class="full-box text-center" style="padding: 30px 10px;">
@@ -13,6 +13,12 @@
         require "./controladores/administradorControlador.php";
         $IAdmin= new administradorControlador();
         $CAdmin=$IAdmin->datos_administrador_controlador("Conteo",0);
+        require "./controladores/universidadControlador.php";
+        $IUniv= new universidadControlador();
+        $CUniv=$IUniv->datos_universidad_controlador("Conteo",0);
+        require "./controladores/carreraControlador.php";
+        $ICarrera= new carreraControlador();
+        $CCarrera=$ICarrera->datos_carrera_controlador("Conteo",0);
     ?>
 	<article class="full-box tile">
 		<div class="full-box tile-title text-center text-titles text-uppercase">
@@ -28,25 +34,25 @@
 	</article>
 	<article class="full-box tile">
 		<div class="full-box tile-title text-center text-titles text-uppercase">
-			Teacher
+			Universidades
 		</div>
 		<div class="full-box tile-icon text-center">
-			<i class="zmdi zmdi-male-alt"></i>
+			<i class="zmdi zmdi-balance"></i>
 		</div>
 		<div class="full-box tile-number text-titles">
-			<p class="full-box">10</p>
+			<p class="full-box"><?php echo $CUniv->rowCount(); ?></p>
 			<small>Register</small>
 		</div>
 	</article>
 	<article class="full-box tile">
 		<div class="full-box tile-title text-center text-titles text-uppercase">
-			Student
+			Carreras
 		</div>
 		<div class="full-box tile-icon text-center">
-			<i class="zmdi zmdi-face"></i>
+			<i class="zmdi zmdi-library"></i>
 		</div>
 		<div class="full-box tile-number text-titles">
-			<p class="full-box">70</p>
+			<p class="full-box"><?php echo $CCarrera->rowCount(); ?></p>
 			<small>Register</small>
 		</div>
 	</article>
@@ -58,7 +64,7 @@
 	<section id="cd-timeline" class="cd-container">
         <div class="cd-timeline-block">
             <div class="cd-timeline-img">
-                <img src="<?php echo SERVERURL; ?>vistas/assets/avatars/StudetMaleAvatar.png" alt="user-picture">
+                <img src="<?php echo SERVERURL; ?>vistas/assets/avatars/Male2Avatar.png" alt="user-picture">
             </div>
             <div class="cd-timeline-content">
                 <h4 class="text-center text-titles">1 - Name (Admin)</h4>
@@ -71,7 +77,7 @@
         </div>  
         <div class="cd-timeline-block">
             <div class="cd-timeline-img">
-                <img src="<?php echo SERVERURL; ?>vistas/assets/avatars/StudetMaleAvatar.png" alt="user-picture">
+                <img src="<?php echo SERVERURL; ?>vistas/assets/avatars/Male2Avatar.png" alt="user-picture">
             </div>
             <div class="cd-timeline-content">
                 <h4 class="text-center text-titles">2 - Name (Teacher)</h4>
@@ -84,7 +90,7 @@
         </div>
         <div class="cd-timeline-block">
             <div class="cd-timeline-img">
-                <img src="<?php echo SERVERURL; ?>vistas/assets/avatars/StudetMaleAvatar.png" alt="user-picture">
+                <img src="<?php echo SERVERURL; ?>vistas/assets/avatars/Male2Avatar.png" alt="user-picture">
             </div>
             <div class="cd-timeline-content">
                 <h4 class="text-center text-titles">3 - Name (Student)</h4>
@@ -97,7 +103,7 @@
         </div>
         <div class="cd-timeline-block">
             <div class="cd-timeline-img">
-                <img src="<?php echo SERVERURL; ?>vistas/assets/avatars/StudetMaleAvatar.png" alt="user-picture">
+                <img src="<?php echo SERVERURL; ?>vistas/assets/avatars/Male2Avatar.png" alt="user-picture">
             </div>
             <div class="cd-timeline-content">
                 <h4 class="text-center text-titles">4 - Name (Personal Ad.)</h4>

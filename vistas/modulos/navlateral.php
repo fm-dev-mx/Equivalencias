@@ -64,7 +64,7 @@
 						<a href="<?php echo SERVERURL; ?>carrerauacj/"><i class="zmdi zmdi-bookmark zmdi-hc-fw"></i> Carreras - UACJ</a>
 					</li>
 					<li>
-						<a href="<?php echo SERVERURL; ?>materiasuacj/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias - UACJ</a>
+						<a href="<?php echo SERVERURL; ?>materiasuacjlist/"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Materias - UACJ</a>
 					</li>
 				</ul>
 			</li>

@@ -2,7 +2,8 @@
   if($_SESSION['tipo_sbp']!="Administrador"){
     echo $lc->forzar_cierre_sesion_controlador();
   }
-  
+
+  $url=explode("/", $_GET['views']);  
 ?>
 
 <div class="container-fluid">
@@ -57,7 +58,7 @@
           $pagina=1;
         }
 
-        echo $insCarrera->paginador_carrera_uacj_controlador($pagina,3,1);
+        echo $insCarrera->paginador_carrera_uacj_controlador($pagina,10,1);
         ?>	
       </div>
     </div>

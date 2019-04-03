@@ -12,7 +12,7 @@
 </div>
 
 <?php 
-	require_once "./controladores/carreraControlador.php";
+	require_once "./controladores/carrerauacjControlador.php";
 	$insCarrera= new carreraUacjControlador();
 
 	$url=explode("/", $_GET['views']);
@@ -26,7 +26,7 @@
 	$tipoConsulta="Unico";
 	//Se obtiene un array con los datos de la carrera seleccionada
 	if(isset($codigoCarrera)){
-		$datosCarrera=$insCarrera->datos_carrera_controlador($tipoConsulta,$codigoCarrera);
+		$datosCarrera=$insCarrera->datos_carrera_uacj_controlador($tipoConsulta,$codigoCarrera);
 		if($datosCarrera->rowCount()==1){
 			$camposCarrera=$datosCarrera->fetch();
 		}
@@ -34,7 +34,7 @@
 
 	$tipoConsulta="Lista";
 	//Se obtiene un array con los nombres de todas las carreras (para la lista desplegable)
-	$listaC=$insCarrera->datos_carrera_controlador($tipoConsulta,$codigoUni);
+	$listaC=$insCarrera->datos_carrera_uacj_controlador($tipoConsulta,"");
 	if($listaC->rowCount()>=1){
 		$listaCarrera=$listaC->fetchAll();
 	}
@@ -57,108 +57,114 @@
 		<p class="lead"></p>
 		<br>
 		<div class="container-fluid">
-			<form action="<?php echo SERVERURL; ?>ajax/materiaAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
-				<fieldset>
-					<input class="form-control" type="hidden" name="codigoCarreraAgregarMateria" value="<?php echo $codigoCarrera; ?>">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-xs-12">
-								<div class="form-group label-floating">
-									<label class="control-label">Agregar nueva materia</label>
-									<input class="form-control" type="text" name="nombreMateriaAgregar" required="" maxlength="170">
-								</div>
-							</div>
-						</div>
-					</div>
-					&nbsp&nbsp&nbsp<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>						
-				</fieldset>
-				<div class="RespuestaAjax"></div>					
-			</form>
-		</div>
+			<ul class="breadcrumb breadcrumb-tabs">
+				<li>
+					<a href="<?php echo SERVERURL; ?>materiasuacj/" class="btn btn-info">
+						<i class="zmdi zmdi-plus"></i> &nbsp; AGREGAR MATERIA
+					</a>
+				</li>
+				<li>
+					<a href="<?php echo SERVERURL; ?>materiasuacjlist/" class="btn btn-success">
+						<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE MATERIAS
+					</a>
+				</li>
+		</ul>
 	</div>
 </div>
 
 <div id="tabla">         
   <?php 
-    require_once "./controladores/materiaControlador.php";
-    $insMateria= new materiaControlador();
+    require_once "./controladores/materiauacjControlador.php";
+    $insMateria= new materiaUacjControlador();
   ?>
 
-  <!-- Panel listado de materias -->
-
-  <div class="container-fluid">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        <h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE MATERIAS</h3>
-      </div>
-      <div class="panel-body">
-      <?php
-      
-        if(isset($url[1])){
-          $pagina=$url[1];
-        }else{
-          $pagina=1;
-        }
-        
-        echo $insMateria->paginador_materia_controlador($pagina,3,1,$codigoCarrera);
-        ?>	
-      </div>
-    </div>
-  </div>
-</div>
-	
-
-<!--Ventana emergente para renombrar carrera-->
-
-<form action="<?php echo SERVERURL; ?>ajax/materiaAjax.php" method="POST" data-form='update' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
-	<div class="modal fade" id="ren-materia-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">Renombrar materia</h4>
-				</div>
-				<div class="modal-body">
-					<input type="text" id="MateriaCodigoUpdate" name="MateriaCodigoUpdate" hidden="">
-					<input type="text" id="MateriaPrivilegioUpdate" name="MateriaPrivilegioUpdate" hidden="">
-					<input type="text" id="MateriaNombreUpdate" name="MateriaNombreUpdate" class="form-control input">
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-success">Actualizar</button>
-				</div>
-			</div>
+<div class="container-fluid">
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<?php echo $_SESSION['carreraSelect'];?>
+			<h3 class="panel-title"><i class="zmdi zmdi-plus"></i> &nbsp; DATOS DE LA MATERIA</h3>
+		</div>
+		<div class="panel-body">
+			<form action="<?php echo SERVERURL;?>ajax/materiauacjAjax.php" method="POST" data-form="Save" class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+				<fieldset>
+					<legend><i class="zmdi zmdi-assignment"></i> &nbsp;</legend>
+					<div class="container-fluid">
+							<div class="col-xs-12">
+								<div class="form-group label-floating">
+									<label class="control-label">Nombre de la materia *</label>
+									<input class="form-control" type="text" name="nombreMateriaAgregar" required="" maxlength="170">
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-group label-floating">
+									<label class="control-label">Clave *</label>
+									<input class="form-control" type="text" name="claveMateriaAgregar" required="" maxlength="15">
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-group label-floating">
+									<label class="control-label">Créditos *</label>
+									<input class="form-control" type="text" name="creditosMateriaAgregar" required="" maxlength="15">
+								</div>
+							</div>
+							<div class="col-xs-6 col-sm-6">
+								<div class="label-floating">
+									<select class="form-control" name="semestreMateriaAgregar" required="">
+										<option class="gris" value="0">Selecciona un semestre *</option>
+										<option>1er Semestre</option>
+										<option>2do Semestre</option>
+										<option>3er Semestre</option>
+										<option>4to Semestre</option>
+										<option>5to Semestre</option>
+										<option>6to Semestre</option>
+										<option>7mo Semestre</option>
+										<option>8vo Semestre</option>
+										<option>9no Semestre</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-group">
+									<div class="radio radio-primary">
+										<label>
+											<input type="radio" name="optionsObl" id="optionsRadios1" value="obl">
+												Obligatoria
+										</label>
+									</div>
+									<div class="radio radio-primary">
+										<label>
+											<input type="radio" name="optionsObl" id="optionsRadios2" value="opt">
+												Optativa
+										</label>
+									</div>
+								</div>
+							</div>
+					</div>
+				</fieldset>
+				<br>
+				<p class="text-center" style="margin-top: 20px;">
+					<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+				</p>
+				<div class="RespuestaAjax"></div>
+			</form>
 		</div>
 	</div>
-	<div class="RespuestaAjax"></div>
-</form>
-
+</div>
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $('#uniSelect').select2();
-	$('#carreraSelect').select2();
+    $('#carreraSelect').select2();
   });
-
-    $('#uniSelect').change(function(){
-      $.ajax({
-        type:"post",
-        data:"uniSelect=" + $('#uniSelect').val(),
-        url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
-        success:function(r){
-          location.reload();
-        }
-      });
-    });
 
 	$('#carreraSelect').change(function(){
       $.ajax({
         type:"post",
         data:"carreraSelect=" + $('#carreraSelect').val(),
-        url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
+        url:"<?php echo SERVERURL; ?>ajax/materiauacjAjax.php",
         success:function(r){
           location.reload();
         }
       });
     });  
-
 </script>
