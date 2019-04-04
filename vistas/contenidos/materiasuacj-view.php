@@ -81,7 +81,6 @@
 <div class="container-fluid">
 	<div class="panel panel-info">
 		<div class="panel-heading">
-			<?php echo $_SESSION['carreraSelect'];?>
 			<h3 class="panel-title"><i class="zmdi zmdi-plus"></i> &nbsp; DATOS DE LA MATERIA</h3>
 		</div>
 		<div class="panel-body">
@@ -110,16 +109,16 @@
 							<div class="col-xs-6 col-sm-6">
 								<div class="label-floating">
 									<select class="form-control" name="semestreMateriaAgregar" required="">
-										<option class="gris" value="0">Selecciona un semestre *</option>
-										<option>1er Semestre</option>
-										<option>2do Semestre</option>
-										<option>3er Semestre</option>
-										<option>4to Semestre</option>
-										<option>5to Semestre</option>
-										<option>6to Semestre</option>
-										<option>7mo Semestre</option>
-										<option>8vo Semestre</option>
-										<option>9no Semestre</option>
+										<option class="gris" value=0>Selecciona un semestre *</option>
+										<option value=1>1er Semestre</option>
+										<option value=2>2do Semestre</option>
+										<option value=3>3er Semestre</option>
+										<option value=4>4to Semestre</option>
+										<option value=5>5to Semestre</option>
+										<option value=6>6to Semestre</option>
+										<option value=7>7mo Semestre</option>
+										<option value=8>8vo Semestre</option>
+										<option value=9>9no Semestre</option>
 									</select>
 								</div>
 							</div>

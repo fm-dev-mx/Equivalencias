@@ -7,11 +7,12 @@
 
 	class materiaUacjModelo extends mainModel{
 		protected function agregar_materia_uacj_modelo($datos){
-			$sql=mainModel::conectar()->prepare("INSERT INTO materiauacj (MateriaUacjNombre,MateriaUacjClave,MateriaUacjCreditos,MateriaUacjObligatoria,MateriaUacjCarrera) VALUES(:Nombre,:Clave,:Creditos,:Obligatoria,:Carrera)");
+			$sql=mainModel::conectar()->prepare("INSERT INTO materiauacj (MateriaUacjNombre,MateriaUacjClave,MateriaUacjCreditos,MateriaUacjObligatoria,MateriaUacjSemestre,MateriaUacjCarrera) VALUES(:Nombre,:Clave,:Creditos,:Obligatoria,:Semestre,:Carrera)");
 			$sql->bindParam(":Nombre",$datos['Nombre']);
 			$sql->bindParam(":Clave",$datos['Clave']);
 			$sql->bindParam(":Creditos",$datos['Creditos']);
 			$sql->bindParam(":Obligatoria",$datos['Obligatoria']);
+			$sql->bindParam(":Semestre",$datos['Semestre']);
 			$sql->bindParam(":Carrera",$datos['CodigoCarrera']);
 			$sql->execute();
 			return $sql;

@@ -47,7 +47,7 @@
 			<select class="selectpicker" id="carreraSelect" name="carreraSelect" data-live-search="true">
 				<option value="0">Seleciona una carrera</option>			
 				<?php foreach($listaCarrera as $rows){ ?> 
-					<option value="<?php echo $lc->encryption($rows['CarreraCodigo']);?>" <?php if($codigoCarrera==$lc->encryption($rows['CarreraCodigo'])){echo ' selected';} ?>>
+					<option value="<?php echo $rows['CarreraCodigo'];?>" <?php if($codigoCarrera==$rows['CarreraCodigo']){echo ' selected';} ?>>
 						<?php echo $rows['CarreraNombre'];?>
 					</option>	
 				<?php } ?>	

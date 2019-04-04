@@ -1,5 +1,6 @@
 <?php
 	if($peticionAjax){
+		session_start(['name'=>'SBP']);
 		require_once "../modelos/materiauacjModelo.php";
 	}else{
 		require_once './modelos/materiauacjModelo.php';
@@ -13,7 +14,7 @@
 			$creditos=mainModel::limpiar_cadena($_POST['creditosMateriaAgregar']);
 			$semestre=mainModel::limpiar_cadena($_POST['semestreMateriaAgregar']);
 			$obl=mainModel::limpiar_cadena($_POST['optionsObl']);
-            $codigoCarrera=mainModel::decryption($_SESSION['carreraSelect']);
+            $codigoCarrera=mainModel::limpiar_cadena($_SESSION['carreraSelect']);
 
             $consulta1=mainModel::ejecutar_consulta_simple("SELECT MateriaUacjNombre FROM materiauacj WHERE (MateriaUacjNombre='$nombre' OR MateriaUacjClave='$clave') AND MateriaUacjCarrera='$codigoCarrera'");
 	
@@ -25,9 +26,6 @@
                     "Tipo"=>"error"
                 ];
 			}else{
-				
-				$consulta=mainModel::ejecutar_consulta_simple("SELECT MateriaUacjNombre FROM materiauacj");
-				$numero=($consulta->rowCount())+1;
 				$dataAc=[
 					"Nombre"=>$nombre,
                     "Clave"=>$clave,
@@ -62,13 +60,7 @@
 			$pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
 			$privilegio=mainModel::limpiar_cadena($privilegio);
-			$carrera=mainModel::limpiar_cadena($carrera);			
-
-			if($carrera!=""){
-				$codigoCarrera=mainModel::decryption($carrera);	
-			}else{
-				$codigoCarrera="";
-			}
+			$codigoCarrera=mainModel::limpiar_cadena($carrera);			
 
 			$tabla="";
 
@@ -120,7 +112,7 @@
 		
 				foreach($datos as $rows){
 
-					$datosRen=mainModel::encryption($rows['MateriaCodigo']).'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
+					$datosRen=$rows['MateriaCodigo'].'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
 
 					$tabla.='	
 								<tr>
@@ -222,7 +214,7 @@
 
 			if($adminPrivilegio==1){
 				
-				$DelMateria=materiaModelo::eliminar_materia_uacj_modelo($codigo);
+				$DelMateria=materiaUacjModelo::eliminar_materia_uacj_modelo($codigo);
 				
 				if($DelMateria->rowCount()>=1){
 					unset($codigo);	
