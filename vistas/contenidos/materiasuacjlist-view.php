@@ -74,8 +74,8 @@
 
 <div id="tabla">         
   <?php 
-    require_once "./controladores/materiaControlador.php";
-    $insMateria= new materiaControlador();
+    require_once "./controladores/materiauacjControlador.php";
+    $insMateria= new materiaUacjControlador();
   ?>
 
   <!-- Panel listado de materias -->
@@ -94,7 +94,7 @@
           $pagina=1;
         }
         
-        echo $insMateria->paginador_materia_controlador($pagina,3,1,$codigoCarrera);
+        echo $insMateria->paginador_materia_uacj_controlador($pagina,3,1,$codigoCarrera);
         ?>	
       </div>
     </div>
@@ -104,26 +104,66 @@
 
 <!--Ventana emergente para renombrar carrera-->
 
+<!--
+		    		
+		    		<div class="container-fluid">
+		    			<div class="row">
+		    				<div class="col-xs-12">
+						    	<div class="form-group label-floating">
+								  	<label class="control-label">DNI/CEDULA *</label>
+								  	<input pattern="[0-9-]{1,30}" class="form-control" type="text" name="dni-reg" required="" maxlength="30">
+								</div>
+		    				</div>
+		    	
+			-->
 <form action="<?php echo SERVERURL; ?>ajax/materiauacjAjax.php" method="POST" data-form='update' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
-	<div class="modal fade" id="ren-materia-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">Renombrar materia</h4>
-				</div>
-				<div class="modal-body">
-					<input type="text" id="MateriaCodigoUpdate" name="MateriaCodigoUpdate" hidden="">
-					<input type="text" id="MateriaPrivilegioUpdate" name="MateriaPrivilegioUpdate" hidden="">
-					<input type="text" id="MateriaNombreUpdate" name="MateriaNombreUpdate" class="form-control input">
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-success">Actualizar</button>
+	
+		<div class="modal fade" id="ren-materia-uacj-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content form-group">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<legend><i class="zmdi zmdi-book"></i> &nbsp; Editar materia</legend>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<input type="text" id="MateriaPrivilegioUpdate" name="MateriaPrivilegioUpdate" hidden="">
+							<div class="col-xs-12">
+								<label class="control-label">NOMBRE *</label>
+								<input type="text" id="MateriaUacjNombre" name="MateriaUacjNombre" class="form-control input">
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">CLAVE *</label>
+								<input type="text" id="MateriaUacjClave" name="MateriaUacjClave" class="form-control input" maxlength="10">
+							</div>	
+							<div class="col-xs-4">								
+								<div class="radio radio-primary">
+									<label>
+										<input type="radio" name="optionsObl" id="optionsRadios1" value="obl">
+											Obligatoria
+									</label>
+								</div>
+								<div class="radio radio-primary">
+									<label>
+										<input type="radio" name="optionsObl" id="optionsRadios2" value="opt">
+											Optativa
+									</label>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<label class="control-label">CREDITOS *</label>
+								<input type="text" id="MateriaUacjCreditos" name="MateriaUacjCreditos" class="form-control input" maxlength="2">
+							</div>	
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-success">Actualizar</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="RespuestaAjax"></div>
+		<div class="RespuestaAjax"></div>
+	
 </form>
 
 <script type="text/javascript">

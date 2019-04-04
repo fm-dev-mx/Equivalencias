@@ -67,9 +67,9 @@
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
-			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE MateriaCarrera='$codigoCarrera' ORDER BY MateriaNombre ASC LIMIT $inicio,$registros";
+			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE MateriaUacjCarrera='$codigoCarrera' ORDER BY MateriaUacjNombre ASC LIMIT $inicio,$registros";
 			
-			$paginaurl="materiasuacj";			
+			$paginaurl="materias";			
 
 			$conexion = mainModel::conectar();
 
@@ -87,12 +87,13 @@
 					<thead>
 						<tr>
 							<th class="text-center">#</th>
+							<th class="text-center">CLAVE</th>
 							<th class="text-center">NOMBRE</th>
-							<th class="text-center">EQUIVALENCIA</th>';
+							<th class="text-center">CREDITOS</th>
+							<th class="text-center">OBL/OPT</th>';
 						if($privilegio<=2){
 							$tabla.='								
-								<th class="text-center">RENOMBRAR</th>
-								<th class="text-center">ASIGNAR</th>
+								<th class="text-center">EDITAR</th>
 							';
 						}
 						if($privilegio==1){
@@ -112,32 +113,29 @@
 		
 				foreach($datos as $rows){
 
-					$datosRen=$rows['MateriaCodigo'].'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
+					$datosRen=$rows['MateriaUacjClave'].'||'.$rows['MateriaUacjNombre'].'||'.$rows['MateriaUacjCreditos'].'||'.$rows['MateriaUacjObligatoria'].'||'.mainModel::encryption($privilegio);
 
 					$tabla.='	
 								<tr>
 									<td>'.$contador.'</td>
-									<td>'.$rows['MateriaNombre'].'</td>
-									<td>'.$rows['MateriaUacj'].'</td>
+									<td>'.$rows['MateriaUacjClave'].'</td>
+									<td>'.$rows['MateriaUacjNombre'].'</td>
+									<td>'.$rows['MateriaUacjCreditos'].'</td>
+									<td>'.$rows['MateriaUacjObligatoria'].'</td>
 									'
 									;
 					if($privilegio<=2){
 						$tabla.='<td>									
-									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalRenombrarMateria(\'' . $datosRen . '\')">
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-materia-uacj-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalRenombrarMateriaUacj(\'' . $datosRen . '\')">
 									<i class="zmdi zmdi-refresh"></i></button>
 								</td>
-								<td>
-									<a href="'.SERVERURL.'equivalencias/" class="btn btn-success btn-raised btn-xs">
-										<i class="zmdi zmdi-bookmark"></i>
-									</a>
-								</td>								
 								';
 					}
 					if($privilegio==1){
 						$tabla.='
 									<td>
 										<form action="'.SERVERURL.'ajax/materiauacjAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
-											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['MateriaCodigo']).'">
+											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['MateriaUacjClave']).'">
 											<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
 											<button type="submit" class="btn btn-danger btn-raised btn-xs">
 												<i class="zmdi zmdi-delete"></i>
@@ -167,7 +165,7 @@
 				}else{
 					$tabla.='
 						<tr>
-							<td colspan="5">No hay registros en el sistema</td>
+							<td colspan="7">No hay registros en el sistema</td>
 						</tr>
 					';	
 				}
@@ -203,7 +201,7 @@
 			}
 
 			return $tabla;
-		}
+		}		
 
 		public function eliminar_materia_uacj_controlador(){
 			$codigo=mainModel::decryption($_POST['codigo-del']);

@@ -19,7 +19,7 @@
 		}
 		
 		protected function eliminar_materia_uacj_modelo($codigo){
-			$query=mainModel::conectar()->prepare("DELETE FROM materiauacj WHERE MateriaCodigo=:Codigo");
+			$query=mainModel::conectar()->prepare("DELETE FROM materiauacj WHERE MateriaUacjClave=:Codigo");
 			$query->bindParam(":Codigo",$codigo);
 			$query->execute();
 			return $query;

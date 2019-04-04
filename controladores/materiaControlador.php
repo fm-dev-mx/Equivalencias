@@ -63,9 +63,9 @@
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
-			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE MateriaUacjCarrera='$codigoCarrera' ORDER BY MateriaUacjNombre ASC LIMIT $inicio,$registros";
+			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE MateriaCarrera='$codigoCarrera' ORDER BY MateriaNombre ASC LIMIT $inicio,$registros";
 			
-			$paginaurl="materias";			
+			$paginaurl="materiasuacj";			
 
 			$conexion = mainModel::conectar();
 
@@ -108,13 +108,13 @@
 		
 				foreach($datos as $rows){
 
-					$datosRen=$rows['MateriaUacjClave'].'||'.$rows['MateriaUacjNombre'].'||'.mainModel::encryption($privilegio);
+					$datosRen=$rows['MateriaCodigo'].'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
 
 					$tabla.='	
 								<tr>
 									<td>'.$contador.'</td>
-									<td>'.$rows['MateriaUacjClave'].'</td>
-									<td>'.$rows['MateriaUacjNombre'].'</td>
+									<td>'.$rows['MateriaNombre'].'</td>
+									<td>'.$rows['MateriaUacj'].'</td>
 									'
 									;
 					if($privilegio<=2){
@@ -132,8 +132,8 @@
 					if($privilegio==1){
 						$tabla.='
 									<td>
-										<form action="'.SERVERURL.'ajax/materiaAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
-											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['MateriaUacjClave']).'">
+										<form action="'.SERVERURL.'ajax/materiauacjAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
+											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['MateriaCodigo']).'">
 											<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
 											<button type="submit" class="btn btn-danger btn-raised btn-xs">
 												<i class="zmdi zmdi-delete"></i>

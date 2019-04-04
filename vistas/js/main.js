@@ -126,3 +126,11 @@ function ModalRenombrarMateria(datos){
 	$('#MateriaNombreUpdate').val(d[1]);
 	$('#MateriaPrivilegioUpdate').val(d[2]);	
 }
+
+function ModalRenombrarMateriaUacj(datos){
+	d=datos.split('||');
+	$('#MateriaUacjClave').val(d[0]);
+	$('#MateriaUacjNombre').val(d[1]);
+    $('#MateriaUacjCreditos').val(d[2]);
+    $('#MateriaUacjObligatoria').val(d[2]);
+}
