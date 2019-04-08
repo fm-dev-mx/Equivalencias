@@ -77,13 +77,13 @@
 			<select class="selectpicker" id="carreraSelect" name="carreraSelect" data-live-search="true">
 				<option value="0">Seleciona una carrera</option>			
 				<?php foreach($listaCarrera as $rows){ ?> 
-					<option value="<?php echo $lc->encryption($rows['CarreraCodigo']);?>" <?php if($codigoCarrera==$lc->encryption($rows['CarreraCodigo'])){echo ' selected';} ?>>
+					<option value="<?php echo $rows['CarreraCodigo'];?>" <?php if($codigoCarrera==$rows['CarreraCodigo']){echo ' selected';} ?>>
 						<?php echo $rows['CarreraNombre'];?>
 					</option>	
 				<?php } ?>	
 			</select>
 		</div>
-			
+
 		<p class="lead"></p>
 		<br>
 		<div class="container-fluid">
@@ -122,7 +122,7 @@
         <h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE MATERIAS</h3>
       </div>
       <div class="panel-body">
-      <?php
+			<?php
       
         if(isset($url[1])){
           $pagina=$url[1];

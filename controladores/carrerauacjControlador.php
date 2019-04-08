@@ -113,7 +113,7 @@
 									<td>'.$rows['CarreraNombre'].'</td>
 									<td>
 										<form action="'.SERVERURL.'ajax/carrerauacjAjax.php" method="POST">
-											<input type="hidden" name="carreraSelect" value="'.mainModel::encryption($rows['CarreraCodigo']).'">
+											<input type="hidden" name="carreraSelect" value="'.$rows['CarreraCodigo'].'">
 											<button type="submit" class="btn btn-success btn-raised btn-xs">
 												<i class="zmdi zmdi-bookmark"></i>
 											</button>

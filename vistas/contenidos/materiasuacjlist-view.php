@@ -2,6 +2,7 @@
 	if($_SESSION['tipo_sbp']!="Administrador"){
 		echo $lc->forzar_cierre_sesion_controlador();
 	}
+	
 ?>
 
 <div class="container-fluid">
@@ -19,7 +20,7 @@
 	
 	if(isset($_SESSION['carreraSelect']))	{
 		$codigoCarrera=$_SESSION['carreraSelect'];
-	}else{
+		}else{
 		$codigoCarrera="";
 	}
 
@@ -118,7 +119,7 @@
 			-->
 <form action="<?php echo SERVERURL; ?>ajax/materiauacjAjax.php" method="POST" data-form='update' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
 	
-		<div class="modal fade" id="ren-materia-uacj-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="editar-materia-uacj-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content form-group">
 					<div class="modal-header">
@@ -131,10 +132,14 @@
 							<div class="col-xs-12">
 								<label class="control-label">NOMBRE *</label>
 								<input type="text" id="MateriaUacjNombre" name="MateriaUacjNombre" class="form-control input">
-							</div>
+							</div>						
 							<div class="col-xs-4">
 								<label class="control-label">CLAVE *</label>
 								<input type="text" id="MateriaUacjClave" name="MateriaUacjClave" class="form-control input" maxlength="10">
+							</div>	
+							<div class="col-xs-4">
+								<label class="control-label">CREDITOS *</label>
+								<input type="text" id="MateriaUacjCreditos" name="MateriaUacjCreditos" class="form-control input" maxlength="2">
 							</div>	
 							<div class="col-xs-4">								
 								<div class="radio radio-primary">
@@ -150,11 +155,7 @@
 									</label>
 								</div>
 							</div>
-							<div class="col-xs-4">
-								<label class="control-label">CREDITOS *</label>
-								<input type="text" id="MateriaUacjCreditos" name="MateriaUacjCreditos" class="form-control input" maxlength="2">
-							</div>	
-						</div>
+						</div>						
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-success">Actualizar</button>

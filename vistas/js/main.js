@@ -127,10 +127,15 @@ function ModalRenombrarMateria(datos){
 	$('#MateriaPrivilegioUpdate').val(d[2]);	
 }
 
-function ModalRenombrarMateriaUacj(datos){
+function ModalEditarMateriaUacj(datos){
 	d=datos.split('||');
 	$('#MateriaUacjClave').val(d[0]);
 	$('#MateriaUacjNombre').val(d[1]);
     $('#MateriaUacjCreditos').val(d[2]);
-    $('#MateriaUacjObligatoria').val(d[2]);
+    
+    if(d[3]=="obl"){
+        $('input[id="optionsRadios1"]').prop('checked',true);    
+    }else{
+        $('input[id="optionsRadios2"]').prop('checked',true);    
+    }
 }

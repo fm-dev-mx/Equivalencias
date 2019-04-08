@@ -69,7 +69,7 @@
 
 			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE MateriaUacjCarrera='$codigoCarrera' ORDER BY MateriaUacjNombre ASC LIMIT $inicio,$registros";
 			
-			$paginaurl="materias";			
+			$paginaurl="materiasuacjlist";			
 
 			$conexion = mainModel::conectar();
 
@@ -126,7 +126,7 @@
 									;
 					if($privilegio<=2){
 						$tabla.='<td>									
-									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-materia-uacj-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalRenombrarMateriaUacj(\'' . $datosRen . '\')">
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#editar-materia-uacj-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalEditarMateriaUacj(\'' . $datosRen . '\')">
 									<i class="zmdi zmdi-refresh"></i></button>
 								</td>
 								';

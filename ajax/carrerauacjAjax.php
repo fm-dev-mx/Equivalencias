@@ -21,7 +21,7 @@
 		if(isset($_POST['carreraSelect'])){
 			session_start(['name'=>'SBP']);
 			$_SESSION['carreraSelect']=$_POST['carreraSelect'];		
-			echo '<script> window.location.href="'.SERVERURL.'materiasuacj/" </script>';
+			echo '<script> window.location.href="'.SERVERURL.'materiasuacjlist/" </script>';
 		}
 	}else{
 		session_start(['name'=>'SBP']);

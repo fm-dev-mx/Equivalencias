@@ -9,7 +9,7 @@
 		public function agregar_materia_controlador(){
 			
 			$nombre=mainModel::limpiar_cadena($_POST['nombreMateriaAgregar']);
-            $codigoCarrera=mainModel::decryption($_POST['codigoCarreraAgregarMateria']);
+            $codigoCarrera=mainModel::limpiar_cadena($_POST['codigoCarreraAgregarMateria']);
 
             $consulta1=mainModel::ejecutar_consulta_simple("SELECT id FROM materia WHERE MateriaNombre='$nombre' AND MateriaCarrera='$codigoCarrera'");
 	
@@ -63,9 +63,9 @@
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
-			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE MateriaCarrera='$codigoCarrera' ORDER BY MateriaNombre ASC LIMIT $inicio,$registros";
+			$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM materia WHERE MateriaCarrera='$codigoCarrera' ORDER BY MateriaNombre ASC LIMIT $inicio,$registros";
 			
-			$paginaurl="materiasuacj";			
+			$paginaurl="materias";			
 
 			$conexion = mainModel::conectar();
 
@@ -108,7 +108,7 @@
 		
 				foreach($datos as $rows){
 
-					$datosRen=$rows['MateriaCodigo'].'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
+					$datosRen=mainModel::encryption($rows['MateriaCodigo']).'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
 
 					$tabla.='	
 								<tr>
@@ -132,7 +132,7 @@
 					if($privilegio==1){
 						$tabla.='
 									<td>
-										<form action="'.SERVERURL.'ajax/materiauacjAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
+										<form action="'.SERVERURL.'ajax/materiaAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
 											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['MateriaCodigo']).'">
 											<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
 											<button type="submit" class="btn btn-danger btn-raised btn-xs">
