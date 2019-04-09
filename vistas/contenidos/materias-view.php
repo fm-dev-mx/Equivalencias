@@ -162,6 +162,42 @@
 	<div class="RespuestaAjax"></div>
 </form>
 
+<!--Ventana emergente para asignar-->
+
+<form action="<?php echo SERVERURL; ?>ajax/materiaAjax.php" id="datos_cotizacion" method="POST" data-form='update' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+	<div class="modal fade" id="asignar-materia-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Asignar materia</h4>
+				</div>
+				<div class="modal-body">
+					
+					<div class="panel-body cold-md-12 col-lg-10 col-xs-12 col-sm-12 col-lg-offset-1">
+						<form class="form-horizontal" role="form" id="datos_cotizacion">			
+							<div class="form-group row">				
+								<div class="col-md-5">
+									<input type="text" class="form-control" id="busqueda" placeholder="Selecciona materia" onkeyup='cargar();'>
+								</div>																				
+							</div>								
+						</form>
+						<div id="resultados"></div><!-- Carga los datos ajax -->
+						<div class='outer_div'></div><!-- Carga los datos ajax -->
+					</div>
+						
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success">Actualizar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="RespuestaAjax"></div>
+</form>
+
+
+
 
 <script type="text/javascript">
   $(document).ready(function(){

@@ -139,3 +139,28 @@ function ModalEditarMateriaUacj(datos){
         $('input[id="optionsRadios2"]').prop('checked',true);    
     }
 }
+
+
+$(document).ready(function(){
+    load();    
+});
+
+function load(){
+    var q= $("#q").val();
+    $.ajax({
+        url:'../ajax/buscar_usuario.php?action=ajax&q='+q,       
+        success:function(data){
+            $(".outer_div").html(data).fadeIn('slow');                   
+        }
+    })
+}
+
+function cargar(){
+    var q= $("#busqueda").val();
+    $.ajax({
+        url:'../ajax/asignarAjax.php?action=ajax&busqueda='+busqueda,       
+        success:function(data){
+            $(".outer_div").html(data).fadeIn('slow');
+        }
+    })
+}

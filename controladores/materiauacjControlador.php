@@ -13,44 +13,53 @@
 			$clave=mainModel::limpiar_cadena($_POST['claveMateriaAgregar']);
 			$creditos=mainModel::limpiar_cadena($_POST['creditosMateriaAgregar']);
 			$semestre=mainModel::limpiar_cadena($_POST['semestreMateriaAgregar']);
-			$obl=mainModel::limpiar_cadena($_POST['optionsObl']);
-            $codigoCarrera=mainModel::limpiar_cadena($_SESSION['carreraSelect']);
+			$obl=mainModel::limpiar_cadena($_POST['optionsObl']);            
 
-            $consulta1=mainModel::ejecutar_consulta_simple("SELECT MateriaUacjNombre FROM materiauacj WHERE (MateriaUacjNombre='$nombre' OR MateriaUacjClave='$clave') AND MateriaUacjCarrera='$codigoCarrera'");
-	
-			if($consulta1->rowCount()>=1){
-                $alerta=[
-                    "Alerta"=>"simple",
-                    "Titulo"=>"Ocurrió un error inesperado",
-                    "Texto"=>"La materia ya existe en el sistema, favor de intentar nuevamente!",
-                    "Tipo"=>"error"
-                ];
-			}else{
-				$dataAc=[
-					"Nombre"=>$nombre,
-                    "Clave"=>$clave,
-					"Creditos"=>$creditos,
-					"Semestre"=>$semestre,
-					"Obligatoria"=>$obl,
-					"CodigoCarrera"=>$codigoCarrera
+			if(!isset($_SESSION['carreraUacjSelect'])){
+				$alerta=[
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"Favor de seleccionar una carrera!!",
+					"Tipo"=>"error"
 				];
-
-				$guardarMateria=MateriaUacjModelo::agregar_materia_uacj_modelo($dataAc);
-
-				if($guardarMateria->rowCount()>=1){
-					$alerta=[
-						"Alerta"=>"recargar",
-						"Titulo"=>"Materia registrada",
-						"Texto"=>"La materia se registro con exito en el sistema",
-						"Tipo"=>"success"
-					];
-				}else{
+			}else{				
+				$codigoCarrera=mainModel::limpiar_cadena($_SESSION['carreraSelect']);
+				$consulta1=mainModel::ejecutar_consulta_simple("SELECT MateriaUacjNombre FROM materiauacj WHERE (MateriaUacjNombre='$nombre' OR MateriaUacjClave='$clave') AND MateriaUacjCarrera='$codigoCarrera'");
+		
+				if($consulta1->rowCount()>=1){
 					$alerta=[
 						"Alerta"=>"simple",
 						"Titulo"=>"Ocurrió un error inesperado",
-						"Texto"=>"No hemos podido registrar la materia, por favor intente nuevamente",
+						"Texto"=>"La materia ya existe en el sistema, favor de intentar nuevamente!",
 						"Tipo"=>"error"
 					];
+				}else{
+					$dataAc=[
+						"Nombre"=>$nombre,
+						"Clave"=>$clave,
+						"Creditos"=>$creditos,
+						"Semestre"=>$semestre,
+						"Obligatoria"=>$obl,
+						"CodigoCarrera"=>$codigoCarrera
+					];
+
+					$guardarMateria=MateriaUacjModelo::agregar_materia_uacj_modelo($dataAc);
+
+					if($guardarMateria->rowCount()>=1){
+						$alerta=[
+							"Alerta"=>"recargar",
+							"Titulo"=>"Materia registrada",
+							"Texto"=>"La materia se registro con exito en el sistema",
+							"Tipo"=>"success"
+						];
+					}else{
+						$alerta=[
+							"Alerta"=>"simple",
+							"Titulo"=>"Ocurrió un error inesperado",
+							"Texto"=>"No hemos podido registrar la materia, por favor intente nuevamente",
+							"Tipo"=>"error"
+						];
+					}
 				}
 			}
             return mainModel::sweet_alert($alerta);

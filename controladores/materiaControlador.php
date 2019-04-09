@@ -123,9 +123,8 @@
 									<i class="zmdi zmdi-refresh"></i></button>
 								</td>
 								<td>
-									<a href="'.SERVERURL.'equivalencias/" class="btn btn-success btn-raised btn-xs">
-										<i class="zmdi zmdi-bookmark"></i>
-									</a>
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#asignar-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalAsignarMateria()">
+									<i class="zmdi zmdi-bookmark"></i></button>									
 								</td>								
 								';
 					}

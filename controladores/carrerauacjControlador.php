@@ -232,7 +232,7 @@
 
 		public function datos_carrera_uacj_controlador($tipo,$codigo){
 			$tipo=mainModel::limpiar_cadena($tipo);
-			$codigo=mainModel::decryption($codigo);
+			$codigo=mainModel::limpiar_cadena($codigo);
 
 			return carreraUacjModelo::datos_carrera_uacj_modelo($tipo,$codigo);
 		}

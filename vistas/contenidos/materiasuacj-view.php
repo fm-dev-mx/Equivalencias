@@ -17,8 +17,8 @@
 
 	$url=explode("/", $_GET['views']);
 	
-	if(isset($_SESSION['carreraSelect']))	{
-		$codigoCarrera=$_SESSION['carreraSelect'];
+	if(isset($_SESSION['carreraUacjSelect']))	{
+		$codigoCarrera=$_SESSION['carreraUacjSelect'];
 	}else{
 		$codigoCarrera="";
 	}
@@ -43,11 +43,12 @@
 <div class="container-fluid">
 	<div class="panel-body">
 		<div class="pull-right">
+			<?php echo $codigoCarrera;?>
 			<!--listado de carreras ---------------------------------------------------------->
-			<select class="selectpicker" id="carreraSelect" name="carreraSelect" data-live-search="true">
+			<select class="selectpicker" id="carreraUacjSelect" name="carreraUacjSelect" data-live-search="true">
 				<option value="0">Seleciona una carrera</option>			
 				<?php foreach($listaCarrera as $rows){ ?> 
-					<option value="<?php echo $lc->encryption($rows['CarreraCodigo']);?>" <?php if($codigoCarrera==$lc->encryption($rows['CarreraCodigo'])){echo ' selected';} ?>>
+					<option value="<?php echo $rows['CarreraCodigo'];?>" <?php if($codigoCarrera==$rows['CarreraCodigo']){echo ' selected';} ?>>
 						<?php echo $rows['CarreraNombre'];?>
 					</option>	
 				<?php } ?>	
@@ -153,13 +154,13 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $('#carreraSelect').select2();
+    $('#carreraUacjSelect').select2();
   });
 
-	$('#carreraSelect').change(function(){
+	$('#carreraUacjSelect').change(function(){
       $.ajax({
         type:"post",
-        data:"carreraSelect=" + $('#carreraSelect').val(),
+        data:"carreraUacjSelect=" + $('#carreraUacjSelect').val(),
         url:"<?php echo SERVERURL; ?>ajax/materiauacjAjax.php",
         success:function(r){
           location.reload();
