@@ -147,6 +147,5 @@
           location.reload();
         }
       });
-    });
-  
+    });  
 </script>

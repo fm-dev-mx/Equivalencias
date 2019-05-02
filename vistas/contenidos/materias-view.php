@@ -130,7 +130,6 @@
           $pagina=1;
         }
 				
-				echo $_SESSION['privilegio_sbp'];
         echo $insMateria->paginador_materia_controlador($pagina,3,1,$codigoCarrera);
         ?>	
       </div>
@@ -172,6 +171,8 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">Asignar materia</h4>
+					<?php echo $_SESSION['MateriaCodigoAsignar'];?>
+					<input type="text" class="form-control" id="asignar">
 				</div>
 				<div class="modal-body">
 					
@@ -182,8 +183,7 @@
 									<input type="text" class="form-control" id="busqueda" placeholder="Selecciona materia" onkeyup='cargar();'>
 								</div>																				
 							</div>								
-						</form>
-						<div id="resultados"></div><!-- Carga los datos ajax -->
+						</form>						
 						<div class='outer_div'></div><!-- Carga los datos ajax -->
 					</div>
 						
@@ -224,5 +224,5 @@
         }
       });
     });  
-
+    
 </script>

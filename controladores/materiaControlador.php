@@ -122,8 +122,8 @@
 									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#ren-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalRenombrarMateria(\'' . $datosRen . '\')">
 									<i class="zmdi zmdi-refresh"></i></button>
 								</td>
-								<td>
-									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#asignar-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalAsignarMateria(\'' . $datosRen . '\')">
+								<td>									
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#asignar-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalAsignarMateria(\'' .$rows['MateriaCodigo']. '\')">
 									<i class="zmdi zmdi-bookmark"></i></button>									
 								</td>								
 								';

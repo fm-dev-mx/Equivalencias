@@ -140,10 +140,11 @@ function ModalEditarMateriaUacj(datos){
     }
 }
 
-function ModalAsignarMateria(datos){
-	d=datos.split('||');
-
-	$('#MateriaCodigoAsignar').val(d[0]);
+function ModalAsignarMateria(codigo){
+    $('#asignar').val(codigo);
+    $.ajax({
+        url:'../ajax/asignarAjax.php?action=ajax&MateriaCodigoAsignar='+codigo,       
+    })
 }
 
 $(document).ready(function(){

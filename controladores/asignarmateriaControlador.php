@@ -44,8 +44,7 @@
 								<td>'.$rows['MateriaUacjObligatoria'].'</td>							
 								<td>
 									<form action="'.SERVERURL.'ajax/asignarAjax.php" method="POST">
-										<input type="hidden" name="asignarMateria" value="'.$rows['MateriaUacjClave'].'">
-										<input type="text" id="MateriaCodigoAsignar" name="MateriaCodigoAsignar" hidden="">
+										<input type="hidden" name="asignarMateria" value="'.$rows['MateriaUacjClave'].'">										
 										<button type="submit" class="btn btn-info btn-xs">
 											<i class="glyphicon glyphicon-ok"></i>
 										</button>
@@ -62,7 +61,7 @@
 		
 		public function asignar_materia_controlador(){
 			$materiaAsignar=mainModel::limpiar_cadena($_POST['asignarMateria']);
-			$materiaCodigo=mainModel::limpiar_cadena($_POST['materiaCodigoAsignar']);
+			$materiaCodigo=mainModel::limpiar_cadena($_POST['MateriaCodigoAsignar']);
 			$adminPrivilegio=$_SESSION['privilegio_sbp'];
 
 			if($adminPrivilegio<=2){
