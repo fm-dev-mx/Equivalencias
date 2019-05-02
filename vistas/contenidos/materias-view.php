@@ -129,7 +129,8 @@
         }else{
           $pagina=1;
         }
-        
+				
+				echo $_SESSION['privilegio_sbp'];
         echo $insMateria->paginador_materia_controlador($pagina,3,1,$codigoCarrera);
         ?>	
       </div>
@@ -174,10 +175,10 @@
 				</div>
 				<div class="modal-body">
 					
-					<div class="panel-body cold-md-12 col-lg-10 col-xs-12 col-sm-12 col-lg-offset-1">
+					<div class="panel-body col-md-24 col-lg-24 col-xs-20 col-sm-20 col-lg-offset-1">
 						<form class="form-horizontal" role="form" id="datos_cotizacion">			
 							<div class="form-group row">				
-								<div class="col-md-5">
+								<div class="col-md-12">
 									<input type="text" class="form-control" id="busqueda" placeholder="Selecciona materia" onkeyup='cargar();'>
 								</div>																				
 							</div>								
@@ -186,10 +187,7 @@
 						<div class='outer_div'></div><!-- Carga los datos ajax -->
 					</div>
 						
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-success">Actualizar</button>
-				</div>
+				</div>				
 			</div>
 		</div>
 	</div>

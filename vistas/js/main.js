@@ -140,23 +140,18 @@ function ModalEditarMateriaUacj(datos){
     }
 }
 
+function ModalAsignarMateria(datos){
+	d=datos.split('||');
 
-$(document).ready(function(){
-    load();    
-});
-
-function load(){
-    var q= $("#q").val();
-    $.ajax({
-        url:'../ajax/buscar_usuario.php?action=ajax&q='+q,       
-        success:function(data){
-            $(".outer_div").html(data).fadeIn('slow');                   
-        }
-    })
+	$('#MateriaCodigoAsignar').val(d[0]);
 }
 
+$(document).ready(function(){
+    cargar();    
+});
+
 function cargar(){
-    var q= $("#busqueda").val();
+    var busqueda= $("#busqueda").val();
     $.ajax({
         url:'../ajax/asignarAjax.php?action=ajax&busqueda='+busqueda,       
         success:function(data){

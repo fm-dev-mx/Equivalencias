@@ -57,15 +57,4 @@
 		</div>
 	</article>
 </div>
-	
-	<div class="panel-body cold-md-12 col-lg-10 col-xs-12 col-sm-12 col-lg-offset-1">
-		<form class="form-horizontal" role="form" id="datos_cotizacion">			
-			<div class="form-group row">				
-				<div class="col-md-5">
-					<input type="text" class="form-control" id="q" placeholder="Nombre o Cargo" onkeyup='load();'>
-				</div>																				
-			</div>								
-		</form>
-		<div id="resultados"></div><!-- Carga los datos ajax -->
-		<div class='outer_div'></div><!-- Carga los datos ajax -->
-	</div>
+

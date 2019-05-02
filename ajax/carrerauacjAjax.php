@@ -1,7 +1,7 @@
 <?php
 	$peticionAjax=true;
 	require_once "../core/configGeneral.php";
-	if(isset($_POST['nombreCarreraUacjAgregar']) || isset($_POST['codigo-del']) || isset($_POST['privilegio-admin']) || isset($_POST['CarreraNombreUpdate']) || isset($_POST['CarreraCodigoUpdate']) || isset($_POST['uniSelect']) || isset($_POST['carreraUacjSelect'])){
+	if(isset($_POST['nombreCarreraUacjAgregar']) || isset($_POST['codigo-del']) || isset($_POST['privilegio-admin']) || isset($_POST['CarreraNombreUpdate']) || isset($_POST['CarreraCodigoUpdate']) || isset($_POST['uniSelect']) || isset($_POST['carreraUacjSelect']) ){
 
 		require_once "../controladores/carrerauacjControlador.php";
 		$InsCarreraUacj= new carreraUacjControlador();
@@ -20,7 +20,7 @@
 
 		if(isset($_POST['carreraUacjSelect'])){
 			session_start(['name'=>'SBP']);
-			$_SESSION['carreraSelect']=$_POST['carreraUacjSelect'];		
+			$_SESSION['carreraUacjSelect']=$_POST['carreraUacjSelect'];		
 			echo '<script> window.location.href="'.SERVERURL.'materiasuacjlist/" </script>';
 		}
 	}else{
