@@ -6,9 +6,8 @@
 		require_once "./modelos/asignarmateriaModelo.php";
 	}
 
-    class asignarmateriaControlador extends asignarmateriaModelo{
+	class asignarmateriaControlador extends asignarmateriaModelo{
 		public function buscar_materia_controlador(){
-	
 			$busqueda=mainModel::limpiar_cadena($_REQUEST['busqueda']);
 
 			//Count the total number of row in your table*/
@@ -19,8 +18,7 @@
 			$query = asignarmateriaModelo::buscar_materia_modelo("Lista",$busqueda);
 			
 			//loop through fetched data
-			if($numrows>0){
-				
+			if($numrows>0){				
 				$tabla='<div class="table-responsive">
 									<table class="table table-hover text-center">
 										<thead>
@@ -37,21 +35,22 @@
 				$i=1;
 				foreach($query as $rows){						
 					$tabla.='<tr>
-								<td>'.$i.'</td>
-								<td>'.$rows['MateriaUacjClave'].'</td>
-								<td>'.$rows['MateriaUacjNombre'].'</td>
-								<td>'.$rows['MateriaUacjCreditos'].'</td>
-								<td>'.$rows['MateriaUacjObligatoria'].'</td>							
-								<td>
-									<form action="'.SERVERURL.'ajax/asignarAjax.php" method="POST">
-										<input type="hidden" name="asignarMateria" value="'.$rows['MateriaUacjClave'].'">										
-										<button type="submit" class="btn btn-info btn-xs">
-											<i class="glyphicon glyphicon-ok"></i>
-										</button>
-									</form>						
-								</td>								
-							</tr>
-							';
+										<td>'.$i.'</td>
+										<td>'.$rows['MateriaUacjClave'].'</td>
+										<td>'.$rows['MateriaUacjNombre'].'</td>
+										<td>'.$rows['MateriaUacjCreditos'].'</td>
+										<td>'.$rows['MateriaUacjObligatoria'].'</td>							
+										<td>																			
+											<form action="'.SERVERURL.'ajax/asignarAjax.php" method="POST" class="FormularioAjax" data-form="update" entype="multipart/form-data" autocomplete="off">
+												<input type="hidden" name="codigoUacj" value="'.$rows['MateriaUacjClave'].'">
+												<button type="submit" class="btn btn-info btn-xs">
+													<i class="glyphicon glyphicon-ok"></i>
+												</button>
+												<div class="RespuestaAjax"></div>
+											</form>
+										</td>								
+									</tr>
+									';
 					$i++;
 				}
 				$tabla.='</tbody></table></div>';			
@@ -60,30 +59,37 @@
 		}
 		
 		public function asignar_materia_controlador(){
-			$materiaAsignar=mainModel::limpiar_cadena($_POST['asignarMateria']);
-			$materiaCodigo=mainModel::limpiar_cadena($_POST['MateriaCodigoAsignar']);
+			
+			$codigoUacj=mainModel::limpiar_cadena($_POST['codigoUacj']);
+			unset($_POST['codigoUacj']);
 			$adminPrivilegio=$_SESSION['privilegio_sbp'];
-
-			if($adminPrivilegio<=2){
-					
-					$asignarMateria=asignarmateriaModelo::asignar_materia_modelo($materiaAsignar,$materiaCodigo);
-				
-					if($asignarMateria->rowCount()>=1){
-						$alerta=[
-							"Alerta"=>"recargar",
-							"Titulo"=>"Datos actualizados!",
-							"Texto"=>"Se asignó la materia correctamente",
-							"Tipo"=>"success"
-						];
-					}else{
-						$alerta=[
-							"Alerta"=>"simple",
-							"Titulo"=>"Ocurrió un error inesperado",
-							"Texto"=>"No hemos podido asignar la materia, por favor intente nuevamente",
-							"Tipo"=>"error"
-						];
-					}					
+			$codigoMateria=mainModel::limpiar_cadena($_SESSION['codigoMateria']);
+			unset($_SESSION['codigoMateria']);
+			if($adminPrivilegio<=1){
+				$asignarMateria=asignarmateriaModelo::asignar_materia_modelo($codigoMateria,$codigoUacj);
+				if($asignarMateria->rowCount()>=1){
+					$alerta=[
+						"Alerta"=>"recargar",
+						"Titulo"=>"Datos actualizados!",
+						"Texto"=>"Se asignó la materia correctamente",
+						"Tipo"=>"success"
+					];
+				}else{
+					$alerta=[
+						"Alerta"=>"simple",
+						"Titulo"=>"Ocurrió un error inesperado",
+						"Texto"=>"No hemos podido asignar la materia, por favor intente nuevamente",
+						"Tipo"=>"error"
+					];
+				}					
+			}else{
+				$alerta=[
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrio un error inesperado",
+					"Texto"=>"No tiene los permisos para asignar materias",
+					"Tipo"=>"error"
+				];
 			}
 			return mainModel::sweet_alert($alerta);
+		}
 	}
-}

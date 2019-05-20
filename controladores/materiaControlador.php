@@ -107,7 +107,6 @@
 				$contador=$inicio+1;
 		
 				foreach($datos as $rows){
-
 					$datosRen=mainModel::encryption($rows['MateriaCodigo']).'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
 
 					$tabla.='	
@@ -123,7 +122,7 @@
 									<i class="zmdi zmdi-refresh"></i></button>
 								</td>
 								<td>									
-									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#asignar-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalAsignarMateria(\'' .$rows['MateriaCodigo']. '\')">
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#asignar-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalAsignarMateria(\''.$rows['MateriaCodigo'].'\')">
 									<i class="zmdi zmdi-bookmark"></i></button>									
 								</td>								
 								';

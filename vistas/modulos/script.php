@@ -7,7 +7,6 @@
 <script src="<?php echo SERVERURL; ?>vistas/js/main.js"></script>
 
 <!--librerias para buscador-->
-<script src="<?php echo SERVERURL; ?>vistas/js/funciones.js"></script>
 <script src="<?php echo SERVERURL; ?>vistas/js/alertify.js"></script>
 <script src="<?php echo SERVERURL; ?>vistas/js/select2.js"></script>
 

@@ -21,10 +21,10 @@
 			return $query;
 		}
 
-		protected function asignar_materia_modelo($materia,$codigo){
+		protected function asignar_materia_modelo($codigo,$codigoUacj){
 			$query=mainModel::conectar()->prepare("UPDATE materia SET MateriaUacj=:Materia WHERE MateriaCodigo=:Codigo");
 			
-			$query->bindParam(":Materia",$materia);
+			$query->bindParam(":Materia",$codigoUacj);
 			$query->bindParam(":Codigo",$codigo);
 			$query->execute();
 			return $query;

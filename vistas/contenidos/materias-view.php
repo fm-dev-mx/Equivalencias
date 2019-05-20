@@ -136,10 +136,8 @@
     </div>
   </div>
 </div>
-	
 
 <!--Ventana emergente para renombrar carrera-->
-
 <form action="<?php echo SERVERURL; ?>ajax/materiaAjax.php" method="POST" data-form='update' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
 	<div class="modal fade" id="ren-materia-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -163,39 +161,30 @@
 </form>
 
 <!--Ventana emergente para asignar-->
-
-<form action="<?php echo SERVERURL; ?>ajax/materiaAjax.php" id="datos_cotizacion" method="POST" data-form='update' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+<form autocomplete="off" enctype="multipart/form-data">
 	<div class="modal fade" id="asignar-materia-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">Asignar materia</h4>
-					<?php echo $_SESSION['MateriaCodigoAsignar'];?>
-					<input type="text" class="form-control" id="asignar">
+					<h4 class="modal-title" id="myModalLabel">Asignar materia</h4>										
 				</div>
 				<div class="modal-body">
-					
 					<div class="panel-body col-md-24 col-lg-24 col-xs-20 col-sm-20 col-lg-offset-1">
-						<form class="form-horizontal" role="form" id="datos_cotizacion">			
+						<div class="form-horizontal" role="form">			
 							<div class="form-group row">				
 								<div class="col-md-12">
 									<input type="text" class="form-control" id="busqueda" placeholder="Selecciona materia" onkeyup='cargar();'>
 								</div>																				
 							</div>								
-						</form>						
+						</div>						
 						<div class='outer_div'></div><!-- Carga los datos ajax -->
-					</div>
-						
+					</div>						
 				</div>				
 			</div>
 		</div>
 	</div>
-	<div class="RespuestaAjax"></div>
 </form>
-
-
-
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -203,26 +192,26 @@
 	$('#carreraSelect').select2();
   });
 
-    $('#uniSelect').change(function(){
-      $.ajax({
-        type:"post",
-        data:"uniSelect=" + $('#uniSelect').val(),
-        url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
-        success:function(r){
-          location.reload();
-        }
-      });
-    });
+	$('#uniSelect').change(function(){
+		$.ajax({
+			type:"post",
+			data:"uniSelect=" + $('#uniSelect').val(),
+			url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
+			success:function(r){
+				location.reload();
+			}
+		});
+	});
 
 	$('#carreraSelect').change(function(){
-      $.ajax({
-        type:"post",
-        data:"carreraSelect=" + $('#carreraSelect').val(),
-        url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
-        success:function(r){
-          location.reload();
-        }
-      });
-    });  
+		$.ajax({
+			type:"post",
+			data:"carreraSelect=" + $('#carreraSelect').val(),
+			url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
+			success:function(r){
+				location.reload();
+			}
+		});
+	});  
     
 </script>

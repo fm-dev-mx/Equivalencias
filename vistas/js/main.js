@@ -140,16 +140,14 @@ function ModalEditarMateriaUacj(datos){
     }
 }
 
-function ModalAsignarMateria(codigo){
-    $('#asignar').val(codigo);
+function ModalAsignarMateria(codigoMateria){
     $.ajax({
-        url:'../ajax/asignarAjax.php?action=ajax&MateriaCodigoAsignar='+codigo,       
-    })
+        url:'../ajax/asignarAjax.php?action=ajax&codigoMateria='+codigoMateria,       
+        success:function(){
+            cargar();
+        }
+    });
 }
-
-$(document).ready(function(){
-    cargar();    
-});
 
 function cargar(){
     var busqueda= $("#busqueda").val();
@@ -158,5 +156,5 @@ function cargar(){
         success:function(data){
             $(".outer_div").html(data).fadeIn('slow');
         }
-    })
+    });
 }
