@@ -1,14 +1,10 @@
 <?php
 	$peticionAjax=true;			
 	require_once "../core/configGeneral.php";
-	if(isset($_GET['busqueda']) || isset($_GET['codigoMateria']) || isset($_POST['codigoUacj'])){
+	if(isset($_GET['busqueda']) || isset($_GET['codigoMateria']) || isset($_GET['codigoMateriaUacj'])){
 		
 		require_once "../controladores/asignarmateriaControlador.php";
-		$InsAsignarMateria= new asignarmateriaControlador();
-
-		if(isset($_POST['codigoUacj'])){			
-			echo $InsAsignarMateria->asignar_materia_controlador();
-		}		
+		$InsAsignarMateria= new asignarmateriaControlador();		
 
 		if(isset($_GET['busqueda'])){			
 			echo $InsAsignarMateria->buscar_materia_controlador();
@@ -18,6 +14,10 @@
 			$_SESSION['codigoMateria']=$_GET['codigoMateria'];
 			unset($_GET['codigoMateria']);
 		}
+
+		if(isset($_GET['codigoMateriaUacj'])){			
+			echo $InsAsignarMateria->asignar_materia_controlador();
+		}		
 		
 	}else{
 		session_start(['name'=>'SBP']);

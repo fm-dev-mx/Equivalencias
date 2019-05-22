@@ -47,6 +47,11 @@
 				</a>
 			</li>
 			<li>
+				<a href="<?php echo SERVERURL; ?>alumno/">				
+					<i class="zmdi zmdi-face zmdi-hc-fw"></i> Registrar Alumno
+				</a>
+			</li>
+			<li>
 				<a href="#!" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-case zmdi-hc-fw"></i> Administración <i class="zmdi zmdi-caret-down pull-right"></i>
 				</a>

@@ -90,8 +90,7 @@ $(document).ready(function(){
             });
             return false;
         });
-    });
-	
+    }); 
 });
 
 (function($){
@@ -158,3 +157,24 @@ function cargar(){
         }
     });
 }
+
+function AsignarMateria(codigoMateriaUacj){
+    $.ajax({
+        url:'../ajax/asignarAjax.php?action=ajax&codigoMateriaUacj='+codigoMateriaUacj,       
+        success:function(data){
+            $(".outer_div").html(data).fadeOut('slow');
+        }
+    });
+}
+
+$(function(){
+    $('#datecontainer .input-group.date').datepicker({
+        format: "yyyy/mm/dd",
+        startView: 3,
+        maxViewMode: 3,
+        language: "es",
+        keyboardNavigation: true,
+        forceParse: false,
+        autoclose: true
+    });
+})

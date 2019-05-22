@@ -20,37 +20,34 @@
 			//loop through fetched data
 			if($numrows>0){				
 				$tabla='<div class="table-responsive">
-									<table class="table table-hover text-center">
-										<thead>
-											<tr>
-												<th class="text-center">#</th>
-												<th class="text-center">CLAVE</th>
-												<th class="text-center">NOMBRE</th>
-												<th class="text-center">CREDITOS</th>
-												<th class="text-center">OBL/OPT</th>
-												<th class="text-center">ASIGNAR</th>
-											</tr>
-										</thead>
-										<tbody>';				
+							<table class="table table-hover text-center">
+								<thead>
+									<tr>
+										<th class="text-center">#</th>
+										<th class="text-center">CLAVE</th>
+										<th class="text-center">NOMBRE</th>
+										<th class="text-center">CREDITOS</th>
+										<th class="text-center">OBL/OPT</th>
+										<th class="text-center">ASIGNAR</th>
+									</tr>
+								</thead>
+								<tbody>';				
 				$i=1;
 				foreach($query as $rows){						
 					$tabla.='<tr>
-										<td>'.$i.'</td>
-										<td>'.$rows['MateriaUacjClave'].'</td>
-										<td>'.$rows['MateriaUacjNombre'].'</td>
-										<td>'.$rows['MateriaUacjCreditos'].'</td>
-										<td>'.$rows['MateriaUacjObligatoria'].'</td>							
-										<td>																			
-											<form action="'.SERVERURL.'ajax/asignarAjax.php" method="POST" class="FormularioAjax" data-form="update" entype="multipart/form-data" autocomplete="off">
-												<input type="hidden" name="codigoUacj" value="'.$rows['MateriaUacjClave'].'">
-												<button type="submit" class="btn btn-info btn-xs">
-													<i class="glyphicon glyphicon-ok"></i>
-												</button>
-												<div class="RespuestaAjax"></div>
-											</form>
-										</td>								
-									</tr>
-									';
+								<td>'.$i.'</td>
+								<td>'.$rows['MateriaUacjClave'].'</td>
+								<td>'.$rows['MateriaUacjNombre'].'</td>
+								<td>'.$rows['MateriaUacjCreditos'].'</td>
+								<td>'.$rows['MateriaUacjObligatoria'].'</td>							
+								<td>
+									<button type="submit" class="btn btn-info btn-xs" onclick="AsignarMateria(\'' . $rows['MateriaUacjClave'] . '\')">
+										<i class="glyphicon glyphicon-ok"></i>
+									</button>
+									<div class="RespuestaAjax"></div>
+								</td>								
+							</tr>
+							';
 					$i++;
 				}
 				$tabla.='</tbody></table></div>';			
@@ -60,8 +57,8 @@
 		
 		public function asignar_materia_controlador(){
 			
-			$codigoUacj=mainModel::limpiar_cadena($_POST['codigoUacj']);
-			unset($_POST['codigoUacj']);
+			$codigoUacj=mainModel::limpiar_cadena($_GET['codigoMateriaUacj']);
+			unset($_GET['codigoMateriaUacj']);
 			$adminPrivilegio=$_SESSION['privilegio_sbp'];
 			$codigoMateria=mainModel::limpiar_cadena($_SESSION['codigoMateria']);
 			unset($_SESSION['codigoMateria']);
