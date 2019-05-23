@@ -81,9 +81,6 @@
 					<li>
 						<a href="<?php echo SERVERURL; ?>admin/"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administradores</a>
 					</li>
-					<li>
-						<a href="<?php echo SERVERURL; ?>home/"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Clientes</a>
-					</li>
 				</ul>
 			</li>
 			<?php endif; ?>
