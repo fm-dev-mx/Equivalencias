@@ -189,7 +189,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('#uniSelect').select2();
-	$('#carreraSelect').select2();
+		$('#carreraSelect').select2();
   });
 
 	$('#uniSelect').change(function(){

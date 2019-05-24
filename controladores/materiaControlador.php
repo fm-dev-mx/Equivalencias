@@ -108,12 +108,19 @@
 		
 				foreach($datos as $rows){
 					$datosRen=mainModel::encryption($rows['MateriaCodigo']).'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
-
+					
+					//obtener nombre de la materia UACJ-------------------------------------------
+					$codigoMateriaUacj=$rows['MateriaUacj'];
+					$consultaNombre="SELECT MateriaUacjNombre FROM materiauacj WHERE MateriaUacjClave='$codigoMateriaUacj'";
+					$conexionNombre = mainModel::conectar();
+					$nombreMateriaUacj = $conexionNombre->query($consultaNombre);
+					$nombreMateriaUacj = $nombreMateriaUacj->fetch();
+					//--------------------------------------------------------------------------
 					$tabla.='	
 								<tr>
 									<td>'.$contador.'</td>
 									<td>'.$rows['MateriaNombre'].'</td>
-									<td>'.$rows['MateriaUacj'].'</td>
+									<td>'.$nombreMateriaUacj[0].'</td>
 									'
 									;
 					if($privilegio<=2){

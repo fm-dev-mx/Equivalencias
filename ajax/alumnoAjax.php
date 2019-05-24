@@ -18,12 +18,6 @@
 			echo $InsAlumno->eliminar_alumno_controlador();
 		}
 
-		if(isset($_POST['uniSelect'])){
-			session_start(['name'=>'SBP']);
-			$_SESSION['uniSelect']=$_POST['uniSelect'];		
-			echo '<script> window.location.href="'.SERVERURL.'carrera/" </script>';
-		}
-
 	}else{
 		session_start(['name'=>'SBP']);
 		session_destroy();

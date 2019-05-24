@@ -45,12 +45,12 @@
 
 		protected function datos_alumno_modelo($tipo,$codigo){
 			if($tipo=="Unico"){
-				$query=mainModel::conectar()->prepare("SELECT * FROM universidad WHERE UniversidadCodigo=:Codigo");
+				$query=mainModel::conectar()->prepare("SELECT * FROM alumno WHERE AlumnoCodigo=:Codigo");
 				$query->bindParam(":Codigo",$codigo);
 			}elseif($tipo=="Conteo"){
-				$query=mainModel::conectar()->prepare("SELECT id FROM universidad");
+				$query=mainModel::conectar()->prepare("SELECT id FROM alumno");
 			}elseif($tipo=="Lista"){
-				$query=mainModel::conectar()->prepare("SELECT UniversidadCodigo,UniversidadNombre FROM universidad ORDER BY UniversidadNombre ASC");
+				$query=mainModel::conectar()->prepare("SELECT AlumnoCodigo,AlumnoNombre FROM alumno ORDER BY AlumnoNombre ASC");
 			}
 			$query->execute();
 			return $query;

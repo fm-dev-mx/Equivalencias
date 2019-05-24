@@ -246,6 +246,47 @@
 			return carreraModelo::datos_carrera_modelo($tipo,$codigo);
 		}
 
+		public function lista_carrera_controlador(){
+			$listaC=self::datos_carrera_controlador("Lista",$_POST['alumnoUniSelect']);
+			if($listaC->rowCount()>=1){
+				$listaCarrera=$listaC->fetchAll();						
+				$cadena='
+						<div class="col-xs-12 col-sm-4" style="margin-top: 7px;">
+							<div class="form-group label-floating">
+								<select class="selectpicker input-lg" id="carreraSelect" name="carreraSelect" data-live-search="true">
+									<option value="0">Seleciona una carrera</option>			
+									<option value="1">Agregar carrera</option>						
+									<option disabled>-----------------------------------------</option>';
+				foreach($listaCarrera as $rows){
+					$cadena.='
+									<option value="'.$rows['CarreraCodigo'].'">'.$rows['CarreraNombre'].'</option>
+							';
+				}
+				$cadena.='
+								</select>
+							</div>
+						</div>';				
+			}else{
+				$cadena='
+						<div class="col-xs-12 col-sm-4" style="margin-top: 7px;">
+							<div class="form-group label-floating">
+								<select class="selectpicker input-lg" id="carreraSelect" name="carreraSelect" data-live-search="true">
+									<option value="0">Seleciona una carrera</option>
+								</select>
+							</div>
+						</div>';				
+			}
+			$cadena.="
+						<script type='text/javascript'>
+							$(document).ready(function(){
+								$('#carreraSelect').select2();
+								$('#carreraSelect').change(function(){
+									$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#111');
+								});
+							});";
+			return $cadena;
+		}		
+		
 		public function actualizar_carrera_controlador(){
 			$nombre=mainModel::limpiar_cadena($_POST['CarreraNombreUpdate']);
 			$codigo=mainModel::decryption($_POST['CarreraCodigoUpdate']);
