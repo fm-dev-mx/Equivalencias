@@ -247,7 +247,8 @@
 		}
 
 		public function lista_carrera_controlador(){
-			$listaC=self::datos_carrera_controlador("Lista",$_POST['alumnoUniSelect']);
+			$codigoUni=mainModel::encryption($_POST['alumnoUniSelect']);
+			$listaC=self::datos_carrera_controlador("Lista",$codigoUni);
 			if($listaC->rowCount()>=1){
 				$listaCarrera=$listaC->fetchAll();						
 				$cadena='

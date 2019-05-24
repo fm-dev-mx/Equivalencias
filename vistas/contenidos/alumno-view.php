@@ -91,13 +91,13 @@
 							<div class="col-xs-12 col-sm-4">
 								<div class="form-group label-floating">
 									<label class="control-label">Teléfono</label>
-									<input pattern="[0-9+]{1,10}" class="form-control" type="text" name="AlumnoTelefono" maxlength="15">
+									<input pattern="[0-9]{1,10}" class="form-control" type="text" name="AlumnoTelefono" maxlength="10">
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-4">
 								<div class="form-group label-floating">
 									<label class="control-label">E-mail</label>
-									<input class="form-control" type="email" name="AlumnoEmail" maxlength="50">
+									<input class="form-control" type="email" name="AlumnoEmail" maxlength="80">
 								</div>
 							</div>
 								
@@ -110,7 +110,7 @@
 											<option value="1">Agregar instituto</option>						
 											<option disabled>-----------------------------------------</option>
 											<?php foreach($listaUniv as $rows){ ?> 
-												<option value="<?php echo $lc->encryption($rows['UniversidadCodigo']);?>">
+												<option value="<?php echo $rows['UniversidadCodigo'];?>">
 													<?php echo $rows['UniversidadNombre'];?>
 												</option>	
 											<?php } ?>	
@@ -123,7 +123,7 @@
 							<div class="col-xs-12 col-sm-2">
 								<div class="form-group label-floating">
 									<label class="control-label">Semestre</label>
-									<input class="form-control" pattern="[0-9]{1,2}" type="text" name="AlumnoSemestre" maxlength="50">
+									<input class="form-control" pattern="[0-9]{1,2}" type="text" name="AlumnoSemestre" maxlength="2">
 								</div>
 							</div>
 						</div>

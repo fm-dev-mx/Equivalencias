@@ -13,8 +13,8 @@
 			$fechaNac=mainModel::limpiar_cadena($_POST['AlumnoFechaNac']);
 			$telefono=mainModel::limpiar_cadena($_POST['AlumnoTelefono']);
 			$email=mainModel::limpiar_cadena($_POST['AlumnoEmail']);
-            $universidad=mainModel::limpiar_cadena($_POST['AlumnoUniversidad']);
-			$carrera=mainModel::limpiar_cadena($_POST['AlumnoCarrera']);
+            $universidad=mainModel::limpiar_cadena($_POST['uniSelect']);
+			$carrera=mainModel::limpiar_cadena($_POST['carreraSelect']);
 			$semestre=mainModel::limpiar_cadena($_POST['AlumnoSemestre']);
 
             $consulta1=mainModel::ejecutar_consulta_simple("SELECT AlumnoCuenta FROM alumno WHERE (AlumnoNombre='$nombre' AND AlumnoApellido='$apellido' AND AlumnoFechaNac='$fechaNac')");
@@ -28,7 +28,7 @@
                 ];
 			}else{
 				
-				$consulta=mainModel::ejecutar_consulta_simple("SELECT AlumnoCuenta FROM alumno");
+				$consulta=mainModel::ejecutar_consulta_simple("SELECT AlumnoCodigo FROM alumno");
 				$numero=($consulta->rowCount())+1;
 				$codigo=mainModel::generar_codigo_aleatorio("AL",7,$numero);
 				$dataAlumno=[
