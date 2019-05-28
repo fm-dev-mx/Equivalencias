@@ -7,15 +7,27 @@
 	}
 
 	class asignarmateriaControlador extends asignarmateriaModelo{
-		public function buscar_materia_controlador(){
+		public function buscar_materia_controlador($pagina,$registros){
+			$registros=mainModel::limpiar_cadena($registros);
+			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 			$busqueda=mainModel::limpiar_cadena($_REQUEST['busqueda']);
 
 			//Count the total number of row in your table*/
-			$numrow = asignarmateriaModelo::buscar_materia_modelo("Conteo",0);
+			$numrow = asignarmateriaModelo::buscar_materia_modelo("Conteo",0,"","");
 			$numrows = $numrow->rowCount(); 
 
 			//main query to fetch the data
-			$query = asignarmateriaModelo::buscar_materia_modelo("Lista",$busqueda);
+			$query="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE MateriaUacjNombre like '%$busqueda%' or MateriaUacjClave like '%$busqueda%' ORDER BY MateriaUacjNombre ASC LIMIT $inicio,$registros";		
+
+			$conexion = mainModel::conectar();
+
+			$datos = $conexion->query($query);
+			$datos= $datos->fetchAll();
+
+			$total= $conexion->query("SELECT FOUND_ROWS()");
+			$total= (int) $total->fetchColumn();
+
+			$Npaginas= ceil($total/$registros);			
 			
 			//loop through fetched data
 			if($numrows>0){				
@@ -32,25 +44,28 @@
 									</tr>
 								</thead>
 								<tbody>';				
-				$i=1;
-				foreach($query as $rows){						
-					$tabla.='<tr>
-								<td>'.$i.'</td>
-								<td>'.$rows['MateriaUacjClave'].'</td>
-								<td>'.$rows['MateriaUacjNombre'].'</td>
-								<td>'.$rows['MateriaUacjCreditos'].'</td>
-								<td>'.$rows['MateriaUacjObligatoria'].'</td>							
-								<td>
-									<button type="submit" class="btn btn-info btn-xs" onclick="AsignarMateria(\'' . $rows['MateriaUacjClave'] . '\')">
-										<i class="glyphicon glyphicon-ok"></i>
-									</button>
-									<div class="RespuestaAjax"></div>
-								</td>								
-							</tr>
-							';
-					$i++;
+				
+				if($total>=1 && $pagina<=$Npaginas){
+					$i=1;
+					foreach($datos as $rows){						
+						$tabla.='<tr>
+									<td>'.$i.'</td>
+									<td>'.$rows['MateriaUacjClave'].'</td>
+									<td>'.$rows['MateriaUacjNombre'].'</td>
+									<td>'.$rows['MateriaUacjCreditos'].'</td>
+									<td>'.$rows['MateriaUacjObligatoria'].'</td>							
+									<td>
+										<button type="submit" class="btn btn-info btn-xs" onclick="AsignarMateria(\'' . $rows['MateriaUacjClave'] . '\')">
+											<i class="glyphicon glyphicon-ok"></i>
+										</button>
+										<div class="RespuestaAjax"></div>
+									</td>								
+								</tr>
+								';
+						$i++;
+					}					
 				}
-				$tabla.='</tbody></table></div>';			
+				$tabla.='</tbody></table></div>';
 			}
 			return $tabla;
 		}

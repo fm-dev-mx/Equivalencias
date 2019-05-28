@@ -255,6 +255,62 @@
 			return universidadModelo::datos_universidad_modelo($tipo,$codigo);
 		}
 
+		public function lista_universidad_controlador(){
+
+			//Se obtiene un array con los nombres de todas las universidades (para la lista desplegable)
+			$listaU=self::datos_universidad_controlador("Lista","");
+			if($listaU->rowCount()>=1){
+				$listaUniv=$listaU->fetchAll();
+			}
+
+			$cadena='
+			<div class="col-xs-12 col-sm-4" style="margin-top: 7px;">
+				<div class="form-group label-floating">
+					<select class="selectpicker input-lg" id="uniSelect" name="uniSelect" data-live-search="true">
+						
+						<option value="0">Seleciona un instituto</option>						
+						<option value="1">Agregar instituto</option>						
+						<option disabled>-----------------------------------------</option>';
+			foreach($listaUniv as $rows){
+				$cadena.='
+						<option value="'.$rows['UniversidadCodigo'].'">
+							'.$rows['UniversidadNombre'].'
+						</option>';
+			}
+			$cadena.='
+					</select>
+				</div>
+			</div>';
+			$cadena.="
+				<script type='text/javascript'>
+					$(document).ready(function(){
+						$('#uniSelect').select2();								
+						$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#999');
+						$('#uniSelect').change(function(){
+							if($('#uniSelect').val()==0){
+								$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#999');
+							}else{
+								$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#111');
+							}
+						});								
+					});
+					
+					$('#uniSelect').change(function(){
+						recargarCarrera();
+						$('#carreraSelect').select2();
+						if($('#uniSelect').val()==0){
+							$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#999');
+						}else{
+							$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#111');
+						}
+			
+						if($('#uniSelect').val()==1){
+							$('#agregar-uni-pop').modal({backdrop: false});				
+						}
+					}); ";
+			return $cadena;
+		}
+
 		public function actualizar_universidad_controlador(){
 			$nombre=mainModel::limpiar_cadena($_POST['nombreUniversidad-reg']);
             $telefono=mainModel::limpiar_cadena($_POST['telefono-reg']);

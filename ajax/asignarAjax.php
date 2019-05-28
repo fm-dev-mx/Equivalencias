@@ -7,7 +7,7 @@
 		$InsAsignarMateria= new asignarmateriaControlador();		
 
 		if(isset($_GET['busqueda'])){			
-			echo $InsAsignarMateria->buscar_materia_controlador();
+			echo $InsAsignarMateria->buscar_materia_controlador(0,7);
 		}
 
 		if(isset($_GET['codigoMateria'])){		

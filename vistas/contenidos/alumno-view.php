@@ -18,13 +18,6 @@
 			$campos=$filesAlumno->fetch();
 		}
 	}	
-
-	//Se obtiene un array con los nombres de todas las universidades (para la lista desplegable)
-	$listaU=$insUniv->datos_universidad_controlador("Lista","");
-	if($listaU->rowCount()>=1){
-		$listaUniv=$listaU->fetchAll();
-	}
-
 ?>
 
 <div class="container-fluid">
@@ -61,7 +54,7 @@
 		</div>
 
 		<div class="panel-body">
-			<form action="<?php echo SERVERURL; ?>ajax/alumnoAjax.php" method="POST" data-form=<?php if(isset($campos['AlumnoNombre'])){echo 'Update';}else{echo 'Save';} ?> class="FormularioAjax">
+			<form action="<?php echo SERVERURL; ?>ajax/alumnoAjax.php" method="POST" data-form=<?php if(isset($campos['AlumnoNombre'])){echo 'update';}else{echo 'save';} ?> class="FormularioAjax">
 				<input type="hidden" name="agregarActualizar"value="<?php if(isset($campos['AlumnoNombre'])){echo "Actualizar";}else{echo "Agregar";} ?>">
 				<input type="hidden" name="AlumnoCodigo" value="<?php echo $datos[1]; ?>">
 				<fieldset>
@@ -101,24 +94,10 @@
 								</div>
 							</div>
 								
-								<!--listado de universidades ---------------------------------------------------------->
-								<div class="col-xs-12 col-sm-4" style="margin-top: 7px;">
-									<div class="form-group label-floating">
-										<select class="selectpicker input-lg" id="uniSelect" name="uniSelect" data-live-search="true">
-											
-											<option value="0">Seleciona un instituto</option>						
-											<option value="1">Agregar instituto</option>						
-											<option disabled>-----------------------------------------</option>
-											<?php foreach($listaUniv as $rows){ ?> 
-												<option value="<?php echo $rows['UniversidadCodigo'];?>">
-													<?php echo $rows['UniversidadNombre'];?>
-												</option>	
-											<?php } ?>	
-										</select>
-									</div>
-								</div>
-
-								<div id="divCarreraSelect"></div>
+							<!--listado de universidades ---------------------------------------------------------->
+							<div id="divUniSelect"></div>
+							<!--listado de carreras (jquery)---------------------------------------------------------->
+							<div id="divCarreraSelect"></div>
 
 							<div class="col-xs-12 col-sm-2">
 								<div class="form-group label-floating">
@@ -139,20 +118,144 @@
 	</div>
 </div>
 
+
+<!--Ventana emergente para agregar universidad-->
+
+<form action="<?php echo SERVERURL; ?>ajax/universidadAjax.php" method="POST" data-form='saveModal' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+	<div class="modal fade" id="agregar-uni-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Agregar instituto</h4>
+				</div>
+				<input class="form-control" type="hidden" name="agregarActualizar-reg" maxlength="170" value="Agregar">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="form-group label-floating">
+								<label class="control-label">Nombre del instituto *</label>
+								<input class="form-control" type="text" name="nombreUniversidad-reg" required="" maxlength="170" value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadNombre'];} ?>">
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-group label-floating">
+								<label class="control-label">Iniciales *</label>
+								<input class="form-control" type="text" name="iniciales-reg" required="" maxlength="15"  value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadIniciales'];} ?>">
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-group label-floating">
+								<label class="control-label">Pais *</label>
+								<input class="form-control" type="text" name="pais-reg" required="" maxlength="15"  value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadPais'];} ?>">
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-group label-floating">
+								<label class="control-label">Estado *</label>
+								<input class="form-control" type="text" name="estado-reg" required="" maxlength="15"  value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadEstado'];} ?>">
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-group label-floating">
+								<label class="control-label">Ciudad *</label>
+								<input class="form-control" type="text" name="ciudad-reg" required="" maxlength="15"  value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadCiudad'];} ?>">
+							</div>
+						</div>
+						<div class="col-xs-12">
+							<div class="form-group label-floating">
+								<label class="control-label">Dirección</label>
+								<input class="form-control" type="text" name="direccion-reg" maxlength="170" value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadDireccion'];} ?>">
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-group">
+								<label class="control-label">Tipo de universidad</label>
+								<div class="radio radio-primary">
+									<label>
+										<input type="radio" name="optionsPublica" id="optionsRadios1" value="Publica" checked="" <?php if(isset($campos['UniversidadTipo'])){if($campos['UniversidadTipo']=="Publica"){ echo 'checked=""'; }} ?>>
+										<i class="zmdi zmdi-male-alt"></i> &nbsp; Pública
+									</label>
+								</div>
+								<div class="radio radio-primary">
+									<label>
+										<input type="radio" name="optionsPublica" id="optionsRadios2" value="Privada" <?php if(isset($campos['UniversidadTipo'])){if($campos['UniversidadTipo']=="Privada"){ echo 'checked=""'; }} ?>>
+										<i class="zmdi zmdi-female"></i> &nbsp; Privada
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-group label-floating">
+								<label class="control-label">Teléfono</label>
+								<input pattern="[0-9+]{1,15}" class="form-control" type="text" name="telefono-reg" maxlength="50" value="<?php if(isset($campos['UniversidadNombre'])){ echo $campos['UniversidadTelefono'];} ?>">
+							</div>
+						</div>
+		    		</div>
+				</div>
+
+				<p class="text-center" style="margin-top: 20px;">
+			    	<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>
+			    </p>
+
+			</div>
+		</div>
+	</div>
+	<div class="RespuestaAjax"></div>
+</form>
+
+<!--Ventana emergente para agregar carrera-->
+
+<form action="<?php echo SERVERURL; ?>ajax/carreraAjax.php" method="POST" data-form='saveModalCarrera' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
+	<div class="modal fade" id="agregar-carrera-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Agregar carrera</h4>
+				</div>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="form-group label-floating">
+								<label class="control-label">Nombre</label>
+								<input class="form-control" type="text" name="nombreAlumnoCarrera" required="" maxlength="170">
+							</div>
+						</div>						
+		    		</div>
+				</div>
+
+				<p class="text-center" style="margin-top: 20px;">
+			    	<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>
+			    </p>
+
+			</div>
+		</div>
+	</div>
+	<div class="RespuestaAjax"></div>
+</form>
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#uniSelect').select2();
+		recargarUniversidad();		
+		recargarCarrera();		
+		$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#999');
 		
-		recargarLista();		
-		
-		$('#uniSelect').change(function(){
-			recargarLista();
-			$('#carreraSelect').select2();
-			$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#111');
-		});
 	});
 
-	function recargarLista(){
+	function recargarUniversidad(){
+		$.ajax({
+			type:"POST",
+			url:"<?php echo SERVERURL; ?>ajax/universidadAjax.php",
+			data:"alumnoUniSelect=true",			
+			success:function(r){				
+				$('#divUniSelect').html(r);
+			}
+		});
+	}
+
+	function recargarCarrera(){
 		$.ajax({
 			type:"POST",
 			url:"<?php echo SERVERURL; ?>ajax/carreraAjax.php",

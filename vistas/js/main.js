@@ -46,10 +46,13 @@ $(document).ready(function(){
             textoAlerta="Los datos serán eliminados completamente del sistema";
         }else if(tipo==="update"){
         	textoAlerta="Los datos del sistema serán actualizados";
+        }else if(tipo==="saveModal"){
+            textoAlerta="Los datos que enviaras quedaran almacenados en el sistema";
+        }else if(tipo==="saveModalCarrera"){
+            textoAlerta="Los datos que enviaras quedaran almacenados en el sistema22";
         }else{
             textoAlerta="Quieres realizar la operación solicitada";
         }
-
 
         swal({
             title: "¿Estás seguro?",   
@@ -83,6 +86,13 @@ $(document).ready(function(){
                 },
                 success: function (data) {
                     respuesta.html(data);
+                    if(tipo==="saveModal"){
+                        $("#agregar-uni-pop").modal('hide');				
+                        recargarUniversidad();
+                    }
+                    if(tipo==="saveModalCarrera"){
+                        $("#agregar-carrera-pop").modal('hide');				
+                    }
                 },
                 error: function() {
                     respuesta.html(msjError);
@@ -144,6 +154,16 @@ function ModalAsignarMateria(codigoMateria){
         url:'../ajax/asignarAjax.php?action=ajax&codigoMateria='+codigoMateria,       
         success:function(){
             cargar();
+        }
+    });
+}
+
+function ModalAgregarCarrera(){
+    var codigoUni=$('#uniSelect').val();
+    $.ajax({
+        url:'../ajax/carreraAjax.php?action=ajax&codigoUni='+codigoUni,       
+        success:function(){
+            $('#agregar-carrera-pop').modal({backdrop: false});
         }
     });
 }

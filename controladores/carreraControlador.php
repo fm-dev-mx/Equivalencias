@@ -7,9 +7,19 @@
 
     class carreraControlador extends carreraModelo{
 		public function agregar_carrera_controlador(){
-			
-			$nombre=mainModel::limpiar_cadena($_POST['nombreCarreraAgregar']);
-            $codigoUniversidad=mainModel::decryption($_POST['codigoUniAgregarCarrera']);
+			var_dump($_POST['nombreAlumnoCarrera']);
+			var_dump($_SESSION['codigoUni']);
+			if(isset($_POST['nombreAlumnoCarrera']) && isset($_SESSION['codigoUni'])){
+				$nombre=mainModel::limpiar_cadena($_POST['nombreAlumnoCarrera']);
+				$codigoUniversidad=mainModel::decryption($_SESSION['codigoUni']);
+				
+				unset($_POST['nombreAlumnoCarrera']);
+				unset($_SESSION['codigoUni']);
+			}else{
+				$nombre=mainModel::limpiar_cadena($_POST['nombreCarreraAgregar']);
+				$codigoUniversidad=mainModel::decryption($_POST['codigoUniAgregarCarrera']);
+			}
+
 
             $consulta1=mainModel::ejecutar_consulta_simple("SELECT id FROM carrera WHERE CarreraNombre='$nombre' AND CarreraCodigoUniversidad='$codigoUniversidad'");
 	
@@ -271,7 +281,7 @@
 				$cadena='
 						<div class="col-xs-12 col-sm-4" style="margin-top: 7px;">
 							<div class="form-group label-floating">
-								<select class="selectpicker input-lg" id="carreraSelect" name="carreraSelect" data-live-search="true">
+								<select class="selectpicker input-lg" id="carreraSelect" name="carreraSelect">
 									<option value="0">Seleciona una carrera</option>
 								</select>
 							</div>
@@ -280,10 +290,18 @@
 			$cadena.="
 						<script type='text/javascript'>
 							$(document).ready(function(){
-								$('#carreraSelect').select2();
+								$('#carreraSelect').select2();								
+								$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#999');
 								$('#carreraSelect').change(function(){
-									$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#111');
-								});
+									if($('#carreraSelect').val()==0){
+										$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#999');
+									}else{
+										$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#111');
+									}
+									if($('#carreraSelect').val()==1){
+										ModalAgregarCarrera();										
+									}
+								});																
 							});";
 			return $cadena;
 		}		

@@ -43,7 +43,6 @@
 <div class="container-fluid">
 	<div class="panel-body">
 		<div class="pull-right">
-			<?php echo $codigoCarrera;?>
 			<!--listado de carreras ---------------------------------------------------------->
 			<select class="selectpicker" id="carreraUacjSelect" name="carreraUacjSelect" data-live-search="true">
 				<option value="0">Seleciona una carrera</option>			
@@ -92,24 +91,24 @@
 							<div class="col-xs-12">
 								<div class="form-group label-floating">
 									<label class="control-label">Nombre de la materia *</label>
-									<input class="form-control" type="text" name="nombreMateriaAgregar" required="" maxlength="170">
+									<input class="form-control materiaUacj" type="text" name="nombreMateriaAgregar" required="" maxlength="170">
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 									<label class="control-label">Clave *</label>
-									<input class="form-control" type="text" name="claveMateriaAgregar" required="" maxlength="15">
+									<input class="form-control materiaUacj" type="text" name="claveMateriaAgregar" required="" maxlength="15">
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 									<label class="control-label">Créditos *</label>
-									<input class="form-control" type="text" name="creditosMateriaAgregar" required="" maxlength="15">
+									<input class="form-control materiaUacj" type="text" name="creditosMateriaAgregar" required="" maxlength="15">
 								</div>
 							</div>
 							<div class="col-xs-6 col-sm-6">
 								<div class="label-floating">
-									<select class="form-control" name="semestreMateriaAgregar" required="">
+									<select class="form-control materiaUacj" name="semestreMateriaAgregar" required="">
 										<option class="gris" value=0>Selecciona un semestre *</option>
 										<option value=1>1er Semestre</option>
 										<option value=2>2do Semestre</option>
@@ -125,7 +124,7 @@
 							</div>
 							
 							<div class="col-xs-12 col-sm-6">
-								<div class="form-group">
+								<div class="form-group materiaUacj">
 									<div class="radio radio-primary">
 										<label>
 											<input type="radio" name="optionsObl" id="optionsRadios1" value="obl">
@@ -154,7 +153,12 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $('#carreraUacjSelect').select2();
+		$('#carreraUacjSelect').select2();
+
+		if($('#carreraUacjSelect').val()==0){
+			$(".materiaUacj").prop('disabled',true);
+		}
+
   });
 
 	$('#carreraUacjSelect').change(function(){
@@ -163,7 +167,7 @@
         data:"carreraUacjSelect=" + $('#carreraUacjSelect').val(),
         url:"<?php echo SERVERURL; ?>ajax/materiauacjAjax.php",
         success:function(r){
-          location.reload();
+					location.reload();
         }
       });
     });  
