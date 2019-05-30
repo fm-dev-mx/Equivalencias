@@ -18,8 +18,13 @@
 			echo $InsUniv->eliminar_universidad_controlador();
 		}
 
+		//recargar lista de select de universidades desde "Registrar alumno"
 		if(isset($_POST['alumnoUniSelect'])){
-			echo $InsUniv->lista_universidad_controlador();
+			if(isset($_POST["codigoUniEditar"])){
+				session_start(['name'=>'SBP']);
+				$_SESSION['alumnoUniSelect']=$_POST["codigoUniEditar"];
+			}
+			echo $InsUniv->lista_universidad_controlador($_POST["codigoUniEditar"]);			
 		}
 
 		if(isset($_POST['uniSelect'])){

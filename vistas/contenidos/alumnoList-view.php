@@ -20,7 +20,7 @@
 
 <div class="container-fluid">
 	<div class="page-header">
-	  <h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Alumno <small>REGISTRAR DATOS</small></h1>
+	  <h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Alumno <small>LISTA DE ALUMNOS</small></h1>
 	</div>
 </div>
 
@@ -45,20 +45,20 @@
 </div>
 
 <?php 
-	require_once "./controladores/universidadControlador.php";
-	$insUniv= new universidadControlador();
+	require_once "./controladores/alumnoControlador.php";
+	$insAlumno= new alumnoControlador();
 ?>
 
-<!-- Panel listado de universidades -->
+<!-- Panel listado de alumnos -->
 <div class="container-fluid">
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE UNIVERSIDADES</h3>
+			<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE ALUMNOS</h3>
 		</div>
 		<div class="panel-body">
 			<?php 
 				$pagina = explode("/", $_GET['views']);
-				echo $insUniv->paginador_universidad_controlador($pagina[1],10,$_SESSION['privilegio_sbp'],"");
+				echo $insAlumno->paginador_alumno_controlador($pagina[1],10,$_SESSION['privilegio_sbp'],"");
 			?>	
 		</div>
 	</div>

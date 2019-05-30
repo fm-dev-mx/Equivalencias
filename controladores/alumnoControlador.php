@@ -77,11 +77,11 @@
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
 			if(isset($busqueda) && $busqueda!=""){
-				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM alumno WHERE (UniversidadNombre LIKE '%$busqueda%' OR UniversidadIniciales LIKE '%$busqueda%' OR UniversidadPais LIKE '%$busqueda%' OR UniversidadEstado LIKE '%$busqueda%' OR UniversidadCiudad LIKE '%$busqueda%' OR UniversidadTipo LIKE '%$busqueda%') ORDER BY UniversidadNombre ASC LIMIT $inicio,$registros";
-				$paginaurl="univSearch";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS al.AlumnoCodigo,al.AlumnoNombre,al.AlumnoApellido,uni.UniversidadNombre,cr.CarreraNombre FROM alumno al,universidad uni, carrera cr WHERE al.AlumnoUniversidad=uni.UniversidadCodigo AND al.AlumnoCarrera=cr.CarreraCodigo AND (AlumnoNombre LIKE '%$busqueda%' OR AlumnoApellido LIKE '%$busqueda%' OR AlumnoTelefono LIKE '%$busqueda%' OR AlumnoEmail LIKE '%$busqueda%') ORDER BY AlumnoApellido ASC LIMIT $inicio,$registros";
+				$paginaurl="alumnoSearch";
 			}else{
-				$consulta="SELECT SQL_CALC_FOUND_ROWS * FROM alumno ORDER BY UniversidadNombre ASC LIMIT $inicio,$registros";
-				$paginaurl="univList";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS al.AlumnoCodigo,al.AlumnoNombre,al.AlumnoApellido,uni.UniversidadNombre,cr.CarreraNombre FROM alumno al,universidad uni, carrera cr WHERE al.AlumnoUniversidad=uni.UniversidadCodigo AND al.AlumnoCarrera=cr.CarreraCodigo ORDER BY AlumnoNombre ASC LIMIT $inicio,$registros";
+				$paginaurl="alumnoList";
 			}
 
 			$conexion = mainModel::conectar();
@@ -101,13 +101,13 @@
 						<tr>
 							<th class="text-center">#</th>
 							<th class="text-center">NOMBRE</th>
-							<th class="text-center">INICIALES</th>
-							<th class="text-center">TELÉFONO</th>
-							<th class="text-center">CAMPUS</th>
-							<th class="text-center">VER CARRERAS</th>';
+							<th class="text-center">APELLIDO</th>
+							<th class="text-center">UNIVERSIDAD</th>
+							<th class="text-center">CARRERA</th>';
 						if($privilegio<=2){
 							$tabla.='
 								<th class="text-center">A. DATOS</th>
+								<th class="text-center">VER MATERIAS</th>
 							';
 						}
 						if($privilegio==1){
@@ -127,25 +127,19 @@
 					$tabla.='
 						<tr>
 							<td>'.$contador.'</td>
+							<td>'.$rows['AlumnoNombre'].'</td>
+							<td>'.$rows['AlumnoApellido'].'</td>
 							<td>'.$rows['UniversidadNombre'].'</td>
-							<td>'.$rows['UniversidadIniciales'].'</td>
-							<td>'.$rows['UniversidadTelefono'].'</td>
-							<td>'.$rows['UniversidadCiudad'].'</td>
-							<td>
-								<form action="'.SERVERURL.'ajax/universidadAjax.php" method="POST">
-									<input type="hidden" name="uniSelect" value="'.mainModel::encryption($rows['UniversidadCodigo']).'">									
-									<button type="submit" class="btn btn-success btn-raised btn-xs">
-										<i class="zmdi zmdi-bookmark"></i>
-									</button>
-								</form>
-							</td>';
-								/*<a href="'.SERVERURL.'carrera/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
-									<i class="zmdi zmdi-bookmark"></i>
-								  </a>*/
+							<td>'.$rows['CarreraNombre'].'</td>';
 							if($privilegio<=2){
 								$tabla.='
 									<td>
-										<a href="'.SERVERURL.'univ/'.mainModel::encryption($rows['UniversidadCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+										<a href="'.SERVERURL.'alumno/'.mainModel::encryption($rows['AlumnoCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+											<i class="zmdi zmdi-refresh"></i>
+										</a>
+									</td>
+									<td>
+										<a href="'.SERVERURL.'alumnoMateria/'.mainModel::encryption($rows['AlumnoCodigo']).'/" class="btn btn-success btn-raised btn-xs">
 											<i class="zmdi zmdi-refresh"></i>
 										</a>
 									</td>
@@ -154,8 +148,8 @@
 							if($privilegio==1){
 								$tabla.='
 									<td>
-										<form action="'.SERVERURL.'ajax/universidadAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
-											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['UniversidadCodigo']).'">
+										<form action="'.SERVERURL.'ajax/alumnoAjax.php" method="POST" class="FormularioAjax" data-form="delete" entype="multipart/form-data" autocomplete="off">
+											<input type="hidden" name="codigo-del" value="'.mainModel::encryption($rows['AlumnoCodigo']).'">
 											<input type="hidden" name="privilegio-admin" value="'.mainModel::encryption($privilegio).'">
 											<button type="submit" class="btn btn-danger btn-raised btn-xs">
 												<i class="zmdi zmdi-delete"></i>
@@ -256,22 +250,22 @@
 		}
 
 		public function actualizar_alumno_controlador(){
-			$nombre=mainModel::limpiar_cadena($_POST['nombreUniversidad-reg']);
-            $telefono=mainModel::limpiar_cadena($_POST['telefono-reg']);
-            $direccion=mainModel::limpiar_cadena($_POST['direccion-reg']);
-			$iniciales=mainModel::limpiar_cadena($_POST['iniciales-reg']);
-			$pais=mainModel::limpiar_cadena($_POST['pais-reg']);
-			$estado=mainModel::limpiar_cadena($_POST['estado-reg']);
-			$ciudad=mainModel::limpiar_cadena($_POST['ciudad-reg']);
-			$tipoUniversidad=mainModel::limpiar_cadena($_POST['optionsPublica']);
-			$codigo=mainModel::decryption($_POST['codigoUniversidad-up']);
-			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM alumno WHERE UniversidadCodigo='$codigo'");
-			$DatosUniv=$query1->fetch();
+			$nombre=mainModel::limpiar_cadena($_POST['AlumnoNombre']);
+			$apellido=mainModel::limpiar_cadena($_POST['AlumnoApellido']);
+			$fechaNac=mainModel::limpiar_cadena($_POST['AlumnoFechaNac']);
+			$telefono=mainModel::limpiar_cadena($_POST['AlumnoTelefono']);
+			$email=mainModel::limpiar_cadena($_POST['AlumnoEmail']);
+            $universidad=mainModel::limpiar_cadena($_POST['uniSelect']);
+			$carrera=mainModel::limpiar_cadena($_POST['carreraSelect']);
+			$semestre=mainModel::limpiar_cadena($_POST['AlumnoSemestre']);
+			$codigo=mainModel::decryption($_POST['AlumnoCodigo']);
+			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM alumno WHERE AlumnoCodigo='$codigo'");
+			$DatosAlumno=$query1->fetch();
 
-			if($nombre!=$DatosUniv['UniversidadNombre'] || $iniciales!=$DatosUniv['UniversidadIniciales'] || $ciudad!=$DatosUniv['UniversidadCiudad']){
-				$consulta1=mainModel::ejecutar_consulta_simple("SELECT UniversidadNombre FROM alumno WHERE UniversidadNombre='$nombre'");
-				$consulta2=mainModel::ejecutar_consulta_simple("SELECT UniversidadIniciales FROM alumno WHERE UniversidadIniciales='$iniciales'");
-				$consulta3=mainModel::ejecutar_consulta_simple("SELECT UniversidadCiudad FROM alumno WHERE UniversidadCiudad='$ciudad'");
+			if($nombre!=$DatosAlumno['AlumnoNombre'] || $apellido!=$DatosAlumno['AlumnoApellido'] || $fechaNac!=$DatosAlumno['AlumnoFechaNac']){
+				$consulta1=mainModel::ejecutar_consulta_simple("SELECT UniversidNombre FROM alumno WHERE AlumnoNombre='$nombre'");
+				$consulta2=mainModel::ejecutar_consulta_simple("SELECT UniversidApellido FROM alumno WHERE Alumnoapellido='$apellido'");
+				$consulta3=mainModel::ejecutar_consulta_simple("SELECT UniversidFechaNac FROM alumno WHERE AlumnoFechaNac='$fechaNac'");
 		
 				if(($consulta1->rowCount()>=1) && ($consulta2->rowCount()>=1) && ($consulta3->rowCount()>=1)){
 					$alerta=[
@@ -285,19 +279,19 @@
 				}
 			}
 
-			$dataAd=[
+			$dataAlumno=[
 				"Codigo"=>$codigo,
 				"Nombre"=>$nombre,
+				"Apellido"=>$apellido,
+				"FechaNac"=>$fechaNac,
 				"Telefono"=>$telefono,
-				"Direccion"=>$direccion,
-				"Iniciales"=>$iniciales,
-				"Tipo"=>$tipoUniversidad,
-				"Pais"=>$pais,
-				"Estado"=>$estado,
-				"Ciudad"=>$ciudad
+				"Email"=>$email,
+				"Universidad"=>$universidad,
+				"Carrera"=>$carrera,
+				"Semestre"=>$semestre
 			];
 
-			if(alumnoModelo::actualizar_alumno_modelo($dataAd)){
+			if(alumnoModelo::actualizar_alumno_modelo($dataAlumno)){
 				$alerta=[
 					"Alerta"=>"recargar",
 					"Titulo"=>"Datos actualizados!",

@@ -49,7 +49,7 @@ $(document).ready(function(){
         }else if(tipo==="saveModal"){
             textoAlerta="Los datos que enviaras quedaran almacenados en el sistema";
         }else if(tipo==="saveModalCarrera"){
-            textoAlerta="Los datos que enviaras quedaran almacenados en el sistema22";
+            textoAlerta="Los datos que enviaras quedaran almacenados en el sistema";
         }else{
             textoAlerta="Quieres realizar la operación solicitada";
         }
@@ -92,6 +92,7 @@ $(document).ready(function(){
                     }
                     if(tipo==="saveModalCarrera"){
                         $("#agregar-carrera-pop").modal('hide');				
+                        recargarCarrera();
                     }
                 },
                 error: function() {
@@ -159,7 +160,8 @@ function ModalAsignarMateria(codigoMateria){
 }
 
 function ModalAgregarCarrera(){
-    var codigoUni=$('#uniSelect').val();
+    var codigoUni=$("#uniSelect").val();
+    
     $.ajax({
         url:'../ajax/carreraAjax.php?action=ajax&codigoUni='+codigoUni,       
         success:function(){

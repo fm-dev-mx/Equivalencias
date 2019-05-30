@@ -29,16 +29,16 @@
 		}
 
 		protected function actualizar_alumno_modelo($datos){
-			$query=mainModel::conectar()->prepare("UPDATE universidad SET UniversidadNombre=:Nombre,UniversidadTelefono=:Telefono,UniversidadDireccion=:Direccion,UniversidadIniciales=:Iniciales,UniversidadTipo=:Tipo,UniversidadPais=:Pais,UniversidadEstado=:Estado,UniversidadCiudad=:Ciudad WHERE UniversidadCodigo=:Codigo");
+			$query=mainModel::conectar()->prepare("UPDATE alumno SET AlumnoNombre=:Nombre,AlumnoApellido=:Apellido,AlumnoFechaNac=:FechaNac,AlumnoTelefono=:Telefono,AlumnoEmail=:Email,AlumnoUniversidad=:Universidad,AlumnoCarrera=:Carrera,AlumnoSemestre=:Semestre WHERE AlumnoCodigo=:Codigo");
 			$query->bindParam(":Codigo",$datos['Codigo']);
 			$query->bindParam(":Nombre",$datos['Nombre']);
+			$query->bindParam(":Apellido",$datos['Apellido']);
+			$query->bindParam(":FechaNac",$datos['FechaNac']);
 			$query->bindParam(":Telefono",$datos['Telefono']);
-			$query->bindParam(":Direccion",$datos['Direccion']);
-			$query->bindParam(":Iniciales",$datos['Iniciales']);
-			$query->bindParam(":Tipo",$datos['Tipo']);
-			$query->bindParam(":Pais",$datos['Pais']);
-			$query->bindParam(":Estado",$datos['Estado']);
-			$query->bindParam(":Ciudad",$datos['Ciudad']);
+			$query->bindParam(":Email",$datos['Email']);
+			$query->bindParam(":Universidad",$datos['Universidad']);
+			$query->bindParam(":Carrera",$datos['Carrera']);
+			$query->bindParam(":Semestre",$datos['Semestre']);
 			$query->execute();
 			return $query;
 		}
@@ -48,7 +48,7 @@
 				$query=mainModel::conectar()->prepare("SELECT * FROM alumno WHERE AlumnoCodigo=:Codigo");
 				$query->bindParam(":Codigo",$codigo);
 			}elseif($tipo=="Conteo"){
-				$query=mainModel::conectar()->prepare("SELECT id FROM alumno");
+				$query=mainModel::conectar()->prepare("SELECT AlumnoCodigo FROM alumno");
 			}elseif($tipo=="Lista"){
 				$query=mainModel::conectar()->prepare("SELECT AlumnoCodigo,AlumnoNombre FROM alumno ORDER BY AlumnoNombre ASC");
 			}

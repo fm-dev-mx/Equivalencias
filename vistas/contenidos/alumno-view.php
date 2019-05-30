@@ -70,7 +70,7 @@
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 										<label class="control-label">Apellidos *</label>
-										<input pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,70}" class="form-control" type="text" name="AlumnoApellido" required="" maxlength="70">
+										<input pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,70}" class="form-control" type="text" name="AlumnoApellido" required="" maxlength="70" value="<?php if(isset($campos['AlumnoApellido'])){ echo $campos['AlumnoApellido'];} ?>">
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-4" id="datecontainer">
@@ -84,13 +84,13 @@
 							<div class="col-xs-12 col-sm-4">
 								<div class="form-group label-floating">
 									<label class="control-label">Teléfono</label>
-									<input pattern="[0-9]{1,10}" class="form-control" type="text" name="AlumnoTelefono" maxlength="10">
+									<input pattern="[0-9]{1,10}" class="form-control" type="text" name="AlumnoTelefono" maxlength="10" value="<?php if(isset($campos['AlumnoTelefono'])){ echo $campos['AlumnoTelefono'];} ?>">
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-4">
 								<div class="form-group label-floating">
 									<label class="control-label">E-mail</label>
-									<input class="form-control" type="email" name="AlumnoEmail" maxlength="80">
+									<input class="form-control" type="email" name="AlumnoEmail" maxlength="80" value="<?php if(isset($campos['AlumnoEmail'])){ echo $campos['AlumnoEmail'];} ?>">
 								</div>
 							</div>
 								
@@ -102,7 +102,7 @@
 							<div class="col-xs-12 col-sm-2">
 								<div class="form-group label-floating">
 									<label class="control-label">Semestre</label>
-									<input class="form-control" pattern="[0-9]{1,2}" type="text" name="AlumnoSemestre" maxlength="2">
+									<input class="form-control" pattern="[0-9]{1,2}" type="text" name="AlumnoSemestre" maxlength="2" value="<?php if(isset($campos['AlumnoSemestre'])){ echo $campos['AlumnoSemestre'];} ?>">
 								</div>
 							</div>
 						</div>
@@ -236,19 +236,18 @@
 </form>
 
 <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function(){		
 		$('#uniSelect').select2();
 		recargarUniversidad();		
 		recargarCarrera();		
-		$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#999');
-		
+		$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#999');		
 	});
 
 	function recargarUniversidad(){
 		$.ajax({
 			type:"POST",
 			url:"<?php echo SERVERURL; ?>ajax/universidadAjax.php",
-			data:"alumnoUniSelect=true",			
+			data:"alumnoUniSelect=true&codigoUniEditar=<?php echo $campos["AlumnoUniversidad"];?>",
 			success:function(r){				
 				$('#divUniSelect').html(r);
 			}
@@ -256,10 +255,11 @@
 	}
 
 	function recargarCarrera(){
+		var uniSelect=$('#uniSelect').val();
 		$.ajax({
 			type:"POST",
 			url:"<?php echo SERVERURL; ?>ajax/carreraAjax.php",
-			data:"alumnoUniSelect=" + $('#uniSelect').val(),			
+			data:"alumnoUniSelect="+uniSelect+"&codigoCarreraEditar=<?php echo $campos['AlumnoCarrera'];?>",
 			success:function(r){				
 				$('#divCarreraSelect').html(r);
 			}

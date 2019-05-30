@@ -7,12 +7,10 @@
 
     class carreraControlador extends carreraModelo{
 		public function agregar_carrera_controlador(){
-			var_dump($_POST['nombreAlumnoCarrera']);
-			var_dump($_SESSION['codigoUni']);
 			if(isset($_POST['nombreAlumnoCarrera']) && isset($_SESSION['codigoUni'])){
 				$nombre=mainModel::limpiar_cadena($_POST['nombreAlumnoCarrera']);
-				$codigoUniversidad=mainModel::decryption($_SESSION['codigoUni']);
-				
+				$codigoUniversidad=mainModel::limpiar_cadena($_SESSION['codigoUni']);
+				$agregarDesdeAlumno=true;
 				unset($_POST['nombreAlumnoCarrera']);
 				unset($_SESSION['codigoUni']);
 			}else{
@@ -44,12 +42,22 @@
 				$guardarCarrera=carreraModelo::agregar_carrera_modelo($dataAc);
 
 				if($guardarCarrera->rowCount()>=1){
-					$alerta=[
-						"Alerta"=>"recargar",
-						"Titulo"=>"Carrera registrada",
-						"Texto"=>"La carrera se registro con exito en el sistema",
-						"Tipo"=>"success"
-					];
+					if(isset($agregarDesdeAlumno)){
+						$alerta=[
+							"Alerta"=>"limpiar",
+							"Titulo"=>"Carrera registrada",
+							"Texto"=>"La carrera se registro con exito en el sistema",
+							"Tipo"=>"success"
+						];
+						unset($agregarDesdeAlumno);
+					}else{
+						$alerta=[
+							"Alerta"=>"recargar",
+							"Titulo"=>"Carrera registrada",
+							"Texto"=>"La carrera se registro con exito en el sistema",
+							"Tipo"=>"success"
+						];
+					}					
 				}else{
 					$alerta=[
 						"Alerta"=>"simple",
@@ -256,9 +264,14 @@
 			return carreraModelo::datos_carrera_modelo($tipo,$codigo);
 		}
 
-		public function lista_carrera_controlador(){
-			$codigoUni=mainModel::encryption($_POST['alumnoUniSelect']);
+		public function lista_carrera_controlador($codigoCarreraEditar){			
+			if(isset($_SESSION['alumnoUniSelect'])){
+				$codigoUni=mainModel::encryption($_SESSION['alumnoUniSelect']);					
+			}else{
+				$codigoUni=mainModel::encryption($_POST['alumnoUniSelect']);
+			}			
 			$listaC=self::datos_carrera_controlador("Lista",$codigoUni);
+
 			if($listaC->rowCount()>=1){
 				$listaCarrera=$listaC->fetchAll();						
 				$cadena='
@@ -268,10 +281,22 @@
 									<option value="0">Seleciona una carrera</option>			
 									<option value="1">Agregar carrera</option>						
 									<option disabled>-----------------------------------------</option>';
+
 				foreach($listaCarrera as $rows){
-					$cadena.='
-									<option value="'.$rows['CarreraCodigo'].'">'.$rows['CarreraNombre'].'</option>
-							';
+					
+					$cadena.='						
+						<option value="'.$rows['CarreraCodigo'];					
+					if(isset($codigoCarreraEditar)){ 
+						if($codigoCarreraEditar==$rows["CarreraCodigo"]){
+							$cadena.='" selected>';
+						}else{
+							$cadena.='">';
+						}
+					}
+					
+					$cadena.='	
+								'.$rows['CarreraNombre'].'
+							</option>';
 				}
 				$cadena.='
 								</select>
@@ -291,7 +316,11 @@
 						<script type='text/javascript'>
 							$(document).ready(function(){
 								$('#carreraSelect').select2();								
-								$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#999');
+								if($('#carreraSelect').val()==0){
+									$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#999');
+								}else{
+									$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#111');
+								}
 								$('#carreraSelect').change(function(){
 									if($('#carreraSelect').val()==0){
 										$('span.select2-selection.select2-selection--single span#select2-carreraSelect-container.select2-selection__rendered').css('color','#999');
@@ -301,7 +330,7 @@
 									if($('#carreraSelect').val()==1){
 										ModalAgregarCarrera();										
 									}
-								});																
+								});																											
 							});";
 			return $cadena;
 		}		

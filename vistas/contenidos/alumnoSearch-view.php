@@ -20,7 +20,7 @@
 
 <div class="container-fluid">
 	<div class="page-header">
-	  <h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Alumno <small>REGISTRAR DATOS</small></h1>
+	  <h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Alumno <small>BUSCAR ALUMNO</small></h1>
 	</div>
 </div>
 
@@ -44,26 +44,26 @@
 	</ul>
 </div>
 <?php 
-	require_once "./controladores/universidadControlador.php";
-	$insUniv= new universidadControlador();
+	require_once "./controladores/alumnoControlador.php";
+	$insAlumno= new alumnoControlador();
 
-	if(isset($_POST['busqueda_inicial_univ'])){
-		$_SESSION['busqueda_univ']=$_POST['busqueda_inicial_univ'];
+	if(isset($_POST['busqueda_inicial_alumno'])){
+		$_SESSION['busqueda_alumno']=$_POST['busqueda_inicial_alumno'];
 	}
 
-	if(isset($_POST['eliminar_busqueda_univ'])){
-		unset($_SESSION['busqueda_univ']);
+	if(isset($_POST['eliminar_busqueda_alumno'])){
+		unset($_SESSION['busqueda_alumno']);
 	}
 
-	if(!isset($_SESSION['busqueda_univ']) && empty($_SESSION['busqueda_univ'])):
+	if(!isset($_SESSION['busqueda_alumno']) && empty($_SESSION['busqueda_alumno'])):
 ?>
 <div class="container-fluid">
 	<form class="well" method="POST" action="" autocomplete="off">
 		<div class="row">
 			<div class="col-xs-12 col-md-8 col-md-offset-2">
 				<div class="form-group label-floating">
-					<span class="control-label">Ingresa algún dato de tu universidad:</span>
-					<input class="form-control" type="text" name="busqueda_inicial_univ" required="">
+					<span class="control-label">Ingresa algún dato del alumno:</span>
+					<input class="form-control" type="text" name="busqueda_inicial_alumno" required="">
 				</div>
 			</div>
 			<div class="col-xs-12">
@@ -77,9 +77,9 @@
 <?php else: ?>
 <div class="container-fluid">
 	<form class="well" method="POST" action="">
-		<p class="lead text-center">Su última búsqueda  fue <strong>“<?php echo $_SESSION['busqueda_univ']; ?>”</strong></p>
+		<p class="lead text-center">Su última búsqueda  fue <strong>“<?php echo $_SESSION['busqueda_alumno']; ?>”</strong></p>
 		<div class="row">
-			<input class="form-control" type="hidden" name="eliminar_busqueda_univ" value="1">
+			<input class="form-control" type="hidden" name="eliminar_busqueda_alumno" value="1">
 			<div class="col-xs-12">
 				<p class="text-center">
 					<button type="submit" class="btn btn-danger btn-raised btn-sm"><i class="zmdi zmdi-delete"></i> &nbsp; Eliminar búsqueda</button>
@@ -89,16 +89,16 @@
 	</form>
 </div>
 
-<!-- Panel listado de busqueda de universidades -->
+<!-- Panel listado de busqueda de alumnos -->
 <div class="container-fluid">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h3 class="panel-title"><i class="zmdi zmdi-search"></i> &nbsp; BUSCAR INSTITUTOS</h3>
+			<h3 class="panel-title"><i class="zmdi zmdi-search"></i> &nbsp; BUSCAR ALUMNOS</h3>
 		</div>
 		<div class="panel-body">
 			<?php 
 				$pagina = explode("/", $_GET['views']);
-				echo $insUniv->paginador_universidad_controlador($pagina[1],10,$_SESSION['privilegio_sbp'],$_SESSION['busqueda_univ']);
+				echo $insAlumno->paginador_alumno_controlador($pagina[1],10,$_SESSION['privilegio_sbp'],$_SESSION['busqueda_alumno']);
 			?>
 		</div>
 	</div>
