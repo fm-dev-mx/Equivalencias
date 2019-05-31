@@ -247,7 +247,7 @@
 		$.ajax({
 			type:"POST",
 			url:"<?php echo SERVERURL; ?>ajax/universidadAjax.php",
-			data:"alumnoUniSelect=true&codigoUniEditar=<?php echo $campos["AlumnoUniversidad"];?>",
+			data:"codigoUniEditar=<?php if(isset($campos["AlumnoUniversidad"])){echo $campos["AlumnoUniversidad"];}else{echo "";}?>",
 			success:function(r){				
 				$('#divUniSelect').html(r);
 			}
@@ -259,7 +259,7 @@
 		$.ajax({
 			type:"POST",
 			url:"<?php echo SERVERURL; ?>ajax/carreraAjax.php",
-			data:"alumnoUniSelect="+uniSelect+"&codigoCarreraEditar=<?php echo $campos['AlumnoCarrera'];?>",
+			data:"alumnoUniSelect="+uniSelect+"&codigoCarreraEditar=<?php if(isset($campos['AlumnoCarrera'])){echo $campos['AlumnoCarrera'];}?>",
 			success:function(r){				
 				$('#divCarreraSelect').html(r);
 			}

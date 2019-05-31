@@ -1,7 +1,7 @@
 <?php
 	$peticionAjax=true;
 	require_once "../core/configGeneral.php";
-	if(isset($_POST['alumnoUniSelect']) || isset($_POST['nombreUniversidad-reg']) || isset($_POST['codigo-del']) || isset($_POST['agregarActualizar-reg']) || isset($_POST['uniSelect'])){
+	if(isset($_POST['codigoUniEditar']) || isset($_POST['nombreUniversidad-reg']) || isset($_POST['codigo-del']) || isset($_POST['agregarActualizar-reg']) || isset($_POST['uniSelect'])){
 		
 		require_once "../controladores/universidadControlador.php";
 		$InsUniv= new universidadControlador();
@@ -19,12 +19,11 @@
 		}
 
 		//recargar lista de select de universidades desde "Registrar alumno"
-		if(isset($_POST['alumnoUniSelect'])){
-			if(isset($_POST["codigoUniEditar"])){
-				session_start(['name'=>'SBP']);
-				$_SESSION['alumnoUniSelect']=$_POST["codigoUniEditar"];
-			}
-			echo $InsUniv->lista_universidad_controlador($_POST["codigoUniEditar"]);			
+		if(isset($_POST['codigoUniEditar'])){
+			session_start(['name'=>'SBP']);
+			$_SESSION['alumnoUniSelect']=$_POST["codigoUniEditar"];
+			
+			echo $InsUniv->lista_universidad_controlador();			
 		}
 
 		if(isset($_POST['uniSelect'])){

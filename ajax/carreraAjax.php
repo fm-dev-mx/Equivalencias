@@ -36,8 +36,13 @@
 		}
 
 		//recargar lista de select de carreras desde "Registrar alumno"
-		if(isset($_POST['alumnoUniSelect'])){			
-			echo $InsCarrera->lista_carrera_controlador($_POST["codigoCarreraEditar"]);
+		if(isset($_POST['alumnoUniSelect'])){	
+			
+			if(isset($_POST["codigoCarreraEditar"])){
+				$_SESSION['codigoCarreraEditar']=$_POST["codigoCarreraEditar"];
+				
+			}
+			echo $InsCarrera->lista_carrera_controlador();
 		}
 
 		if(isset($_POST['carreraSelect'])){

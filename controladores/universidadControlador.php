@@ -255,7 +255,8 @@
 			return universidadModelo::datos_universidad_modelo($tipo,$codigo);
 		}
 
-		public function lista_universidad_controlador($codigoUniEditar){
+		public function lista_universidad_controlador(){
+			$codigoUniEditar=$_SESSION['alumnoUniSelect'];
 
 			//Se obtiene un array con los nombres de todas las universidades (para la lista desplegable)
 			$listaU=self::datos_universidad_controlador("Lista","");

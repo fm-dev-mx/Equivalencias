@@ -264,12 +264,17 @@
 			return carreraModelo::datos_carrera_modelo($tipo,$codigo);
 		}
 
-		public function lista_carrera_controlador($codigoCarreraEditar){			
-			if(isset($_SESSION['alumnoUniSelect'])){
+		public function lista_carrera_controlador(){
+			
+			
+			$codigoCarreraEditar=$_SESSION['codigoCarreraEditar'];
+			
+			if($_SESSION['alumnoUniSelect']!=""){
 				$codigoUni=mainModel::encryption($_SESSION['alumnoUniSelect']);					
 			}else{
 				$codigoUni=mainModel::encryption($_POST['alumnoUniSelect']);
 			}			
+
 			$listaC=self::datos_carrera_controlador("Lista",$codigoUni);
 
 			if($listaC->rowCount()>=1){
