@@ -37,10 +37,9 @@
 
 		//recargar lista de select de carreras desde "Registrar alumno"
 		if(isset($_POST['alumnoUniSelect'])){	
-			
+			$_SESSION['alumnoUniSelect']=$_POST['alumnoUniSelect'];
 			if(isset($_POST["codigoCarreraEditar"])){
-				$_SESSION['codigoCarreraEditar']=$_POST["codigoCarreraEditar"];
-				
+				$_SESSION['codigoCarreraEditar']=$_POST["codigoCarreraEditar"];				
 			}
 			echo $InsCarrera->lista_carrera_controlador();
 		}

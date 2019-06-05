@@ -109,9 +109,38 @@
 					</div>
 				</fieldset>
 				<br>
-				<p class="text-center" style="margin-top: 20px;">
-					<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
-				</p>
+				
+				
+				<div class="container-fluid">
+					<div class="row">
+						<?php if(isset($campos['AlumnoEmail'])){ ?>
+
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-group label-floating">										
+									<p class="text-right" style="margin-top: 20px;">
+										<a href="<?php echo SERVERURL; ?>alumnomateria/" class="btn btn-default btn-raised btn-sm"><i class="zmdi zmdi-book"></i> Ver Materias</a>
+									</p>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-group label-floating">						
+									<p class="text-left" style="margin-top: 20px;">				
+										<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+									</p>
+								</div>
+
+						<?php }else{ ?>
+
+							<div class="form-group label-floating">						
+								<p class="text-center" style="margin-top: 20px;">				
+									<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+								</p>
+							</div>
+
+						<?php }?>
+
+					</div>
+				
 				<div class="RespuestaAjax"></div>
 			</form>
 		</div>
@@ -195,8 +224,8 @@
 				</div>
 
 				<p class="text-center" style="margin-top: 20px;">
-			    	<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>
-			    </p>
+					<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Agregar</button>
+				</p>
 
 			</div>
 		</div>
@@ -255,7 +284,7 @@
 	}
 
 	function recargarCarrera(){
-		var uniSelect=$('#uniSelect').val();
+		var uniSelect=<?php if(isset($campos['AlumnoUniversidad'])){echo "\"".$campos['AlumnoUniversidad']."\"";}else{echo '$("#uniSelect").val()';}?>;
 		$.ajax({
 			type:"POST",
 			url:"<?php echo SERVERURL; ?>ajax/carreraAjax.php",

@@ -6,6 +6,8 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<link rel="stylesheet" href="<?php echo SERVERURL; ?>vistas/css/main.css">
 	<link rel="shortcut icon" href="<?php echo SERVERURL; ?>logo5.ico">
+	<!--Librerias para multi select de alumnomaterias-->
+	<link rel="stylesheet" type="text/css" href="<?php echo SERVERURL; ?>vistas/css/multi.min.css">
 	<!--librerias de buscador-->    
     <link rel="stylesheet" type="text/css" href="<?php echo SERVERURL; ?>vistas/css/select2.css">
 	<!--librerias de datepicker-->    

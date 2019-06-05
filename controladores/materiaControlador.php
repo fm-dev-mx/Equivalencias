@@ -284,4 +284,11 @@
 				}
 			}
 		}
+
+		public function datos_materia_controlador($tipo,$codigo,$carrera){
+			$tipo=mainModel::limpiar_cadena($tipo);
+			$codigo=mainModel::decryption($codigo);
+			$carrera=mainModel::limpiar_cadena($carrera);
+			return materiaModelo::datos_materia_modelo($tipo,$codigo,$carrera);
+		}
 	}

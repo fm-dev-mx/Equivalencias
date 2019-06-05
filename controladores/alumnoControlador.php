@@ -139,7 +139,7 @@
 										</a>
 									</td>
 									<td>
-										<a href="'.SERVERURL.'alumnoMateria/'.mainModel::encryption($rows['AlumnoCodigo']).'/" class="btn btn-success btn-raised btn-xs">
+										<a href="'.SERVERURL.'alumnomateria/'.mainModel::encryption($rows['AlumnoCodigo']).'/" class="btn btn-success btn-raised btn-xs">
 											<i class="zmdi zmdi-refresh"></i>
 										</a>
 									</td>

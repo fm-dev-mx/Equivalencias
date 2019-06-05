@@ -266,11 +266,14 @@
 
 		public function lista_carrera_controlador(){
 			
-			
-			$codigoCarreraEditar=$_SESSION['codigoCarreraEditar'];
-			
-			if($_SESSION['alumnoUniSelect']!=""){
-				$codigoUni=mainModel::encryption($_SESSION['alumnoUniSelect']);					
+			$codigoCarreraEditar=$_SESSION['codigoCarreraEditar'];	
+					
+			if(isset($_SESSION['alumnoUniSelect'])){
+				if($_SESSION['alumnoUniSelect']!=""){
+					$codigoUni=mainModel::encryption($_SESSION['alumnoUniSelect']);					
+				}else{
+					$codigoUni=mainModel::encryption($_POST['alumnoUniSelect']);
+				}			
 			}else{
 				$codigoUni=mainModel::encryption($_POST['alumnoUniSelect']);
 			}			
@@ -290,8 +293,8 @@
 				foreach($listaCarrera as $rows){
 					
 					$cadena.='						
-						<option value="'.$rows['CarreraCodigo'];					
-					if(isset($codigoCarreraEditar)){ 
+						<option value="'.$rows['CarreraCodigo'];											
+					if(isset($codigoCarreraEditar)){ 						
 						if($codigoCarreraEditar==$rows["CarreraCodigo"]){
 							$cadena.='" selected>';
 						}else{

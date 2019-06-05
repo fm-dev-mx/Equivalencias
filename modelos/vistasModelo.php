@@ -1,7 +1,7 @@
 <?php 
 	class vistasModelo{
 		protected function obtener_vistas_modelo($vistas){
-			$listaBlanca=["alumno","alumnoSearch","alumnoList","adminlist","adminsearch","admin","home","myaccount","mydata","search","univ","univList","univSearch","carrera","materias","carrerauacj","materiasuacj","materiasuacjlist"];
+			$listaBlanca=["alumno","alumnoSearch","alumnoList","alumnomateria","adminlist","adminsearch","admin","home","myaccount","mydata","search","univ","univList","univSearch","carrera","materias","carrerauacj","materiasuacj","materiasuacjlist"];
 			if(in_array($vistas, $listaBlanca)){
 				if(is_file("./vistas/contenidos/".$vistas."-view.php")){
 					$contenido="./vistas/contenidos/".$vistas."-view.php";

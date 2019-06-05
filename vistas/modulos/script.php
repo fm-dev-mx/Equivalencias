@@ -13,3 +13,5 @@
 <!--librerias para datepicker-->
 <script src="<?php echo SERVERURL; ?>vistas/js/bootstrap-datepicker.min.js" integrity="sha256-tW5LzEC7QjhG0CiAvxlseMTs2qJS7u3DRPauDjFJ3zo=" crossorigin="anonymous"></script>
 
+<!-- Librerias para multi select de alumnoMaterias -->
+<script src="<?php echo SERVERURL; ?>vistas/js/multi.min.js"></script>
