@@ -1,7 +1,7 @@
 <?php
 	$peticionAjax=true;
 	require_once "../core/configGeneral.php";
-	if(isset($_POST['privilegio-admin']) || isset($_POST['nombreMateriaAgregar']) || isset($_POST['carreraUacjSelect']) || isset($_POST['codigo-del']) || isset($_POST['materiaObl'])){
+	if(isset($_POST['privilegio-admin']) || isset($_POST['nombreMateriaAgregar']) || isset($_POST['carreraUacjSelect']) || isset($_POST['codigo-del']) || isset($_POST['materiaObl']) || isset($_POST['MateriaUacjNombre']) || isset($_POST['MateriaUacjClave'])){
 
 		require_once "../controladores/materiauacjControlador.php";
 		$InsMateria= new materiaUacjControlador();
@@ -13,10 +13,11 @@
 		if(isset($_POST['codigo-del']) && isset($_POST['privilegio-admin'])){
 			echo $InsMateria->eliminar_materia_uacj_controlador();
 		}
-/*
-		if(isset($_POST['MateriaNombreUpdate']) && isset($_POST['MateriaCodigoUpdate'])){
+		
+		//Editar nombre de materia desde http://localhost/Equivalencias/materiasuacjlist/
+		if(isset($_POST['MateriaUacjNombre']) && isset($_POST['MateriaUacjClave'])){
 			echo $InsMateria->actualizar_materia_uacj_controlador();
-		}*/
+		}
 		
 		if(isset($_POST['materiaObl'])){
 			session_start(['name'=>'SBP']);

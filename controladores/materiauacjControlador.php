@@ -268,7 +268,7 @@
 						exit();
 					}
 					
-					$guardarMateria=materiaModelo::actualizar_materia_uacj_modelo($codigo,$nombre);
+					$guardarMateria=materiaUacjModelo::actualizar_materia_uacj_modelo($codigo,$nombre);
 				
 					if($guardarMateria->rowCount()>=1){
 						unset($codigo);	
