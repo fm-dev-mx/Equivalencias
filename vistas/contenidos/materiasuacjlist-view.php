@@ -1,8 +1,7 @@
 <?php 
 	if($_SESSION['tipo_sbp']!="Administrador"){
 		echo $lc->forzar_cierre_sesion_controlador();
-	}
-	
+	}	
 ?>
 
 <div class="container-fluid">
@@ -17,10 +16,10 @@
 	$insCarrera= new carreraUacjControlador();
 
 	$url=explode("/", $_GET['views']);
-	
+		
 	if(isset($_SESSION['carreraUacjSelect']))	{
 		$codigoCarrera=$_SESSION['carreraUacjSelect'];
-		}else{
+	}else{
 		$codigoCarrera="";
 	}
 
@@ -95,7 +94,7 @@
           $pagina=1;
         }
         
-        echo $insMateria->paginador_materia_uacj_controlador($pagina,3,1,$codigoCarrera);
+        echo $insMateria->paginador_materia_uacj_controlador($pagina,10,1,$codigoCarrera);
         ?>	
       </div>
     </div>
@@ -128,14 +127,19 @@
 					</div>
 					<div class="modal-body">
 						<div class="row">
-							<input type="text" id="MateriaPrivilegioUpdate" name="MateriaPrivilegioUpdate" hidden="">
-							<div class="col-xs-12">
+							<input type="text" id="MateriaUacjPrivilegio" name="MateriaUacjPrivilegio" hidden="">
+							<div class="col-xs-8">
 								<label class="control-label">NOMBRE *</label>
 								<input type="text" id="MateriaUacjNombre" name="MateriaUacjNombre" class="form-control input">
+							</div>				
+							<div class="col-xs-4">
+								<label class="control-label">SEMESTRE *</label>
+								<input type="text" id="MateriaUacjSemestre" name="MateriaUacjSemestre" pattern="[1-9]" class="form-control input">
 							</div>						
 							<div class="col-xs-4">
 								<label class="control-label">CLAVE *</label>
 								<input type="text" id="MateriaUacjClave" name="MateriaUacjClave" class="form-control input" maxlength="10">
+								<input hidden="" id="MateriaClaveOriginal" name="MateriaClaveOriginal">
 							</div>	
 							<div class="col-xs-4">
 								<label class="control-label">CREDITOS *</label>

@@ -12,6 +12,7 @@
 			$nombre=mainModel::limpiar_cadena($_POST['nombreMateriaAgregar']);
 			$clave=mainModel::limpiar_cadena($_POST['claveMateriaAgregar']);
 			$creditos=mainModel::limpiar_cadena($_POST['creditosMateriaAgregar']);
+			var_dump($_POST['semestreMateriaAgregar']);
 			$semestre=mainModel::limpiar_cadena($_POST['semestreMateriaAgregar']);
 			$obl=mainModel::limpiar_cadena($_POST['optionsObl']);            
 
@@ -22,8 +23,9 @@
 					"Texto"=>"Favor de seleccionar una carrera!!",
 					"Tipo"=>"error"
 				];
-			}else{				
-				$codigoCarrera=mainModel::limpiar_cadena($_SESSION['carreraSelect']);
+			}else{			
+				
+				$codigoCarrera=mainModel::limpiar_cadena($_SESSION['carreraUacjSelect']);
 				$consulta1=mainModel::ejecutar_consulta_simple("SELECT MateriaUacjNombre FROM materiauacj WHERE (MateriaUacjNombre='$nombre' OR MateriaUacjClave='$clave') AND MateriaUacjCarrera='$codigoCarrera'");
 		
 				if($consulta1->rowCount()>=1){
@@ -122,8 +124,8 @@
 		
 				foreach($datos as $rows){
 
-					$datosRen=$rows['MateriaUacjClave'].'||'.$rows['MateriaUacjNombre'].'||'.$rows['MateriaUacjCreditos'].'||'.$rows['MateriaUacjObligatoria'].'||'.mainModel::encryption($privilegio);
-
+					$datosRen=$rows['MateriaUacjClave'].'||'.$rows['MateriaUacjNombre'].'||'.$rows['MateriaUacjCreditos'].'||'.$rows['MateriaUacjObligatoria'].'||'.mainModel::encryption($privilegio).'||'.$rows['MateriaUacjSemestre'];
+					
 					$tabla.='	
 								<tr>
 									<td>'.$contador.'</td>
@@ -244,50 +246,92 @@
 		}
 
 		public function actualizar_materia_uacj_controlador(){
-			$nombre=mainModel::limpiar_cadena($_POST['MateriaNombreUpdate']);
-			$codigo=mainModel::decryption($_POST['MateriaCodigoUpdate']);
-			$adminPrivilegio=mainModel::decryption($_POST['MateriaPrivilegioUpdate']);
+			
+			$nombre=mainModel::limpiar_cadena($_POST['MateriaUacjNombre']);
+			$ClaveOriginal=mainModel::limpiar_cadena($_POST['MateriaClaveOriginal']);			
+			$claveMateria=mainModel::limpiar_cadena($_POST['MateriaUacjClave']);
+			$creditos=mainModel::limpiar_cadena($_POST['MateriaUacjCreditos']);
+			$oblOpt=mainModel::limpiar_cadena($_POST['optionsObl']);
+			$semestre=mainModel::limpiar_cadena($_POST['MateriaUacjSemestre']);
+			$adminPrivilegio=mainModel::decryption($_POST['MateriaUacjPrivilegio']);
+						
+			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM materiauacj WHERE MateriaUacjClave='$ClaveOriginal'");
 
-			$query1=mainModel::ejecutar_consulta_simple("SELECT * FROM materia WHERE MateriaCodigo='$codigo'");
-			$DatosMateria=$query1->fetch();
-
+			$datosMateria=$query1->fetch();
+			
 			if($adminPrivilegio==1){
-
-				if($nombre!=$DatosMateria['MateriaNombre']){
-					$consulta1=mainModel::ejecutar_consulta_simple("SELECT MateriaNombre FROM materiauacj WHERE MateriaNombre='$nombre'");
-					
+				
+				if($nombre!=$datosMateria['MateriaUacjNombre']){
+					$consulta1=mainModel::ejecutar_consulta_simple("SELECT MateriaUacjNombre FROM materiauacj WHERE MateriaUacjNombre='$nombre'");
+		
 					if($consulta1->rowCount()>=1)
 					{
 						$alert=[
 							"Alerta"=>"simple",
 							"Titulo"=>"Ocurrió un error inesperado",
-							"Texto"=>"El nombre de la materia que acaba de ingresar ya se encuentran registrado en esta carrera",
+							"Texto"=>"El nombre de la materia que acaba de ingresar ya se encuentra registrado en esta carrera44",
 							"Tipo"=>"error"
 						];
 						return mainModel::sweet_alert($alert);
 						exit();
 					}
+				}
+
+				if($claveMateria!=$datosMateria['MateriaUacjClave']){
+					$consulta2=mainModel::ejecutar_consulta_simple("SELECT MateriaUacjNombre FROM materiauacj WHERE MateriaUacjClave='$claveMateria'");
 					
-					$guardarMateria=materiaUacjModelo::actualizar_materia_uacj_modelo($codigo,$nombre);
-				
-					if($guardarMateria->rowCount()>=1){
-						unset($codigo);	
-						$alerta=[
-							"Alerta"=>"recargar",
-							"Titulo"=>"Datos actualizados!",
-							"Texto"=>"El nombre de la materia ha sido actualizado correctamente",
-							"Tipo"=>"success"
-						];
-					}else{
-						$alerta=[
+					if($consulta2->rowCount()>=1)
+					{
+						$alert=[
 							"Alerta"=>"simple",
 							"Titulo"=>"Ocurrió un error inesperado",
-							"Texto"=>"No hemos podido actualizar el nombre de la materia, por favor intente nuevamente",
+							"Texto"=>"La clave de la materia que acaba de ingresar ya se encuentra registrada en la base de datos!!",
 							"Tipo"=>"error"
 						];
+						return mainModel::sweet_alert($alert);
+						exit();
+					}else{
+						$guardarMateria=materiaUacjModelo::actualizar_materia_uacj_modelo($claveMateria,$nombre,$creditos,$oblOpt,$semestre,$ClaveOriginal);
+
+						if($guardarMateria->rowCount()>=1){
+							$alerta=[
+								"Alerta"=>"recargar",
+								"Titulo"=>"Datos actualizados!",
+								"Texto"=>"El nombre de la materia ha sido actualizado correctamente",
+								"Tipo"=>"success"
+							];
+						}else{
+							$alerta=[
+								"Alerta"=>"simple",
+								"Titulo"=>"Ocurrió un error inesperado",
+								"Texto"=>"No hemos podido actualizar el nombre de la materia, por favor intente nuevamente",
+								"Tipo"=>"error"
+							];
+						}
+						return mainModel::sweet_alert($alerta);		
+						exit();
 					}
-					return mainModel::sweet_alert($alerta);
 				}
+					
+				
+				$guardarMateria=materiaUacjModelo::actualizar_materia_uacj_modelo($claveMateria,$nombre,$creditos,$oblOpt,$semestre,'N');								
+				
+				if($guardarMateria->rowCount()>=1){
+					$alerta=[
+						"Alerta"=>"recargar",
+						"Titulo"=>"Datos actualizados!",
+						"Texto"=>"El nombre de la materia ha sido actualizado correctamente",
+						"Tipo"=>"success"
+					];
+				}else{
+					$alerta=[
+						"Alerta"=>"simple",
+						"Titulo"=>"Ocurrió un error inesperado",
+						"Texto"=>"No hemos podido actualizar el nombre de la materia, por favor intente nuevamente",
+						"Tipo"=>"error"
+					];
+				}
+				return mainModel::sweet_alert($alerta);														
 			}
 		}
 	}

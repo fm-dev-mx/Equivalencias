@@ -139,7 +139,8 @@ function ModalRenombrarMateria(datos){
 
 function ModalEditarMateriaUacj(datos){
 	d=datos.split('||');
-	$('#MateriaUacjClave').val(d[0]);
+    $('#MateriaUacjClave').val(d[0]);
+    $('#MateriaClaveOriginal').val(d[0]);    
 	$('#MateriaUacjNombre').val(d[1]);
     $('#MateriaUacjCreditos').val(d[2]);
     
@@ -148,6 +149,9 @@ function ModalEditarMateriaUacj(datos){
     }else{
         $('input[id="optionsRadios2"]').prop('checked',true);    
     }
+    
+    $('#MateriaUacjPrivilegio').val(d[4]);
+    $('#MateriaUacjSemestre').val(d[5]);
 }
 
 function ModalAsignarMateria(codigoMateria){

@@ -25,10 +25,18 @@
 			return $query;
 		}
 
-		protected function actualizar_materia_uacj_modelo($codigo,$nombre){
-			$query=mainModel::conectar()->prepare("UPDATE materiauacj SET MateriaNombre=:Nombre WHERE MateriaCodigo=:Codigo");
+		protected function actualizar_materia_uacj_modelo($clave,$nombre,$creditos,$oblOpt,$semestre,$claveOriginal){
+			if($claveOriginal=='N'){
+				$query=mainModel::conectar()->prepare("UPDATE materiauacj SET MateriaUacjNombre=:Nombre,MateriaUacjCreditos=:Creditos,MateriaUacjObligatoria=:OblOpt,MateriaUacjSemestre=:Semestre WHERE MateriaUacjClave=:Clave");
+			}else{
+				$query=mainModel::conectar()->prepare("UPDATE materiauacj SET MateriaUacjClave=:Clave,MateriaUacjNombre=:Nombre,MateriaUacjCreditos=:Creditos,MateriaUacjObligatoria=:OblOpt,MateriaUacjSemestre=:Semestre WHERE MateriaUacjClave='$claveOriginal'");
+			}
+			
 			$query->bindParam(":Nombre",$nombre);
-			$query->bindParam(":Codigo",$codigo);
+			$query->bindParam(":Clave",$clave);
+			$query->bindParam(":Creditos",$creditos);
+			$query->bindParam(":OblOpt",$oblOpt);
+			$query->bindParam(":Semestre",$semestre);
 			$query->execute();
 			return $query;
 		}

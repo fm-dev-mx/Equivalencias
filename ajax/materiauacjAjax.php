@@ -14,7 +14,6 @@
 			echo $InsMateria->eliminar_materia_uacj_controlador();
 		}
 		
-		//Editar nombre de materia desde http://localhost/Equivalencias/materiasuacjlist/
 		if(isset($_POST['MateriaUacjNombre']) && isset($_POST['MateriaUacjClave'])){
 			echo $InsMateria->actualizar_materia_uacj_controlador();
 		}

@@ -16,7 +16,7 @@
 	$insCarrera= new carreraUacjControlador();
 
 	$url=explode("/", $_GET['views']);
-	
+		
 	if(isset($_SESSION['carreraUacjSelect']))	{
 		$codigoCarrera=$_SESSION['carreraUacjSelect'];
 	}else{
