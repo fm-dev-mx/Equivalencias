@@ -16,9 +16,9 @@
             $universidad=mainModel::limpiar_cadena($_POST['uniSelect']);
 			$carrera=mainModel::limpiar_cadena($_POST['carreraSelect']);
 			$semestre=mainModel::limpiar_cadena($_POST['AlumnoSemestre']);
-
-            $consulta1=mainModel::ejecutar_consulta_simple("SELECT AlumnoCuenta FROM alumno WHERE (AlumnoNombre='$nombre' AND AlumnoApellido='$apellido' AND AlumnoFechaNac='$fechaNac')");
-	
+			
+            $consulta1=mainModel::ejecutar_consulta_simple("SELECT AlumnoCodigo FROM alumno WHERE (AlumnoNombre='$nombre' AND AlumnoApellido='$apellido' AND AlumnoFecNac='$fechaNac')");
+			
 			if($consulta1->rowCount()>=1){
                 $alerta=[
                     "Alerta"=>"simple",
@@ -26,8 +26,7 @@
                     "Texto"=>"El alumno ya existe en el sistema, favor de intentar nuevamente!",
                     "Tipo"=>"error"
                 ];
-			}else{
-				
+			}else{				
 				$consulta=mainModel::ejecutar_consulta_simple("SELECT AlumnoCodigo FROM alumno");
 				$numero=($consulta->rowCount())+1;
 				$codigo=mainModel::generar_codigo_aleatorio("AL",7,$numero);
@@ -35,7 +34,7 @@
 					"Codigo"=>$codigo,
 					"Nombre"=>$nombre,
 					"Apellido"=>$apellido,
-					"FechaNac"=>$fechaNac,
+					"FecNac"=>$fechaNac,
 					"Telefono"=>$telefono,
 					"Email"=>$email,
 					"Universidad"=>$universidad,
@@ -44,7 +43,6 @@
 				];
 
 				$guardarAlumno=alumnoModelo::agregar_alumno_modelo($dataAlumno);
-
 				if($guardarAlumno->rowCount()>=1){
 					$alerta=[
 						"Alerta"=>"limpiar",

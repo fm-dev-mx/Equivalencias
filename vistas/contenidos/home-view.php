@@ -91,13 +91,13 @@
 				</a>
 			</div>
 			<div class="col-xs-12 col-sm-4">
-				<a href="<?php echo SERVERURL; ?>alumno/">
+				<a href="<?php echo SERVERURL; ?>equivalencias/">
 					<article class="full-box tile">
 						<div class="full-box tile-title text-center text-titles text-uppercase">
-							Alumnos
+							Equivalencias
 						</div>
 						<div class="full-box tile-icon text-center">
-							<i class="zmdi zmdi-face zmdi-hc-fw"></i>
+							<i class="zmdi zmdi-assignment-return zmdi-hc-fw"></i>
 						</div>
 						<div class="full-box tile-number text-titles">
 							<p class="full-box"><?php echo $CAlumno->rowCount(); ?></p>
@@ -110,14 +110,14 @@
 				<a href="<?php echo SERVERURL; ?>alumno/">
 					<article class="full-box tile">
 						<div class="full-box tile-title text-center text-titles text-uppercase">
-							Alumnos
+							Operaciones
 						</div>
 						<div class="full-box tile-icon text-center">
-							<i class="zmdi zmdi-face zmdi-hc-fw"></i>
+							<i class="zmdi zmdi-chart zmdi-hc-fw"></i>
 						</div>
 						<div class="full-box tile-number text-titles">
 							<p class="full-box"><?php echo $CAlumno->rowCount(); ?></p>
-							<small>Registrados</small>
+							<small>Operaciones</small>
 						</div>
 					</article>
 				</a>

@@ -7,12 +7,12 @@
 
 	class alumnoModelo extends mainModel{
 		protected function agregar_alumno_modelo($datos){
-			$sql=mainModel::conectar()->prepare("INSERT INTO alumno (AlumnoCodigo,AlumnoNombre,AlumnoApellido,AlumnoTelefono,AlumnoFechaNac,AlumnoEmail,AlumnoUniversidad,AlumnoCarrera,AlumnoSemestre) VALUES(:Codigo,:Nombre,:Apellido,:Telefono,:FechaNac,:Email,:Universidad,:Carrera,:Semestre)");
+			$sql=mainModel::conectar()->prepare("INSERT INTO alumno (AlumnoCodigo,AlumnoNombre,AlumnoApellido,AlumnoTelefono,AlumnoFecNac,AlumnoEmail,AlumnoUniversidad,AlumnoCarrera,AlumnoSemestre) VALUES(:Codigo,:Nombre,:Apellido,:Telefono,:FecNac,:Email,:Universidad,:Carrera,:Semestre)");
 			$sql->bindParam(":Codigo",$datos['Codigo']);
 			$sql->bindParam(":Nombre",$datos['Nombre']);
 			$sql->bindParam(":Apellido",$datos['Apellido']);
             $sql->bindParam(":Telefono",$datos['Telefono']);
-			$sql->bindParam(":FechaNac",$datos['FechaNac']);
+			$sql->bindParam(":FecNac",$datos['FecNac']);
 			$sql->bindParam(":Email",$datos['Email']);
 			$sql->bindParam(":Universidad",$datos['Universidad']);
 			$sql->bindParam(":Carrera",$datos['Carrera']);

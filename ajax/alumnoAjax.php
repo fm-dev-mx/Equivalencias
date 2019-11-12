@@ -5,11 +5,12 @@
 
 		require_once "../controladores/alumnoControlador.php";
 		$InsAlumno= new alumnoControlador();
-
+		
 		if(isset($_POST['AlumnoNombre']) && isset($_POST['agregarActualizar'])){
-			if($_POST['agregarActualizar']=='Actualizar'){
+			if($_POST['agregarActualizar']=='Actualizar'){				
 				echo $InsAlumno->actualizar_alumno_controlador();
 			}elseif($_POST['agregarActualizar']=="Agregar"){
+				
 				echo $InsAlumno->agregar_alumno_controlador();
 			}	
 		}
