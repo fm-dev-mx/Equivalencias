@@ -94,6 +94,7 @@ $(document).ready(function(){
                         $("#agregar-carrera-pop").modal('hide');				
                         recargarCarrera();
                     }
+
                 },
                 error: function() {
                     respuesta.html(msjError);
@@ -194,8 +195,8 @@ function AsignarMateria(codigoMateriaUacj){
 }
 
 $(function(){
-    $('#datecontainer .input-group.date').datepicker({
-        format: "yyyy/mm/dd",
+    $('#datecontainer .input-group .date').datepicker({
+        format: "yy/mm/dd",
         startView: 3,
         maxViewMode: 3,
         language: "es",

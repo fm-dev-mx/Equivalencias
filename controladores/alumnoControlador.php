@@ -43,9 +43,10 @@
 				];
 
 				$guardarAlumno=alumnoModelo::agregar_alumno_modelo($dataAlumno);
+				
 				if($guardarAlumno->rowCount()>=1){
 					$alerta=[
-						"Alerta"=>"limpiar",
+						"Alerta"=>"limpiarAlumno",
 						"Titulo"=>"Alumno registrado",
 						"Texto"=>"El alumno se registro con exito en el sistema",
 						"Tipo"=>"success"
@@ -64,7 +65,7 @@
 
 		// Controlador para paginar universidades
 		public function paginador_alumno_controlador($pagina,$registros,$privilegio,$busqueda){
-
+			
 			$pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
 			$privilegio=mainModel::limpiar_cadena($privilegio);
@@ -73,20 +74,19 @@
 
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
-
+			
 			if(isset($busqueda) && $busqueda!=""){
-				$consulta="SELECT SQL_CALC_FOUND_ROWS al.AlumnoCodigo,al.AlumnoNombre,al.AlumnoApellido,uni.UniversidadNombre,cr.CarreraNombre FROM alumno al,universidad uni, carrera cr WHERE al.AlumnoUniversidad=uni.UniversidadCodigo AND al.AlumnoCarrera=cr.CarreraCodigo AND (AlumnoNombre LIKE '%$busqueda%' OR AlumnoApellido LIKE '%$busqueda%' OR AlumnoTelefono LIKE '%$busqueda%' OR AlumnoEmail LIKE '%$busqueda%') ORDER BY AlumnoApellido ASC LIMIT $inicio,$registros";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS al.AlumnoCodigo,al.AlumnoNombre,al.AlumnoApellido,uni.UniversidadNombre,cr.CarreraNombre FROM alumno al,universidad uni, carrera cr WHERE al.AlumnoUniversidad=uni.UniversidadCodigo AND al.AlumnoCarrera=cr.CarreraCodigo AND (AlumnoNombre LIKE '%$busqueda%' OR AlumnoApellido LIKE '%$busqueda%' OR al.AlumnoTelefono LIKE '%$busqueda%' OR al.AlumnoEmail LIKE '%$busqueda%') ORDER BY al.AlumnoApellido ASC LIMIT $inicio,$registros";
 				$paginaurl="alumnoSearch";
 			}else{
-				$consulta="SELECT SQL_CALC_FOUND_ROWS al.AlumnoCodigo,al.AlumnoNombre,al.AlumnoApellido,uni.UniversidadNombre,cr.CarreraNombre FROM alumno al,universidad uni, carrera cr WHERE al.AlumnoUniversidad=uni.UniversidadCodigo AND al.AlumnoCarrera=cr.CarreraCodigo ORDER BY AlumnoNombre ASC LIMIT $inicio,$registros";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS al.AlumnoCodigo, al.AlumnoNombre, al.AlumnoApellido, uni.UniversidadNombre, cr.CarreraNombre FROM alumno al, universidad uni, carrera cr WHERE al.AlumnoUniversidad=uni.UniversidadCodigo AND al.AlumnoCarrera=cr.CarreraCodigo ORDER BY al.AlumnoNombre ASC LIMIT $inicio, $registros";
 				$paginaurl="alumnoList";
-			}
-
-			$conexion = mainModel::conectar();
-
+			}			
+			$conexion = mainModel::conectar();			
 			$datos = $conexion->query($consulta);
+			var_dump($datos);
 			$datos= $datos->fetchAll();
-
+			var_dump($datos);
 			$total= $conexion->query("SELECT FOUND_ROWS()");
 			$total= (int) $total->fetchColumn();
 

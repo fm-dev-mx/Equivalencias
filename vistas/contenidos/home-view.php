@@ -53,7 +53,7 @@
 						</div>
 						<div class="full-box tile-number text-titles">
 							<p class="full-box"><?php echo $CUniv->rowCount(); ?></p>
-							<small>Registrados</small>
+							<small>Registradas</small>
 						</div>
 					</article>
 				</a>
@@ -69,7 +69,7 @@
 						</div>
 						<div class="full-box tile-number text-titles">
 							<p class="full-box"><?php echo $CCarrera->rowCount(); ?></p>
-							<small>Registrados</small>
+							<small>Registradas</small>
 						</div>
 					</article>
 				</a>
@@ -101,7 +101,7 @@
 						</div>
 						<div class="full-box tile-number text-titles">
 							<p class="full-box"><?php echo $CAlumno->rowCount(); ?></p>
-							<small>Registrados</small>
+							<small>Registradas</small>
 						</div>
 					</article>
 				</a>
@@ -117,7 +117,7 @@
 						</div>
 						<div class="full-box tile-number text-titles">
 							<p class="full-box"><?php echo $CAlumno->rowCount(); ?></p>
-							<small>Operaciones</small>
+							<small>Registradas</small>
 						</div>
 					</article>
 				</a>

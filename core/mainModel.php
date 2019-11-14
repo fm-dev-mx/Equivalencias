@@ -152,7 +152,7 @@
 						  type: '".$datos['Tipo']."',
 						  confirmButtonText: 'Aceptar'
 						}).then(function () {
-							location.reload();
+							location.reload();			
 						});
 					</script>
 				";
@@ -166,6 +166,21 @@
 						  confirmButtonText: 'Aceptar'
 						}).then(function () {
 							$('.FormularioAjax')[0].reset();
+						});
+					</script>
+				";
+			}elseif($datos['Alerta']=="limpiarAlumno"){
+				$alerta="
+					<script>
+						swal({
+						  title: '".$datos['Titulo']."',
+						  text: '".$datos['Texto']."',
+						  type: '".$datos['Tipo']."',
+						  confirmButtonText: 'Aceptar'
+						}).then(function () {
+							$('.FormularioAjax')[0].reset();
+							recargarUniversidad();
+                        	recargarCarrera();
 						});
 					</script>
 				";

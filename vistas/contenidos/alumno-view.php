@@ -54,13 +54,13 @@
 		</div>
 
 		<div class="panel-body">
-			<form action="<?php echo SERVERURL; ?>ajax/alumnoAjax.php" method="POST" data-form=<?php if(isset($campos['AlumnoNombre'])){echo 'update';}else{echo 'save';} ?> class="FormularioAjax">
-				<input type="hidden" name="agregarActualizar"value="<?php if(isset($campos['AlumnoNombre'])){echo "Actualizar";}else{echo "Agregar";} ?>">
-				<input type="hidden" name="AlumnoCodigo" value="<?php echo $datos[1]; ?>">
-				<fieldset>
+			<form action="<?php echo SERVERURL; ?>ajax/alumnoAjax.php" method="POST" data-form=<?php if(isset($campos['AlumnoNombre'])){echo 'updateAlumno';}else{echo 'saveAlumno';} ?> class="FormularioAjax" enctype="multipart/form-data">			
+				<fieldset>					
 					<legend><i class="zmdi zmdi-account-box"></i> &nbsp; Información personal</legend>
 					<div class="container-fluid">
-						<div class="row">
+						
+							<input type="hidden" name="agregarActualizar"value="<?php if(isset($campos['AlumnoNombre'])){echo "Actualizar";}else{echo "Agregar";} ?>">
+							<input type="hidden" name="AlumnoCodigo" value="<?php echo $datos[1]; ?>">
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">
 									<label class="control-label">Nombres *</label>
@@ -76,15 +76,15 @@
 							<div class="col-xs-12 col-sm-4" id="datecontainer">
 								<div class="form-group label-floating">										
 									<div class="input-group date">											
-										<label class="control-label">Fecha de nacimiento *</label>
-										<input class="form-control" name="AlumnoFechaNac" value="<?php if(isset($campos['AlumnoFechaNac'])){ echo $campos['AlumnoFechaNac'];} ?>"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+										<label class="control-label datecontainer">Fecha de nacimiento *</label>
+										<input class="form-control" name="AlumnoFechaNac" type="date" value="<?php if(isset($campos['AlumnoFechaNac'])){ echo $campos['AlumnoFechaNac'];} ?>"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 									</div>
 								</div>
 							</div>			
 							<div class="col-xs-12 col-sm-4">
 								<div class="form-group label-floating">
 									<label class="control-label">Teléfono</label>
-									<input pattern="[0-9]{1,10}" class="form-control" type="text" name="AlumnoTelefono" maxlength="10" value="<?php if(isset($campos['AlumnoTelefono'])){ echo $campos['AlumnoTelefono'];} ?>">
+									<input pattern="[0-9]{10}" class="form-control" type="text" name="AlumnoTelefono" maxlength="10" value="<?php if(isset($campos['AlumnoTelefono'])){ echo $campos['AlumnoTelefono'];} ?>">
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-4">
@@ -105,13 +105,13 @@
 									<input class="form-control" pattern="[0-9]{1,2}" type="text" name="AlumnoSemestre" maxlength="2" value="<?php if(isset($campos['AlumnoSemestre'])){ echo $campos['AlumnoSemestre'];} ?>">
 								</div>
 							</div>
-						</div>
+
 					</div>
 				</fieldset>
 				<br>
 				
 				
-				<div class="container-fluid">
+				
 					<div class="row">
 						<?php if(isset($campos['AlumnoEmail'])){ ?>
 
@@ -128,7 +128,7 @@
 										<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
 									</p>
 								</div>
-
+							</div>
 						<?php }else{ ?>
 
 							<div class="form-group label-floating">						
@@ -271,7 +271,7 @@
 		recargarCarrera();		
 		$('span.select2-selection.select2-selection--single span#select2-uniSelect-container.select2-selection__rendered').css('color','#999');		
 	});
-
+	
 	function recargarUniversidad(){
 		$.ajax({
 			type:"POST",
