@@ -6,26 +6,22 @@
 
 <div class="container-fluid">
 	<div class="page-header">
-	  <h1 class="text-titles"><i class="zmdi zmdi-book zmdi-hc-fw"></i> Administración <small>Materias</small></h1>
+		<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Alumno <small>Materias</small></h1>
 	</div>
 	<p class="lead"></p>
 </div>
 
 <?php 
-	require_once "./controladores/carrerauacjControlador.php";
-	$insCarrera= new carreraUacjControlador();
+	require_once "./controladores/universidadControlador.php";
+	$insUniv= new universidadControlador();
+	require_once "./controladores/carreraControlador.php";
+	$insCarrera= new carreraControlador();
 	require_once "./controladores/alumnoControlador.php";
 	$insAlumno= new alumnoControlador();
 	require_once "./controladores/materiaControlador.php";
 	$insMateria= new materiaControlador();
 
-	$url=explode("/", $_GET['views']);
-	
-	if(isset($_SESSION['carreraUacjSelect']))	{
-		$codigoCarrera=$_SESSION['carreraUacjSelect'];
-	}else{
-		$codigoCarrera="";
-	}
+	$url=explode("/", $_GET['views']);	
 
 	//Se obtiene un array con los datos del alumno seleccionado
 	if($url[1]!=""){
@@ -35,36 +31,25 @@
 		}
 	}
 
-	//Se obtiene un array con los nombres de todas las carreras (para la lista desplegable)
-	$listaC=$insCarrera->datos_carrera_uacj_controlador("Lista","");
+	//Se obtiene un array con los nombres de todas las universidades (para datos del alumno)
+	$listaUniv=$insUniv->datos_universidad_controlador("Lista","");
+	if($listaUniv->rowCount()>=1){
+		$listaUniversidad=$listaUniv->fetchAll();
+	}
+
+	//Se obtiene un array con los nombres de todas las carreras (para datos del alumno)
+	$listaC=$insCarrera->datos_carrera_controlador("Lista","");
 	if($listaC->rowCount()>=1){
 		$listaCarrera=$listaC->fetchAll();
 	}
 
-	//Se obtiene un array con los nombres de todas las carreras (para la lista desplegable)
+	//Se obtiene un array con los nombres de todas las materias (para la lista desplegable)
 	$listaM=$insMateria->datos_materia_controlador("Lista","",$camposAlumno['AlumnoCarrera']);
 	if($listaM->rowCount()>=1){
 		$listaMateria=$listaM->fetchAll();
 	}
 ?>
 
-<div class="container-fluid">
-	<div class="panel-body">
-		<div class="pull-right">
-			<!--listado de carreras ---------------------------------------------------------->
-			<select class="selectpicker" id="carreraUacjSelect" name="carreraUacjSelect" data-live-search="true">
-				<option value="0">Seleciona una carrera</option>			
-				<?php foreach($listaCarrera as $rows){ ?> 
-					<option value="<?php echo $rows['CarreraCodigo'];?>" <?php if($codigoCarrera==$rows['CarreraCodigo']){echo ' selected';} ?>>
-						<?php echo $rows['CarreraNombre'];?>
-					</option>	
-				<?php } ?>	
-			</select>
-		</div>	
-	<br>		
-	<br>		
-	<br>		
-</div>
 
 <style>
 	.container {
@@ -89,7 +74,40 @@
 		<?php } ?>	
 	</select>
 </div>		
-	
+
+<div style="text-indent:60px;">
+	<legend>Datos del estudiante</legend>				
+	<div style="text-indent:70px;">
+		<p>
+			<b>Universidad: </b> 
+				<?php foreach($listaUniversidad as $rows){
+					if($rows['UniversidadCodigo']==$camposAlumno['AlumnoUniversidad'])	
+					echo $rows['UniversidadNombre'];					
+				} ?>			
+		</p>
+		<p>
+			<b>Carrera: </b> 
+				<?php 
+					foreach($listaCarrera as $rows){
+					if($rows['CarreraCodigo']==$camposAlumno['AlumnoCarrera'])	
+					echo $rows['CarreraNombre'];					
+				} ?>			
+				
+		</p>
+		<p>
+			<b>Semestre: </b> 
+				<?php
+					echo $camposAlumno['AlumnoSemestre'].'to sem';
+				?>
+		</p>				    	
+	</div>				
+</div>
+
+<div class="form-group label-floating">						
+	<p class="text-center" style="margin-top: 20px;">				
+		<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+	</p>
+</div>
 
 <script type="text/javascript">
   $(document).ready(function(){

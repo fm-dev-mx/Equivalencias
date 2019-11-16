@@ -259,8 +259,8 @@
 
 		public function datos_carrera_controlador($tipo,$codigo){
 			$tipo=mainModel::limpiar_cadena($tipo);
-			$codigo=mainModel::decryption($codigo);
-
+			if($codigo!="")
+				$codigo=mainModel::decryption($codigo);
 			return carreraModelo::datos_carrera_modelo($tipo,$codigo);
 		}
 

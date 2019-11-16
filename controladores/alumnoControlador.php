@@ -84,9 +84,9 @@
 			}			
 			$conexion = mainModel::conectar();			
 			$datos = $conexion->query($consulta);
-			var_dump($datos);
+			
 			$datos= $datos->fetchAll();
-			var_dump($datos);
+			
 			$total= $conexion->query("SELECT FOUND_ROWS()");
 			$total= (int) $total->fetchColumn();
 

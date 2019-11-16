@@ -118,7 +118,7 @@
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-group label-floating">										
 									<p class="text-right" style="margin-top: 20px;">
-										<a href="<?php echo SERVERURL; ?>alumnomateria/" class="btn btn-default btn-raised btn-sm"><i class="zmdi zmdi-book"></i> Ver Materias</a>
+										<a href="<?php echo SERVERURL; ?>alumnomateria/<?php echo mainModel::encryption($campos['AlumnoCodigo']); ?>" class="btn btn-default btn-raised btn-sm"><i class="zmdi zmdi-book"></i> Ver Materias</a>
 									</p>
 								</div>
 							</div>

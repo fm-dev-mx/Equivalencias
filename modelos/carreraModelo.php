@@ -37,7 +37,10 @@
 			}elseif($tipo=="Conteo"){
 				$query=mainModel::conectar()->prepare("SELECT id FROM carrera");
 			}elseif($tipo=="Lista"){
-				$query=mainModel::conectar()->prepare("SELECT CarreraCodigo,CarreraNombre FROM carrera WHERE CarreraCodigoUniversidad=:Codigo ORDER BY CarreraNombre ASC");
+				if($codigo=="")
+					$query=mainModel::conectar()->prepare("SELECT CarreraCodigo,CarreraNombre FROM carrera ORDER BY CarreraNombre ASC");
+				else
+					$query=mainModel::conectar()->prepare("SELECT CarreraCodigo,CarreraNombre FROM carrera WHERE CarreraCodigoUniversidad=:Codigo ORDER BY CarreraNombre ASC");
 				$query->bindParam(":Codigo",$codigo);
 			}
 			$query->execute();
