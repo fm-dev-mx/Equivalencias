@@ -6,7 +6,7 @@
 
 <div class="container-fluid">
 	<div class="page-header">
-		<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Alumno <small>Materias</small></h1>
+		<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Estudiante <small>Materias</small></h1>
 	</div>
 	<p class="lead"></p>
 </div>
@@ -20,6 +20,8 @@
 	$insAlumno= new alumnoControlador();
 	require_once "./controladores/materiaControlador.php";
 	$insMateria= new materiaControlador();
+	require_once "./controladores/alumnoMateriaControlador.php";
+	$insAlumnoMateria= new alumnoMateriaControlador();
 
 	$url=explode("/", $_GET['views']);	
 
@@ -28,6 +30,14 @@
 		$datosAlumno=$insAlumno->datos_alumno_controlador("Unico",$url[1]);
 		if($datosAlumno->rowCount()==1){
 			$camposAlumno=$datosAlumno->fetch();
+		}
+	}
+
+	//Se obtiene un array con las materias cursadas por el alumno
+	if($url[1]!=""){
+		$datosAlumnoMateria=$insAlumnoMateria->obtener_materias_controlador($url[1]);
+		if($datosAlumnoMateria->rowCount()>=1){
+			$materiasCursadas=$datosAlumnoMateria->fetchAll();
 		}
 	}
 
@@ -61,53 +71,78 @@
 	}
 </style>
 
-<!-- Panel listado de materias -->
-<div class="container">
-
-	<select multiple="multiple" name="multiSelectMaterias[]">
-		<?php foreach($listaMateria as $rows){ ?> 
-
-			
-			<option value="<?php echo $rows['MateriaCodigo'].' class=\'selected-wrapper\'';?>">
-				<?php echo $rows['MateriaNombre'];?>
-			</option>	
-		<?php } ?>	
-	</select>
-</div>		
-
 <div style="text-indent:60px;">
-	<legend>Datos del estudiante</legend>				
-	<div style="text-indent:70px;">
-		<p>
-			<b>Universidad: </b> 
-				<?php foreach($listaUniversidad as $rows){
-					if($rows['UniversidadCodigo']==$camposAlumno['AlumnoUniversidad'])	
-					echo $rows['UniversidadNombre'];					
-				} ?>			
-		</p>
-		<p>
-			<b>Carrera: </b> 
-				<?php 
-					foreach($listaCarrera as $rows){
-					if($rows['CarreraCodigo']==$camposAlumno['AlumnoCarrera'])	
-					echo $rows['CarreraNombre'];					
-				} ?>			
-				
-		</p>
-		<p>
-			<b>Semestre: </b> 
-				<?php
-					echo $camposAlumno['AlumnoSemestre'].'to sem';
-				?>
-		</p>				    	
-	</div>				
+	<b>Nombre: </b> 
+		<?php
+			echo $camposAlumno['AlumnoNombre'].' '.$camposAlumno['AlumnoApellido'];
+		?>
 </div>
 
-<div class="form-group label-floating">						
-	<p class="text-center" style="margin-top: 20px;">				
-		<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
-	</p>
+<!-- Panel listado de materias -->
+<div class="panel-body">
+	<form action="<?php echo SERVERURL; ?>ajax/alumnoMateriaAjax.php" method="POST" data-form='Save' class="FormularioAjax" enctype="multipart/form-data">			
+		<fieldset>					
+			<div class="container">
+				<input type="hidden" name="CodigoAlumno" value="<?php echo $camposAlumno['AlumnoCodigo']; ?>">				
+				<select multiple="multiple" name="multiSelectMaterias[]">
+					<?php foreach($listaMateria as $rows){
+							$banMat=0;
+							foreach($materiasCursadas as $rowMat){
+								if(($rows['MateriaCodigo']==$rowMat['CodigoMateria']) && $rowMat['EstatusMateria']==1){ 
+									$banMat=$banMat+1;
+								}
+							} 
+							if($banMat>=1){ ?>
+								<option value="<?php echo $rows['MateriaCodigo'];?>" class="selected-wrapper" selected="true">
+									<?php echo $rows['MateriaNombre'];?>
+								</option>	<?php
+							}else{ ?>
+								<option value="<?php echo $rows['MateriaCodigo'];?>" class="selected-wrapper">
+									<?php echo $rows['MateriaNombre'];?>
+								</option>	<?php
+							}
+						} ?>	
+				</select>
+			</div>		
+		</fieldset>
+	
+		<div style="text-indent:60px;">
+			<legend>Datos del estudiante</legend>				
+			<div style="text-indent:70px;">
+				<p>
+					<b>Universidad: </b> 
+						<?php foreach($listaUniversidad as $rows){
+							if($rows['UniversidadCodigo']==$camposAlumno['AlumnoUniversidad'])	
+							echo $rows['UniversidadNombre'];					
+						} ?>			
+				</p>
+				<p>
+					<b>Carrera: </b> 
+						<?php 
+							foreach($listaCarrera as $rows){
+							if($rows['CarreraCodigo']==$camposAlumno['AlumnoCarrera'])	
+							echo $rows['CarreraNombre'];					
+						} ?>			
+						
+				</p>
+				<p>
+					<b>Semestre: </b> 
+						<?php
+							echo $camposAlumno['AlumnoSemestre'].'to sem';
+						?>
+				</p>				    	
+			</div>				
+		</div>
+
+		<div class="form-group label-floating">						
+			<p class="text-center" style="margin-top: 20px;">				
+				<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+			</p>
+		</div>
+		<div class="RespuestaAjax"></div>
+	</form>
 </div>
+
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -118,15 +153,4 @@
 	});
 
   });
-
-	$('#carreraUacjSelect').change(function(){
-      $.ajax({
-        type:"post",
-        data:"carreraUacjSelect=" + $('#carreraUacjSelect').val(),
-        url:"<?php echo SERVERURL; ?>ajax/materiauacjAjax.php",
-        success:function(r){
-          location.reload();
-        }
-      });
-    });  
 </script>                
