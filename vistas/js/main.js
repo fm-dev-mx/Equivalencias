@@ -92,7 +92,10 @@ $(document).ready(function(){
                     }
                     if(tipo==="saveModalCarrera"){
                         $("#agregar-carrera-pop").modal('hide');				
-                        recargarCarrera();
+                        recargarCarrera();                     
+                    }
+                    if(tipo==="saveModalMateria"){
+                        $("#agregar-materia-pop").modal('hide');				              
                     }
 
                 },

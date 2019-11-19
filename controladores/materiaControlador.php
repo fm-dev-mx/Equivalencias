@@ -11,8 +11,7 @@
 			$nombre=mainModel::limpiar_cadena($_POST['nombreMateriaAgregar']);
             $codigoCarrera=mainModel::limpiar_cadena($_POST['codigoCarreraAgregarMateria']);
 
-            $consulta1=mainModel::ejecutar_consulta_simple("SELECT id FROM materia WHERE MateriaNombre='$nombre' AND MateriaCarrera='$codigoCarrera'");
-	
+            $consulta1=mainModel::ejecutar_consulta_simple("SELECT MateriaCodigo FROM materia WHERE MateriaNombre='$nombre' AND MateriaCarrera='$codigoCarrera'");
 			if($consulta1->rowCount()>=1){
                 $alerta=[
                     "Alerta"=>"simple",
@@ -22,7 +21,7 @@
                 ];
 			}else{
 				
-				$consulta=mainModel::ejecutar_consulta_simple("SELECT id FROM materia");
+				$consulta=mainModel::ejecutar_consulta_simple("SELECT MateriaCodigo FROM materia");
 				$numero=($consulta->rowCount())+1;
 				$codigoMateria=mainModel::generar_codigo_aleatorio("MT",7,$numero);
 				$dataAc=[
@@ -32,7 +31,7 @@
 				];
 
 				$guardarMateria=MateriaModelo::agregar_materia_modelo($dataAc);
-
+				var_dump($guardarMateria->rowCount()>=1);
 				if($guardarMateria->rowCount()>=1){
 					$alerta=[
 						"Alerta"=>"recargar",
