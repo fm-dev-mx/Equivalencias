@@ -130,7 +130,7 @@
           $pagina=1;
         }
 				
-        echo $insMateria->paginador_materia_controlador($pagina,3,1,$codigoCarrera);
+        echo $insMateria->paginador_materia_controlador($pagina,10,1,$codigoCarrera);
         ?>	
       </div>
     </div>

@@ -30,7 +30,7 @@
 			}else{
 				$_SESSION['carreraUacjSelect']=$_POST['carreraUacjSelect'];		
 			}
-			
+			var_dump($_SESSION['carreraUacjSelect']);
 		}
 
 	}else{

@@ -31,7 +31,6 @@
 				];
 
 				$guardarMateria=MateriaModelo::agregar_materia_modelo($dataAc);
-				var_dump($guardarMateria->rowCount()>=1);
 				if($guardarMateria->rowCount()>=1){
 					$alerta=[
 						"Alerta"=>"recargar",

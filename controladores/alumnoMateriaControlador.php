@@ -110,7 +110,7 @@
 									<p class="text-center" style="margin-top: 20px;">	
 										<button type="button" class="btn btn-primary btn-raised btn-sm" data-toggle="modal" data-target="#agregar-materia-pop" data-dismiss="modal" data-backdrop="false"><i class="zmdi zmdi-book"></i>Agregar Materia</button>			
 
-										<a href="'.SERVERURL.'alumnomateria/'.mainModel::encryption($alumno).'" class="btn btn-default btn-raised btn-sm"><i class="zmdi zmdi-assignment-return"></i> Ver Equivalencias</a>
+										<a href="'.SERVERURL.'alumnoequivalencia/'.mainModel::encryption($alumno).'" class="btn btn-default btn-raised btn-sm"><i class="zmdi zmdi-assignment-return"></i> Ver Equivalencias</a>
 									</p>
 								</div>
 							</div>	
@@ -126,4 +126,129 @@
 			}
 			return $cadena;
 		}
+
+		public function paginador_alumno_equivalencia_controlador($pagina,$registros,$privilegio,$alumno){
+			$pagina=mainModel::limpiar_cadena($pagina);
+			$registros=mainModel::limpiar_cadena($registros);
+			$privilegio=mainModel::limpiar_cadena($privilegio);
+			$codigoAlumno=mainModel::limpiar_cadena($alumno);			
+
+			$tabla="";
+
+			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
+			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
+
+			$consulta="SELECT SQL_CALC_FOUND_ROWS mat.MateriaNombre, am.CalificacionMateria FROM alumnomaterias am, materia mat WHERE (am.CodigoAlumno='$codigoAlumno' AND mat.MateriaCodigo=am.CodigoMateria AND am.EstatusMateria=1) ORDER BY mat.MateriaNombre ASC LIMIT $inicio,$registros";
+			
+			$paginaurl="alumnoequivalencia";			
+
+			$conexion = mainModel::conectar();
+
+			$datos = $conexion->query($consulta);
+			$datos= $datos->fetchAll();
+
+			$total= $conexion->query("SELECT FOUND_ROWS()");
+			$total= (int) $total->fetchColumn();
+
+			$Npaginas= ceil($total/$registros);
+
+			$tabla.='
+			<div class="table-responsive">
+				<table class="table table-hover text-center">
+					<thead>
+						<tr>
+							<th class="text-center">#</th>
+							<th class="text-center">MATERIA</th>
+							<th class="text-center">EQUIVALENCIA</th>
+							<th class="text-center">CALIFICACION</th>';
+						if($privilegio<=2){
+							$tabla.='								
+								<th class="text-center">ASIGNAR</th>
+							';
+						}						
+			$tabla.='</tr>
+					</thead>
+					<tbody>
+			';
+
+			if($total>=1 && $pagina<=$Npaginas){
+
+				$contador=$inicio+1;
+		
+				foreach($datos as $rows){
+
+					$datosRen=$rows['MateriaNombre'].'||'.'||'.$rows['CalificacionMateria'].'||'.mainModel::encryption($privilegio);
+					
+					$tabla.='	
+								<tr>
+									<td>'.$contador.'</td>
+									<td>'.$rows['MateriaNombre'].'</td>
+									<td>'.$rows['CalificacionMateria'].'</td>
+									';
+					if($privilegio<=2){
+						$tabla.='<td>									
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#editar-materia-uacj-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalEditarMateriaUacj(\'' . $datosRen . '\')">
+									<i class="zmdi zmdi-refresh"></i></button>
+								</td>
+								';
+					}
+
+					$contador++;
+				}
+				
+				$tabla.='</tr>';
+				
+			}else{
+				if($total>=1){
+					$tabla.='
+						<tr>
+							<td colspan="5">
+								<a href="'.SERVERURL.$paginaurl.'/" class="btn btn-sm btn-info btn-raised">
+									Haga clic aca para recargar el listado
+								</a>
+							</td>
+						</tr>
+					';
+				}else{
+					$tabla.='
+						<tr>
+							<td colspan="7">No hay registros en el sistema</td>
+						</tr>
+					';	
+				}
+			}
+
+			$tabla.='</tbody></table></div>';
+
+			if($total>=1 && $pagina<=$Npaginas){
+				$tabla.='<nav class="text-center"><ul class="pagination pagination-sm">';
+
+				if($pagina==1){
+					$tabla.='<li class="disabled"><a><i class="zmdi zmdi-arrow-left"></i></a></li>';
+				}else{
+					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.($pagina-1).'/"><i class="zmdi zmdi-arrow-left"></i></a></li>';
+				}
+
+				for($i=1; $i<=$Npaginas; $i++){
+					if($pagina==$i){
+						$tabla.='<li class="active"><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
+					}else{
+						$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.$i.'/">'.$i.'</a></li>';
+					}
+				}
+
+				if($pagina==$Npaginas){
+					$tabla.='<li class="disabled"><a><i class="zmdi zmdi-arrow-right"></i></a></li>';
+				}else{
+					$tabla.='<li><a href="'.SERVERURL.$paginaurl.'/'.($pagina+1).'/"><i class="zmdi zmdi-arrow-right"></i></a></li>';
+				}
+				$tabla.='</ul></nav>	
+						';
+				$contador++;
+			}
+
+			return $tabla;
+		}		
+
+
 	}

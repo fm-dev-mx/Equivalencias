@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 19, 2019 at 09:58 PM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.3.11
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 02-05-2019 a las 20:55:19
+-- Versión del servidor: 10.1.37-MariaDB
+-- Versión de PHP: 7.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `equivalencias`
+-- Base de datos: `equivalencias`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Estructura de tabla para la tabla `admin`
 --
 
 CREATE TABLE `admin` (
@@ -39,7 +39,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `admin`
+-- Volcado de datos para la tabla `admin`
 --
 
 INSERT INTO `admin` (`id`, `AdminDNI`, `AdminNombre`, `AdminApellido`, `AdminTelefono`, `AdminDireccion`, `CuentaCodigo`) VALUES
@@ -50,55 +50,7 @@ INSERT INTO `admin` (`id`, `AdminDNI`, `AdminNombre`, `AdminApellido`, `AdminTel
 -- --------------------------------------------------------
 
 --
--- Table structure for table `alumno`
---
-
-CREATE TABLE `alumno` (
-  `id` int(10) NOT NULL,
-  `AlumnoNombre` varchar(70) COLLATE utf8_spanish2_ci NOT NULL,
-  `AlumnoApellido` varchar(70) COLLATE utf8_spanish2_ci NOT NULL,
-  `AlumnoFecNac` date NOT NULL,
-  `AlumnoTelefono` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `AlumnoCodigo` varchar(70) COLLATE utf8_spanish2_ci NOT NULL,
-  `AlumnoEmail` varchar(80) COLLATE utf8_spanish2_ci NOT NULL,
-  `AlumnoUniversidad` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `AlumnoCarrera` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `AlumnoSemestre` int(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
---
--- Dumping data for table `alumno`
---
-
-INSERT INTO `alumno` (`id`, `AlumnoNombre`, `AlumnoApellido`, `AlumnoFecNac`, `AlumnoTelefono`, `AlumnoCodigo`, `AlumnoEmail`, `AlumnoUniversidad`, `AlumnoCarrera`, `AlumnoSemestre`) VALUES
-(26, 'Francisco', 'Mendoza', '1987-11-15', '6563769461', 'AL66156711', 'frgmendoza@gmail.com', 'UV92210553', 'CR04289877', 4);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `alumnomaterias`
---
-
-CREATE TABLE `alumnomaterias` (
-  `id` int(11) NOT NULL,
-  `CodigoAlumno` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
-  `CodigoMateria` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
-  `CalificacionMateria` decimal(10,0) NOT NULL,
-  `MateriaUacj` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
-  `EstatusMateria` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
---
--- Dumping data for table `alumnomaterias`
---
-
-INSERT INTO `alumnomaterias` (`id`, `CodigoAlumno`, `CodigoMateria`, `CalificacionMateria`, `MateriaUacj`, `EstatusMateria`) VALUES
-(71, 'AL66156711', 'MT33939782', '0', '', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `bitacora`
+-- Estructura de tabla para la tabla `bitacora`
 --
 
 CREATE TABLE `bitacora` (
@@ -113,7 +65,7 @@ CREATE TABLE `bitacora` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `bitacora`
+-- Volcado de datos para la tabla `bitacora`
 --
 
 INSERT INTO `bitacora` (`id`, `BitacoraCodigo`, `BitacoraFecha`, `BitacoraHoraInicio`, `BitacoraHoraFinal`, `BitacoraTipo`, `BitacoraYear`, `CuentaCodigo`) VALUES
@@ -241,24 +193,12 @@ INSERT INTO `bitacora` (`id`, `BitacoraCodigo`, `BitacoraFecha`, `BitacoraHoraIn
 (126, 'CB1692884122', '2019-05-01', '10:53:19 pm', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
 (127, 'CB4188910123', '2019-05-02', '10:38:17 am', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
 (128, 'CB3798520124', '2019-05-02', '10:48:04 am', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
-(129, 'CB4510642125', '2019-05-02', '12:15:16 pm', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
-(130, 'CB8515349126', '2019-11-05', '01:52:18 pm', '06:36:56 pm', 'Administrador', 2019, 'AC39666591'),
-(131, 'CB8418870127', '2019-11-06', '06:37:00 pm', '06:41:24 pm', 'Administrador', 2019, 'AC39666591'),
-(132, 'CB9038952128', '2019-11-06', '06:41:29 pm', '08:21:37 pm', 'Administrador', 2019, 'AC39666591'),
-(133, 'CB8640607129', '2019-11-06', '08:21:41 pm', '09:42:12 pm', 'Administrador', 2019, 'AC39666591'),
-(134, 'CB3996830130', '2019-11-06', '09:41:19 pm', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
-(135, 'CB6489120131', '2019-11-06', '09:42:15 pm', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
-(136, 'CB2197738132', '2019-11-08', '01:40:16 am', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
-(137, 'CB5629079133', '2019-11-13', '08:27:04 pm', '09:14:14 pm', 'Administrador', 2019, 'AC39666591'),
-(138, 'CB0024621134', '2019-11-13', '09:42:03 pm', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
-(139, 'CB6847009135', '2019-11-14', '08:43:12 pm', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
-(140, 'CB0961383136', '2019-11-16', '02:20:39 pm', 'Sin registro', 'Administrador', 2019, 'AC39666591'),
-(141, 'CB3600033137', '2019-11-16', '03:09:57 pm', '01:54:25 pm', 'Administrador', 2019, 'AC39666591');
+(129, 'CB4510642125', '2019-05-02', '12:15:16 pm', 'Sin registro', 'Administrador', 2019, 'AC39666591');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `carrera`
+-- Estructura de tabla para la tabla `carrera`
 --
 
 CREATE TABLE `carrera` (
@@ -269,7 +209,7 @@ CREATE TABLE `carrera` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `carrera`
+-- Volcado de datos para la tabla `carrera`
 --
 
 INSERT INTO `carrera` (`id`, `CarreraNombre`, `CarreraCodigo`, `CarreraCodigoUniversidad`) VALUES
@@ -284,7 +224,7 @@ INSERT INTO `carrera` (`id`, `CarreraNombre`, `CarreraCodigo`, `CarreraCodigoUni
 -- --------------------------------------------------------
 
 --
--- Table structure for table `carrerauacj`
+-- Estructura de tabla para la tabla `carrerauacj`
 --
 
 CREATE TABLE `carrerauacj` (
@@ -293,20 +233,20 @@ CREATE TABLE `carrerauacj` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `carrerauacj`
+-- Volcado de datos para la tabla `carrerauacj`
 --
 
 INSERT INTO `carrerauacj` (`CarreraNombre`, `CarreraCodigo`) VALUES
-('Ingenierí­a en Sistemas Digitales y Comunicaciones', 'CU08241731'),
-('Ingeniería en Sistemas Computacionales', 'CU36749831'),
-('Ingeniería Biomédica', 'CU64417521'),
-('Ingenierí­a Eléctrica', 'CU94079411'),
-('Ingenierí­a de Softwarew', 'CU98959691');
+('IngenierÃ­a en Sistemas Digitales y Comunicaciones', 'CU08241731'),
+('IngenierÃ­a en Sistemas Computacionales', 'CU36749831'),
+('IngenierÃ­a BiomÃ©dica', 'CU64417521'),
+('IngenierÃ­a ElÃ©ctrica', 'CU94079411'),
+('IngenierÃ­a de Software', 'CU98959691');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cuenta`
+-- Estructura de tabla para la tabla `cuenta`
 --
 
 CREATE TABLE `cuenta` (
@@ -323,7 +263,7 @@ CREATE TABLE `cuenta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `cuenta`
+-- Volcado de datos para la tabla `cuenta`
 --
 
 INSERT INTO `cuenta` (`id`, `CuentaCodigo`, `CuentaPrivilegio`, `CuentaUsuario`, `CuentaClave`, `CuentaEmail`, `CuentaEstado`, `CuentaTipo`, `CuentaGenero`, `CuentaFoto`) VALUES
@@ -335,7 +275,7 @@ INSERT INTO `cuenta` (`id`, `CuentaCodigo`, `CuentaPrivilegio`, `CuentaUsuario`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `materia`
+-- Estructura de tabla para la tabla `materia`
 --
 
 CREATE TABLE `materia` (
@@ -346,17 +286,18 @@ CREATE TABLE `materia` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `materia`
+-- Volcado de datos para la tabla `materia`
 --
 
 INSERT INTO `materia` (`MateriaCodigo`, `MateriaNombre`, `MateriaCarrera`, `MateriaUacj`) VALUES
-('MT33939782', 'asdad', 'CR04289877', NULL),
-('MT92181311', 'Matemáticas', 'CR91787422', 'CBE120196');
+('MT20227751', 'sdfsdfdsf', 'CR90534746', NULL),
+('MT20984691', '1111', 'CR90534746', NULL),
+('MT96278011', 'asdasdasd111', 'CR91787422', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `materiauacj`
+-- Estructura de tabla para la tabla `materiauacj`
 --
 
 CREATE TABLE `materiauacj` (
@@ -369,20 +310,20 @@ CREATE TABLE `materiauacj` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `materiauacj`
+-- Volcado de datos para la tabla `materiauacj`
 --
 
 INSERT INTO `materiauacj` (`MateriaUacjNombre`, `MateriaUacjClave`, `MateriaUacjCreditos`, `MateriaUacjObligatoria`, `MateriaUacjCarrera`, `MateriaUacjSemestre`) VALUES
-('Calculo I', 'CBE100296', 8, 'obl', 'CU36749831', 1),
-('Fi­sica I', 'CBE120196', 8, 'obl', 'CU36749831', 2),
-('Algebra', 'CBE122396', 8, 'obl', 'CU36749831', 2),
-('Química', 'CBE150196', 8, 'obl', 'CU36749831', 1),
-('Fundamentos de Programción', 'IEC980900', 8, 'obl', 'CU36749831', 4);
+('CÃ¡lculo I', 'CBE100296', 8, 'obl', 'CU36749831', 0),
+('FÃ­sica I', 'CBE120196', 8, 'obl', 'CU36749831', 0),
+('Ãlgebra', 'CBE122396', 8, 'obl', 'CU36749831', 0),
+('QuÃ­mica', 'CBE150196', 8, 'obl', 'CU36749831', 0),
+('Fundamentos de ProgramciÃ³n', 'IEC980900', 8, 'obl', 'CU36749831', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `universidad`
+-- Estructura de tabla para la tabla `universidad`
 --
 
 CREATE TABLE `universidad` (
@@ -399,130 +340,104 @@ CREATE TABLE `universidad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Dumping data for table `universidad`
+-- Volcado de datos para la tabla `universidad`
 --
 
 INSERT INTO `universidad` (`id`, `UniversidadCodigo`, `UniversidadNombre`, `UniversidadTelefono`, `UniversidadDireccion`, `UniversidadIniciales`, `UniversidadTipo`, `UniversidadPais`, `UniversidadEstado`, `UniversidadCiudad`) VALUES
 (12, 'UV97784701', 'universidad autonoma de ciudad juarez', '6561000000', 'av del charro', 'uacj', 'Publica', 'mexico', 'chihuahua', 'ciudad juarez'),
-(13, 'UV92121712', 'Universidad Cultural', '6566666666', 'Simona Barba', 'UC', 'Privada', 'Mexico', 'Chihuahua', 'Ciudad Juarez'),
-(14, 'UV92210553', 'Instituto Tecnologico de Ciudad Juarez', '6561000000', 'Av Tecnologico', 'ITCJ', 'Publica', 'Mexico', 'Chihuahua', 'Ciudad Juarez'),
-(16, 'UV18257634', 'asdasda', '1231312333', 'sadasd', 'asd', 'Publica', 'asdasd', 'adadas', 'asdasd');
+(13, 'UV92121712', 'Universidad Cultural', '', 'Simona Barba', 'UC', 'Privada', 'Mexico', 'Chihuahua', 'Ciudad Juarez'),
+(14, 'UV92210553', 'Instituto Tecnologico de Ciudad Juarez', '6561000000', 'Av Tecnologico', 'ITCJ', 'Publica', 'Mexico', 'Chihuahua', 'Ciudad Juarez');
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `admin`
+-- Indices de la tabla `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`),
   ADD KEY `CuentaCodigo` (`CuentaCodigo`);
 
 --
--- Indexes for table `alumno`
---
-ALTER TABLE `alumno`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `CuentaCodigo` (`AlumnoCodigo`);
-
---
--- Indexes for table `alumnomaterias`
---
-ALTER TABLE `alumnomaterias`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `bitacora`
+-- Indices de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
   ADD PRIMARY KEY (`id`),
   ADD KEY `CuentaCodigo` (`CuentaCodigo`);
 
 --
--- Indexes for table `carrera`
+-- Indices de la tabla `carrera`
 --
 ALTER TABLE `carrera`
   ADD PRIMARY KEY (`id`) USING BTREE,
   ADD UNIQUE KEY `CarreraCodigo` (`CarreraCodigo`);
 
 --
--- Indexes for table `carrerauacj`
+-- Indices de la tabla `carrerauacj`
 --
 ALTER TABLE `carrerauacj`
   ADD PRIMARY KEY (`CarreraCodigo`) USING BTREE;
 
 --
--- Indexes for table `cuenta`
+-- Indices de la tabla `cuenta`
 --
 ALTER TABLE `cuenta`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `CuentaCodigo` (`CuentaCodigo`);
 
 --
--- Indexes for table `materia`
+-- Indices de la tabla `materia`
 --
 ALTER TABLE `materia`
   ADD PRIMARY KEY (`MateriaCodigo`) USING BTREE;
 
 --
--- Indexes for table `materiauacj`
+-- Indices de la tabla `materiauacj`
 --
 ALTER TABLE `materiauacj`
   ADD PRIMARY KEY (`MateriaUacjClave`);
 
 --
--- Indexes for table `universidad`
+-- Indices de la tabla `universidad`
 --
 ALTER TABLE `universidad`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `UniversidadCodigo` (`UniversidadCodigo`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `alumno`
---
-ALTER TABLE `alumno`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
-
---
--- AUTO_INCREMENT for table `alumnomaterias`
---
-ALTER TABLE `alumnomaterias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
-
---
--- AUTO_INCREMENT for table `bitacora`
+-- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
--- AUTO_INCREMENT for table `carrera`
+-- AUTO_INCREMENT de la tabla `carrera`
 --
 ALTER TABLE `carrera`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `cuenta`
+-- AUTO_INCREMENT de la tabla `cuenta`
 --
 ALTER TABLE `cuenta`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `universidad`
+-- AUTO_INCREMENT de la tabla `universidad`
 --
 ALTER TABLE `universidad`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

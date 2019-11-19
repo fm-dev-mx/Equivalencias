@@ -141,7 +141,7 @@
 </div>
 
 <!--Ventana emergente para agregar materia-->
-<div class="panel-body">
+<div class="modal-body">
 	<form action="<?php echo SERVERURL; ?>ajax/materiaAjax.php" method="POST" data-form='saveModalMateria' class="FormularioAjax" autocomplete="off" enctype="multipart/form-data">
 		<div class="modal fade" id="agregar-materia-pop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
