@@ -180,13 +180,14 @@ function ModalAgregarCarrera(){
 
 function cargar(){
     var busqueda= $("#busqueda").val();
-    $.ajax({
+    $.ajax({        
         url:'../ajax/asignarAjax.php?action=ajax&busqueda='+busqueda,       
         success:function(data){
             $(".outer_div").html(data).fadeIn('slow');
         }
     });
 }
+
 
 function AsignarMateria(codigoMateriaUacj){
     $.ajax({

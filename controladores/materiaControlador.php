@@ -50,11 +50,12 @@
             return mainModel::sweet_alert($alerta);
         }
 
-		public function paginador_materia_controlador($pagina,$registros,$privilegio,$carrera){
+		public function paginador_materia_controlador($pagina,$registros,$privilegio,$carrera,$carreraUacj){
 			$pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
 			$privilegio=mainModel::limpiar_cadena($privilegio);
 			$codigoCarrera=mainModel::limpiar_cadena($carrera);			
+			$codigoCarreraUacj=mainModel::limpiar_cadena($carreraUacj);			
 
 			$tabla="";
 
@@ -106,19 +107,19 @@
 		
 				foreach($datos as $rows){
 					$datosRen=mainModel::encryption($rows['MateriaCodigo']).'||'.$rows['MateriaNombre'].'||'.mainModel::encryption($privilegio);
-					
-					//obtener nombre de la materia UACJ-------------------------------------------
-					$codigoMateriaUacj=$rows['MateriaUacj'];
-					$consultaNombre="SELECT MateriaUacjNombre FROM materiauacj WHERE MateriaUacjClave='$codigoMateriaUacj'";
-					$conexionNombre = mainModel::conectar();
-					$nombreMateriaUacj = $conexionNombre->query($consultaNombre);
-					$nombreMateriaUacj = $nombreMateriaUacj->fetch();
-					//--------------------------------------------------------------------------
+						
 					$tabla.='	
 								<tr>
 									<td>'.$contador.'</td>
-									<td>'.$rows['MateriaNombre'].'</td>
-									<td>'.$nombreMateriaUacj[0].'</td>
+									<td>'.$rows['MateriaNombre'].'</td>';
+
+					//obtener nombre de la materia UACJ-------------------------------------------
+					$codigoMateria=$rows['MateriaCodigo'];
+					$consultaEquivalencia = "SELECT matuacj.MateriaUacjNombre FROM materiauacj matuacj, materia mat, equivalencia eq WHERE matuacj.MateriaUacjClave=eq.CodigoMateriaUacj AND eq.CodigoMateria='$codigoMateria' AND matuacj.MateriaUacjCarrera='$carreraUacj'";
+					$consultaEquivalencia = $conexion->query($consultaEquivalencia);
+					$consultaEquivalencia= $consultaEquivalencia->fetch();
+					$tabla.='	
+									<td>'.$consultaEquivalencia['MateriaUacjNombre'].'</td>
 									'
 									;
 					if($privilegio<=2){

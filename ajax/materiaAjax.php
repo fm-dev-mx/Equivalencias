@@ -1,7 +1,7 @@
 <?php
 	$peticionAjax=true;
 	require_once "../core/configGeneral.php";
-	if(isset($_POST['privilegio-admin']) || isset($_POST['uniSelect']) || isset($_POST['carreraSelect']) || isset($_POST['nombreMateriaAgregar']) || isset($_POST['codigoCarreraAgregarMateria']) || isset($_POST['MateriaNombreUpdate'])	){
+	if(isset($_POST['privilegio-admin']) || isset($_POST['uniSelect']) || isset($_POST['carreraSelect']) || isset($_POST['carreraUacjSelect']) || isset($_POST['nombreMateriaAgregar']) || isset($_POST['codigoCarreraAgregarMateria']) || isset($_POST['MateriaNombreUpdate'])	){
 
 		require_once "../controladores/materiaControlador.php";
 		$InsMateria= new materiaControlador();
@@ -21,11 +21,17 @@
 		if(isset($_POST['uniSelect'])){
 			session_start(['name'=>'SBP']);
 			$_SESSION['uniSelect']=$_POST['uniSelect'];		
+			unset($_SESSION['carreraSelect']);
 		}
 
 		if(isset($_POST['carreraSelect'])){
 			session_start(['name'=>'SBP']);
 			$_SESSION['carreraSelect']=$_POST['carreraSelect'];		
+		}
+
+		if(isset($_POST['carreraUacjSelect'])){
+			session_start(['name'=>'SBP']);
+			$_SESSION['carreraUacjSelect']=$_POST['carreraUacjSelect'];		
 		}
 
 	}else{

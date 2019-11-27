@@ -37,7 +37,7 @@
 			}elseif($tipo=="Conteo"){
 				$query=mainModel::conectar()->prepare("SELECT MateriaCodigo FROM materia");
 			}elseif($tipo=="Lista"){
-				$query=mainModel::conectar()->prepare("SELECT MateriaCodigo,MateriaNombre,MateriaUacj FROM materia WHERE MateriaCarrera=:Carrera ORDER BY MateriaNombre ASC");
+				$query=mainModel::conectar()->prepare("SELECT MateriaCodigo,MateriaNombre FROM materia WHERE MateriaCarrera=:Carrera ORDER BY MateriaNombre ASC");
 				$query->bindParam(":Carrera",$carrera);
 			}
 			$query->execute();

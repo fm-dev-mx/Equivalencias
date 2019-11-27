@@ -17,7 +17,9 @@
 			$numrows = $numrow->rowCount(); 
 
 			//main query to fetch the data
-			$query="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE MateriaUacjNombre like '%$busqueda%' or MateriaUacjClave like '%$busqueda%' ORDER BY MateriaUacjNombre ASC LIMIT $inicio,$registros";		
+			$carrera = $_SESSION['carreraUacjSelect'];
+
+			$query="SELECT SQL_CALC_FOUND_ROWS * FROM materiauacj WHERE (MateriaUacjNombre like '%$busqueda%' or MateriaUacjClave like '%$busqueda%') AND MateriaUacjCarrera='$carrera' ORDER BY MateriaUacjNombre ASC LIMIT $inicio,$registros";		
 
 			$conexion = mainModel::conectar();
 
@@ -71,29 +73,58 @@
 		}
 		
 		public function asignar_materia_controlador(){
-			
-			$codigoUacj=mainModel::limpiar_cadena($_GET['codigoMateriaUacj']);
-			unset($_GET['codigoMateriaUacj']);
+
 			$adminPrivilegio=$_SESSION['privilegio_sbp'];
-			$codigoMateria=mainModel::limpiar_cadena($_SESSION['codigoMateria']);
-			unset($_SESSION['codigoMateria']);
-			if($adminPrivilegio<=1){
-				$asignarMateria=asignarmateriaModelo::asignar_materia_modelo($codigoMateria,$codigoUacj);
-				if($asignarMateria->rowCount()>=1){
-					$alerta=[
-						"Alerta"=>"recargar",
-						"Titulo"=>"Datos actualizados!",
-						"Texto"=>"Se asignó la materia correctamente",
-						"Tipo"=>"success"
-					];
+			if($adminPrivilegio==1){
+
+				$MateriaUacj=mainModel::limpiar_cadena($_GET['codigoMateriaUacj']);
+				unset($_GET['codigoMateriaUacj']);				
+				$Materia=mainModel::limpiar_cadena($_SESSION['codigoMateria']);		
+				unset($_SESSION['codigoMateria']);
+				$query="SELECT MateriaUacjCarrera FROM materiauacj WHERE MateriaUacjClave='$MateriaUacj'";		
+				$conexion = mainModel::conectar();
+				$query = $conexion->query($query);
+				$query= $query->fetch();
+				$CarreraMateria=$query['MateriaUacjCarrera'];
+				$consulta=mainModel::ejecutar_consulta_simple("SELECT eq.id FROM equivalencia eq, materiauacj matuacj WHERE eq.CodigoMateria='$Materia' AND matuacj.MateriaUacjClave=eq.CodigoMateriaUacj AND matuacj.MateriaUacjCarrera='$CarreraMateria'");
+
+				if($consulta->rowCount()<=0){
+
+					$agregarMateria=asignarmateriaModelo::agregar_materia_modelo($Materia,$MateriaUacj);
+					if($agregarMateria->rowCount()>=1){
+						$alerta=[
+							"Alerta"=>"recargar",
+							"Titulo"=>"Datos actualizados!",
+							"Texto"=>"Se asignó la materia correctamente",
+							"Tipo"=>"success"
+						];
+					}else{
+						$alerta=[
+							"Alerta"=>"simple",
+							"Titulo"=>"Ocurrió un error inesperado",
+							"Texto"=>"No hemos podido asignar la materia, por favor intente nuevamente",
+							"Tipo"=>"error"
+						];
+					}	
 				}else{
-					$alerta=[
-						"Alerta"=>"simple",
-						"Titulo"=>"Ocurrió un error inesperado",
-						"Texto"=>"No hemos podido asignar la materia, por favor intente nuevamente",
-						"Tipo"=>"error"
-					];
-				}					
+					
+					$asignarMateria=asignarmateriaModelo::asignar_materia_modelo($Materia,$MateriaUacj,$CarreraMateria);
+					if($asignarMateria->rowCount()>=1){
+						$alerta=[
+							"Alerta"=>"recargar",
+							"Titulo"=>"Datos actualizados!",
+							"Texto"=>"Se asignó la materia correctamente",
+							"Tipo"=>"success"
+						];
+					}else{
+						$alerta=[
+							"Alerta"=>"simple",
+							"Titulo"=>"Ocurrió un error inesperado",
+							"Texto"=>"No hemos podido asignar la materia, por favor intente nuevamente",
+							"Tipo"=>"error"
+						];
+					}								
+				}
 			}else{
 				$alerta=[
 					"Alerta"=>"simple",
@@ -102,6 +133,7 @@
 					"Tipo"=>"error"
 				];
 			}
+			
 			return mainModel::sweet_alert($alerta);
 		}
 	}

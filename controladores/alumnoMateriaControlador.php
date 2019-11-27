@@ -138,7 +138,7 @@
 			$pagina= (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
 			$inicio= ($pagina>0) ? (($pagina*$registros)-$registros) : 0;
 
-			$consulta="SELECT SQL_CALC_FOUND_ROWS mat.MateriaNombre, am.CalificacionMateria FROM alumnomaterias am, materia mat WHERE (am.CodigoAlumno='$codigoAlumno' AND mat.MateriaCodigo=am.CodigoMateria AND am.EstatusMateria=1) ORDER BY mat.MateriaNombre ASC LIMIT $inicio,$registros";
+			$consulta="SELECT SQL_CALC_FOUND_ROWS mat.MateriaNombre, am.CalificacionMateria, am.MateriaUacj FROM alumnomaterias am, materia mat WHERE (am.CodigoAlumno='$codigoAlumno' AND mat.MateriaCodigo=am.CodigoMateria AND am.EstatusMateria=1) ORDER BY mat.MateriaNombre ASC LIMIT $inicio,$registros";
 			
 			$paginaurl="alumnoequivalencia";			
 
@@ -176,13 +176,22 @@
 				$contador=$inicio+1;
 		
 				foreach($datos as $rows){
+					$codigoMateriaUacj=$rows['MateriaUacj'];
+					$consultaEquivalencia="SELECT MateriaUacjNombre FROM materiauacj WHERE MateriaUacjClave='$codigoMateriaUacj'";
+					$consultaEquivalencia = $conexion->query($consultaEquivalencia);
+					$consultaEquivalencia= $consultaEquivalencia->fetch();
+					$paginaurl="alumnoequivalencia";			
 
+					$conexion = mainModel::conectar();
+
+					$datos = $conexion->query($consulta);
 					$datosRen=$rows['MateriaNombre'].'||'.'||'.$rows['CalificacionMateria'].'||'.mainModel::encryption($privilegio);
 					
 					$tabla.='	
 								<tr>
 									<td>'.$contador.'</td>
 									<td>'.$rows['MateriaNombre'].'</td>
+									<td>'.$consultaEquivalencia['MateriaUacjNombre'].'</td>
 									<td>'.$rows['CalificacionMateria'].'</td>
 									';
 					if($privilegio<=2){

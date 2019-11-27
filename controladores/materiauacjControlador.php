@@ -12,7 +12,6 @@
 			$nombre=mainModel::limpiar_cadena($_POST['nombreMateriaAgregar']);
 			$clave=mainModel::limpiar_cadena($_POST['claveMateriaAgregar']);
 			$creditos=mainModel::limpiar_cadena($_POST['creditosMateriaAgregar']);
-			var_dump($_POST['semestreMateriaAgregar']);
 			$semestre=mainModel::limpiar_cadena($_POST['semestreMateriaAgregar']);
 			$obl=mainModel::limpiar_cadena($_POST['optionsObl']);            
 

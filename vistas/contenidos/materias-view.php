@@ -14,8 +14,10 @@
 <?php 
 	require_once "./controladores/universidadControlador.php";
 	require_once "./controladores/carreraControlador.php";
+	require_once "./controladores/carreraUacjControlador.php";
 	$insUniv= new universidadControlador();
 	$insCarrera= new carreraControlador();
+	$InsCarreraUacj= new carreraUacjControlador();
 
 	$url=explode("/", $_GET['views']);
 	
@@ -29,6 +31,12 @@
 		$codigoCarrera=$_SESSION['carreraSelect'];
 	}else{
 		$codigoCarrera="";
+	}
+
+	if(isset($_SESSION['carreraUacjSelect']))	{
+		$codigoCarreraUacj=$_SESSION['carreraUacjSelect'];
+	}else{
+		$codigoCarreraUacj="";
 	}
 
 	$tipoConsulta="Unico";
@@ -57,6 +65,11 @@
 	$listaC=$insCarrera->datos_carrera_controlador($tipoConsulta,$codigoUni);
 	if($listaC->rowCount()>=1){
 		$listaCarrera=$listaC->fetchAll();
+	}
+	//Se obtiene un array con los nombres de todas las carreras de la UACJ(para la lista desplegable)
+	$listaCUacj=$InsCarreraUacj->datos_carrera_uacj_controlador($tipoConsulta,$codigoUni);
+	if($listaCUacj->rowCount()>=1){
+		$listaCarreraUacj=$listaCUacj->fetchAll();
 	}
 ?>
 
@@ -119,7 +132,19 @@
   <div class="container-fluid">
     <div class="panel panel-success">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE MATERIAS</h3>
+		<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp;LISTA DE MATERIAS	
+			<div class="pull-right">
+						<!--listado de carreras de la UACJ---------------------------------------------------------->
+				<select class="selectpicker" id="carreraUacjSelect" name="carreraUacjSelect">
+					<option value="0" >Seleciona una carrera</option>			
+					<?php foreach($listaCarreraUacj as $rows){ ?> 
+						<option value="<?php echo $rows['CarreraCodigo'];?>" <?php if($codigoCarreraUacj==$rows['CarreraCodigo']){echo ' selected';} ?>>
+							<?php echo $rows['CarreraNombre'];?>
+						</option>	
+					<?php } ?>	
+				</select>
+			</div>
+		</h3>
       </div>
       <div class="panel-body">
 			<?php
@@ -130,7 +155,7 @@
           $pagina=1;
         }
 				
-        echo $insMateria->paginador_materia_controlador($pagina,10,1,$codigoCarrera);
+        echo $insMateria->paginador_materia_controlador($pagina,10,1,$codigoCarrera,$codigoCarreraUacj);
         ?>	
       </div>
     </div>
@@ -174,7 +199,7 @@
 						<div class="form-horizontal" role="form">			
 							<div class="form-group row">				
 								<div class="col-md-12">
-									<input type="text" class="form-control" id="busqueda" placeholder="Selecciona materia" onkeyup='cargar();'>
+									<input type="text" class="form-control" id="busqueda" placeholder="Selecciona materia" onkeyup='cargar()'>
 								</div>																				
 							</div>								
 						</div>						
@@ -207,6 +232,17 @@
 		$.ajax({
 			type:"post",
 			data:"carreraSelect=" + $('#carreraSelect').val(),
+			url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
+			success:function(r){
+				location.reload();
+			}
+		});
+	});  
+
+	$('#carreraUacjSelect').change(function(){
+		$.ajax({
+			type:"post",
+			data:"carreraUacjSelect=" + $('#carreraUacjSelect').val(),
 			url:"<?php echo SERVERURL; ?>ajax/materiaAjax.php",
 			success:function(r){
 				location.reload();
