@@ -1,6 +1,6 @@
 <?php
 	const SERVER="localhost";
-	const DB="equivalencias";
+	const DB="equivalenciasold";
 	const USER="root";
 	const PASS="";
 

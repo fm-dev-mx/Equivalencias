@@ -195,10 +195,11 @@
 									<td>'.$rows['CalificacionMateria'].'</td>
 									';
 					if($privilegio<=2){
-						$tabla.='<td>									
-									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#editar-materia-uacj-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalEditarMateriaUacj(\'' . $datosRen . '\')">
-									<i class="zmdi zmdi-refresh"></i></button>
-								</td>
+						$tabla.='
+								<td>																		
+									<button class="btn btn-success btn-raised btn-xs" data-toggle="modal" data-target="#asignar-materia-pop" data-dismiss="modal" data-backdrop="false" onclick="ModalAsignarMateria(\''.$rows['MateriaCodigo'].'\')">
+									<i class="zmdi zmdi-bookmark"></i></button>																		
+								</td>		
 								';
 					}
 
